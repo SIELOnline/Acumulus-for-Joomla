@@ -8,7 +8,7 @@ interdiff.txt
 .idea/*
 
 # Common library
-administrator/components/com_acumulus/libraries/*
+VirtueMart-3.x-Acumulus4.x/admin/libraries/*
 
 # Shared files
 changelog.txt
@@ -17,4 +17,4 @@ LICENTIE-NL.pdf
 README.txt
 
 # Resulting installer files
-com_acumulus.zip
+/*.zip

@@ -1,9 +1,4 @@
 <?php
-/**
- * @package Siel\Acumulus
- * @subpackage  com_acumulus
- */
-
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 

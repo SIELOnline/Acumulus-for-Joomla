@@ -1,0 +1,81 @@
+Changelog Acumulus webkoppelingen
+=================================
+
+Library die door iedere webwinkelkoppeling gebruikt wordt
+=========================================================
+
+Library 4.0.0-alpha1 2015-04-25
+-------------------------------
+De library 4.x is volledig vernieuwd. Er is meer gemeenschappelijke code en er
+is meer documentatie. hierdoor kan de library ook losstaand gebruikt worden.
+
+Alle kennis en ervaring die met de library 3.x is opgedaan is verwerkt in deze
+versie. Uiteraard zijn alle problemen die in 3.x zijn gevonden en ook van
+toepassing waren op 4.x ook hier opgelost. Door de grote verschillen is de 3.x
+changelog dan ook verwijderd.
+
+
+Magento
+=======
+Geteste Magento versie(s):
+* 1.9.x
+
+Nog niet beschikbaar.
+
+
+
+OpenCart 2.x
+============
+Geteste OpenCart 2.x versie(s):
+* 2.0.x
+
+Nog niet beschikbaar.
+
+
+
+OpenCart 1.x
+============
+Geteste OpenCart 1.x versie(s):
+* 1.5.6.4
+
+Werkt niet met (volgens meldingen van gebruikers):
+* 1.5.4 en eerder.
+
+Nog niet beschikbaar.
+
+
+
+PrestaShop
+==========
+Geteste PrestaShop versie(s):
+* 1.6.x
+
+Nog niet beschikbaar.
+
+
+
+VirtueMart 3
+============
+Geteste VirtueMart versie(s):
+* 3.0.8 (Joomla 3.4.1)
+
+VirtueMart-3-Acumulus-4.0.0-alpha1 2015-04-25
+---------------------------------------------
+Eerste versie voor VM3:
+- Instellingenformulier.
+- Batch verzendformulier.
+- Geen automatische verzending.
+- Meerdere BTW tarieven in 1 factuur nog niet getest.
+- Europese BTW tarieven nog niet getest.
+- Geen ondersteuning voor de betaalde EU VAT checker extensie.
+- Geen ondersteuning voor de margeregeling
+
+
+
+
+WooCommerce
+===========
+Geteste WooCommerce versie(s):
+* 2.2.x (WordPress: 4.0)
+
+Nog niet beschikbaar.
