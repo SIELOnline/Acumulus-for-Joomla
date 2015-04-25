@@ -1,0 +1,20 @@
+# patches, diffs, merges
+*.patch
+interdiff.txt
+*.orig
+*.bak
+
+# PHPStorm
+.idea/*
+
+# Common library
+administrator/components/com_acumulus/libraries/*
+
+# Shared files
+changelog.txt
+LICENTIE.txt
+LICENTIE-NL.pdf
+README.txt
+
+# Resulting installer files
+com_acumulus.zip
