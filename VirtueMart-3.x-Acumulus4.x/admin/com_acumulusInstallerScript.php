@@ -63,11 +63,17 @@ class com_acumulusInstallerScript {
    */
   public function preflight($type, $parent) {
     $version = (string) $parent->get("manifest")->version;
+    $joomlaVersion = (new JVersion())->getShortVersion();
 
     // Check Joomla version: @todo check what version will fail.
     $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
-    if (version_compare((new JVersion())->getShortVersion(), $minJoomlaVersion, 'lt')) {
+    if (version_compare('3.1', $minJoomlaVersion, 'lt')) {
       JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion.");
+      return FALSE;
+    }
+    if (version_compare($joomlaVersion, $minJoomlaVersion, 'lt')) {
+      JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
+      JInstaller::getInstance()->abort("The Acumulus component ($currentRelease) cannot be downgraded to $version.");
       return FALSE;
     }
 
