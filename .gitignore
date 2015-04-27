@@ -3,12 +3,17 @@
 interdiff.txt
 *.orig
 *.bak
+*.old
 
 # PHPStorm
 .idea/*
 
 # Common library
 VirtueMart-3.x-Acumulus4.x/admin/libraries/*
+
+# Duplicate files
+VirtueMart-3.x-Acumulus4.x/acumulus.xml
+VirtueMart-3.x-Acumulus4.x/com_acumulusInstallerScript.php
 
 # Shared files
 changelog.txt
