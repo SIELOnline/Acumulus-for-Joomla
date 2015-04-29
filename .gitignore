@@ -9,17 +9,17 @@ interdiff.txt
 .idea/*
 
 # Common library
-VirtueMart-3.x-Acumulus4.x/admin/libraries/*
+acumulus/admin/libraries/*
 
 # Duplicate files
-VirtueMart-3.x-Acumulus4.x/acumulus.xml
-VirtueMart-3.x-Acumulus4.x/com_acumulusInstallerScript.php
+acumulus/acumulus.xml
+acumulus/com_acumulusInstallerScript.php
 
 # Shared files
-changelog.txt
-LICENTIE.txt
-LICENTIE-NL.pdf
-README.txt
+changelog*.txt
+license.txt
+licentie-nl.pdf
+readme-nl.txt
 
 # Resulting installer files
 /*.zip

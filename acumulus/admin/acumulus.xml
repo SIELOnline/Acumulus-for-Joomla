@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.4" method="upgrade">
+
+  <name>com_acumulus</name>
+  <creationDate>April 2015</creationDate>
+  <author>Buro RaDer</author>
+  <authorEmail>support@burorader.com</authorEmail>
+  <authorUrl>http://www.burorader.com/</authorUrl>
+  <copyright>Copyright Siel 2015</copyright>
+  <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+  <!--  The version string is recorded in the components table -->
+  <version>4.0.0-alpha1</version>
+  <description>Acumulus webservice koppeling voor VirtueMart 3.x</description>
+  <!-- Minimal VirtueMArt version we require. -->
+  <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
+
+  <scriptfile>com_acumulusInstallerScript.php</scriptfile>
+
+  <install> <!-- Runs on install -->
+    <sql>
+      <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+    </sql>
+  </install>
+  <uninstall> <!-- Runs on uninstall -->
+    <sql>
+      <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+    </sql>
+  </uninstall>
+  <!-- Runs on update; New since J2.5
+  <update>
+    <schemas>
+      <schemapath type="mysql">sql/updates/mysql</schemapath>
+    </schemas>
+  </update>
+  -->
+  <administration>
+    <!-- Administration Menu Section -->
+    <menu img="./media/logo-acumulus-16.png">Acumulus</menu>
+    <submenu>
+      <menu link="option=com_acumulus&amp;task=batch" img="./media/logo-acumulus-16.png">Batchverzending</menu>
+      <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Instellingen</menu>
+    </submenu>
+
+    <!-- Administration Main File Copy Section -->
+    <files folder="admin">
+      <!-- Admin Main File Copy Section -->
+      <filename>acumulus.xml</filename>
+      <filename>acumulus.php</filename>
+      <filename>controller.php</filename>
+      <filename>com_acumulusInstallerScript.php</filename>
+      <filename>changelog-4.x.txt</filename>
+      <filename>license.txt</filename>
+      <filename>licentie-nl.pdf</filename>
+      <filename>readme-nl.txt</filename>
+      <folder>libraries</folder>
+      <folder>media</folder>
+      <folder>models</folder>
+      <folder>sql</folder>
+      <folder>tables</folder>
+      <folder>views</folder>
+    </files>
+  </administration>
+
+</extension>
