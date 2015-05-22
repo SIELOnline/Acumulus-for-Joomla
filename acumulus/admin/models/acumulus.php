@@ -1,10 +1,11 @@
 <?php
 use Siel\Acumulus\Helpers\Translator;
 use Siel\Acumulus\Shop\Config;
-use Siel\Acumulus\VirtueMart\BatchForm;
-use Siel\Acumulus\VirtueMart\ConfigForm;
-use Siel\Acumulus\VirtueMart\ConfigStore;
-use Siel\Acumulus\VirtueMart\InvoiceManager;
+use Siel\Acumulus\Shop\VirtueMart\BatchForm;
+use Siel\Acumulus\Shop\VirtueMart\ConfigForm;
+use Siel\Acumulus\Shop\VirtueMart\ConfigStore;
+use Siel\Acumulus\Shop\VirtueMart\InvoiceManager;
+use Siel\Acumulus\Shop\VirtueMart\Log;
 
 /**
  * Acumulus Model
@@ -13,9 +14,6 @@ class AcumulusModelAcumulus extends JModelLegacy {
 
   /** @var \Siel\Acumulus\Shop\InvoiceManager */
   protected $invoiceManager;
-
-  /** @var \Siel\Acumulus\Shop\ConfigStoreInterface */
-  protected $acumulusConfigStore;
 
   /** @var \Siel\Acumulus\Shop\Config */
   protected $acumulusConfig;
@@ -34,8 +32,8 @@ class AcumulusModelAcumulus extends JModelLegacy {
 
     $languageCode = substr(JFactory::getLanguage()->getTag(), 0, 2);
     $this->translator = new Translator($languageCode);
-    $this->acumulusConfigStore = new ConfigStore();
-    $this->acumulusConfig = new Config($this->acumulusConfigStore, $this->translator);
+    $this->acumulusConfig = new Config(new ConfigStore(), $this->translator);
+    Log::createInstance($this->acumulusConfig->getLogLevel());
     $this->formType = $config['name'];
   }
 

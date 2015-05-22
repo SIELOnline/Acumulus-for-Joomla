@@ -9,7 +9,7 @@
   <copyright>Copyright Siel 2015</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.0.0-alpha1</version>
+  <version>4.0.0-alpha3</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x</description>
   <!-- Minimal VirtueMArt version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
