@@ -64,7 +64,7 @@ class AcumulusViewConfig extends JViewLegacy {
     $this->formFields = $this->form->addValues($this->formFields);
 
     // Display the template
-    $this->formRenderer = new FormRenderer();
+    $this->formRenderer = new FormRenderer($this->form);
     parent::display($tpl);
 
     $this->addToolBar();
