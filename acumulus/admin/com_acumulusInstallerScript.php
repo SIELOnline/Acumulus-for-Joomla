@@ -67,13 +67,12 @@ class com_acumulusInstallerScript {
 
     // Check Joomla version: @todo check what version will fail.
     $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
-    if (version_compare('3.1', $minJoomlaVersion, 'lt')) {
+    if (version_compare($joomlaVersion, '3.1', '<')) {
       JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion.");
       return FALSE;
     }
-    if (version_compare($joomlaVersion, $minJoomlaVersion, 'lt')) {
+    if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
       JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
-      JInstaller::getInstance()->abort("The Acumulus component ($currentRelease) cannot be downgraded to $version.");
       return FALSE;
     }
 
@@ -102,7 +101,7 @@ class com_acumulusInstallerScript {
     $componentInfo = json_decode($extension->manifest_cache, TRUE);
     $shopVersion = $componentInfo['version'];
     $minVirtueMartVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
-    if (version_compare($shopVersion, $minVirtueMartVersion, 'lt')) {
+    if (version_compare($shopVersion, $minVirtueMartVersion, '<')) {
       JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVirtueMartVersion.");
       return FALSE;
     }
