@@ -1,11 +1,11 @@
 <?php
 use Siel\Acumulus\Helpers\Translator;
 use Siel\Acumulus\Shop\Config;
-use Siel\Acumulus\Shop\VirtueMart\BatchForm;
-use Siel\Acumulus\Shop\VirtueMart\ConfigForm;
-use Siel\Acumulus\Shop\VirtueMart\ConfigStore;
-use Siel\Acumulus\Shop\VirtueMart\InvoiceManager;
-use Siel\Acumulus\Shop\VirtueMart\Log;
+use Siel\Acumulus\VirtueMart\Shop\BatchForm;
+use Siel\Acumulus\VirtueMart\Shop\ConfigForm;
+use Siel\Acumulus\VirtueMart\Shop\ConfigStore;
+use Siel\Acumulus\VirtueMart\Shop\InvoiceManager;
+use Siel\Acumulus\VirtueMart\Helpers\Log;
 
 /**
  * Acumulus Model
@@ -32,6 +32,8 @@ class AcumulusModelAcumulus extends JModelLegacy {
 
     $languageCode = substr(JFactory::getLanguage()->getTag(), 0, 2);
     $this->translator = new Translator($languageCode);
+    // @todo: this order is dangerous as config might already access log via
+    //   getInstance(0. Inject log class into config?
     $this->acumulusConfig = new Config(new ConfigStore(), $this->translator);
     Log::createInstance($this->acumulusConfig->getLogLevel());
     $this->formType = $config['name'];
@@ -46,6 +48,8 @@ class AcumulusModelAcumulus extends JModelLegacy {
 
   /**
    * @return \Siel\Acumulus\Helpers\Form
+   *
+   * @todo: inject forms (and thus invoicemanager becomes superfluous).
    */
   public function getForm() {
     // Get the form.

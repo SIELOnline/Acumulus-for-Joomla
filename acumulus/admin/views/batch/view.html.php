@@ -1,17 +1,18 @@
 <?php
-use Siel\Acumulus\Shop\VirtueMart\FormRenderer;
+use Siel\Acumulus\VirtueMart\Helpers\FormRenderer;
 
 /**
  * Acumulus batch view.
  */
 class AcumulusViewBatch extends JViewLegacy {
-  /** @var \Siel\Acumulus\Shop\VirtueMart\BatchForm */
+  /** @var \Siel\Acumulus\VirtueMart\Shop\BatchForm */
   protected $form;
 
   /** @var array */
   protected $formFields;
 
-  /** @var \Siel\Acumulus\Shop\VirtueMart\FormRenderer */
+  // @todo: inject form renderer?
+  /** @var \Siel\Acumulus\VirtueMart\Helpers\FormRenderer */
   protected $formRenderer;
 
   public function __construct($config = array()) {
