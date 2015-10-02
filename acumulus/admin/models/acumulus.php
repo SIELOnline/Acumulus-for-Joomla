@@ -30,12 +30,10 @@ class AcumulusModelAcumulus extends JModelLegacy {
   public function __construct($config = array()) {
     parent::__construct($config);
 
+    Log::createInstance();
     $languageCode = substr(JFactory::getLanguage()->getTag(), 0, 2);
     $this->translator = new Translator($languageCode);
-    // @todo: this order is dangerous as config might already access log via
-    //   getInstance(0. Inject log class into config?
     $this->acumulusConfig = new Config(new ConfigStore(), $this->translator);
-    Log::createInstance($this->acumulusConfig->getLogLevel());
     $this->formType = $config['name'];
   }
 
@@ -59,10 +57,10 @@ class AcumulusModelAcumulus extends JModelLegacy {
           if (!isset($this->invoiceManager)) {
             $this->invoiceManager = new InvoiceManager($this->acumulusConfig, $this->translator);
           }
-          $this->form = new BatchForm($this->acumulusConfig, $this->translator, $this->invoiceManager);
+          $this->form = new BatchForm($this->translator, $this->invoiceManager);
           break;
         case 'config':
-          $this->form = new ConfigForm($this->acumulusConfig, $this->translator);
+          $this->form = new ConfigForm($this->translator, $this->acumulusConfig);
           break;
       }
     }

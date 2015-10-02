@@ -8,9 +8,6 @@ class AcumulusViewConfig extends JViewLegacy {
   /** @var \Siel\Acumulus\VirtueMart\Shop\ConfigForm */
   protected $form;
 
-  /** @var array */
-  protected $formFields;
-
   // @todo: inject form renderer?
   /** @var \Siel\Acumulus\VirtueMart\Helpers\FormRenderer */
   protected $formRenderer;
@@ -61,8 +58,7 @@ class AcumulusViewConfig extends JViewLegacy {
     $this->form = $this->getForm();
 
     // Get the fields and their values for display.
-    $this->formFields = $this->form->getFields();
-    $this->formFields = $this->form->addValues($this->formFields);
+    $this->form->addValues();
 
     // Display the template
     $this->formRenderer = new FormRenderer($this->form);

@@ -12,14 +12,17 @@ $document->addStyleDeclaration('.icon-acumulus {background-image: url(./com_acum
 // Load VirtueMart: we need access to VirtueMart models and data.
 // Copied from administrator/components/com_virtuemart/virtuemart.php
 if (!class_exists('VmConfig')) {
+  /** @noinspection PhpIncludeInspection */
   require_once(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
 }
 VmConfig::loadConfig();
 
 if (!class_exists('VmController')) {
+  /** @noinspection PhpIncludeInspection */
   require_once(VMPATH_ADMIN . '/helpers/vmcontroller.php');
 }
 if (!class_exists('VmModel')) {
+  /** @noinspection PhpIncludeInspection */
   require(VMPATH_ADMIN . '/helpers/vmmodel.php');
 }
 // End of load VirtueMart.

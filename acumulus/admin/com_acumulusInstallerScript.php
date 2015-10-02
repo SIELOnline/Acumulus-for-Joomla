@@ -13,12 +13,14 @@ class com_acumulusInstallerScript {
    * Method to install the extension
    * $parent is the class calling this method
    *
-   * @return void
+   * @param JAdapterInstance $parent
+   *
+   * @throws \Exception
    */
   public function install($parent) {
     $version = (string) $parent->get('manifest')->version;
     JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has been installed. Please fill in the settings form.", 'message');
-    $parent->getParent()->setRedirectURL('index.php?option=com_acumulus&task=config');
+    JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=config');
   }
 
   /**
@@ -35,7 +37,7 @@ class com_acumulusInstallerScript {
    * Method to update the extension
    * $parent is the class calling this method
    *
-   * @param object $parent
+   * @param JAdapterInstance $parent
    *
    * @throws \Exception
    */
@@ -98,6 +100,7 @@ class com_acumulusInstallerScript {
     $extension = JTable::getInstance('extension');
     $id = $extension->find(array('element' => 'com_virtuemart'));
     $extension->load($id);
+    /** @noinspection PhpUndefinedFieldInspection */
     $componentInfo = json_decode($extension->manifest_cache, TRUE);
     $shopVersion = $componentInfo['version'];
     $minVirtueMartVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
