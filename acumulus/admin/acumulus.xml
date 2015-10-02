@@ -3,13 +3,13 @@
 
   <name>com_acumulus</name>
   <creationDate>April 2015</creationDate>
-  <author>Buro RaDer</author>
+  <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
   <copyright>Copyright Siel 2015</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.0.0-rc1</version>
+  <version>4.0.0</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x</description>
   <!-- Minimal VirtueMArt version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>

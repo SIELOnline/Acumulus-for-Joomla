@@ -67,7 +67,7 @@ class com_acumulusInstallerScript {
     $version = (string) $parent->get("manifest")->version;
     $joomlaVersion = (new JVersion())->getShortVersion();
 
-    // Check Joomla version: @todo check what version will fail.
+    // Check Joomla version
     $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
     if (version_compare($joomlaVersion, '3.1', '<')) {
       JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion.");
@@ -95,7 +95,7 @@ class com_acumulusInstallerScript {
       return FALSE;
     }
 
-    // Check Virtuemart version: @todo: determine which version will fail.
+    // Check Virtuemart version.
     /** @var JTableExtension $extension */
     $extension = JTable::getInstance('extension');
     $id = $extension->find(array('element' => 'com_virtuemart'));
