@@ -65,7 +65,8 @@ class com_acumulusInstallerScript {
    */
   public function preflight($type, $parent) {
     $version = (string) $parent->get("manifest")->version;
-    $joomlaVersion = (new JVersion())->getShortVersion();
+    $joomlaVersion = new JVersion();
+    $joomlaVersion = $joomlaVersion->getShortVersion();
 
     // Check Joomla version
     $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
