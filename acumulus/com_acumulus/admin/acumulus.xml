@@ -2,7 +2,7 @@
 <extension type="component" version="3.4" method="upgrade">
 
   <name>com_acumulus</name>
-  <creationDate>April 2015</creationDate>
+  <creationDate>December 2015</creationDate>
   <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
@@ -51,7 +51,7 @@
       <filename>changelog.txt</filename>
       <filename>license.txt</filename>
       <filename>licentie-nl.pdf</filename>
-      <filename>readme-nl.txt</filename>
+      <filename>leesmij.txt</filename>
       <folder>libraries</folder>
       <folder>media</folder>
       <folder>models</folder>

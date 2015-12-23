@@ -1,8 +1,10 @@
 <?php
+use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Shop\Config;
 use Siel\Acumulus\Joomla\Helpers\FormRenderer;
 use Siel\Acumulus\Joomla\Shop\BatchForm;
 use Siel\Acumulus\Joomla\VirtueMart\Shop\ConfigForm;
+use Siel\Acumulus\Web\ConfigInterface;
 
 /**
  * Acumulus Model
@@ -12,9 +14,6 @@ class AcumulusModelAcumulus extends JModelLegacy {
   /** @var \Siel\Acumulus\Shop\Config */
   protected $acumulusConfig;
 
-  /** @var string */
-  protected $formType;
-
   /** @var \Siel\Acumulus\Helpers\Form */
   protected $form;
 
@@ -22,7 +21,6 @@ class AcumulusModelAcumulus extends JModelLegacy {
     parent::__construct($config);
 
     $this->acumulusConfig = new Config('Joomla\\VirtueMart', substr(JFactory::getLanguage()->getTag(), 0, 2));
-    $this->formType = $config['name'];
   }
 
   /**
@@ -47,20 +45,61 @@ class AcumulusModelAcumulus extends JModelLegacy {
   }
 
   /**
+   * @param string $task
+   *
    * @return \Siel\Acumulus\Helpers\Form
    */
-  public function getForm() {
+  protected function getForm($task) {
     // Get the form.
     if (!isset($this->form)) {
-      switch ($this->formType) {
+      switch ($task) {
         case 'batch':
           $this->form = new BatchForm($this->acumulusConfig->getTranslator(), $this->acumulusConfig->getManager());
           break;
         case 'config':
           $this->form = new ConfigForm($this->acumulusConfig->getTranslator(), $this->acumulusConfig);
           break;
+        default:
+          $this->acumulusConfig->getLog()->error('InvoiceManager::getForm(): unknown formType "%s"', $task);
+          break;
       }
     }
     return $this->form;
   }
+
+  /**
+   * Processes the form at hand.
+   *
+   * @param string $task
+   * @return array
+   *   Array with 2 - possibly empty - lists of messages: 'success' and 'error'.
+   */
+  public function processForm($task) {
+    $form = $this->getForm($task);
+    $form->process();
+    // Return messages.
+    return array(
+      'success' => $form->getSuccessMessages(),
+      'error' => $form->getErrorMessages(),
+    );
+  }
+
+  /**
+   * Processes an order update by notifying the invoiceManager.
+   *
+   * @param \TableOrders $order
+   * @param string $old_order_status
+   *
+   * @return int
+   *   Status, one of the WebConfigInterface::Status_ constants.
+   */
+  public function sourceStatusChange(TableOrders $order, $old_order_status) {
+    $result = ConfigInterface::Status_NotSent;
+    if ($order->order_status !== $old_order_status) {
+      $source = $this->acumulusConfig->getSource(Source::Order, $order);
+      $result = $this->acumulusConfig->getManager()->sourceStatusChange($source, $order->order_status);
+    }
+    return $result;
+  }
+
 }

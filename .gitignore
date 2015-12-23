@@ -9,11 +9,11 @@ interdiff.txt
 .idea/*
 
 # Common library
-acumulus/admin/libraries/*
+acumulus/com_acumulus/admin/libraries/*
 
 # Duplicate files
-acumulus/acumulus.xml
-acumulus/com_acumulusInstallerScript.php
+acumulus/com_acumulus/acumulus.xml
+acumulus/com_acumulus/acumulusInstallerScript.php
 
 # Shared files
 changelog.txt
@@ -23,3 +23,4 @@ leesmij.txt
 
 # Resulting installer files
 /*.zip
+acumulus/packages/*
