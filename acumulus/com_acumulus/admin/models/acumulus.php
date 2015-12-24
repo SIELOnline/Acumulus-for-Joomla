@@ -49,7 +49,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    *
    * @return \Siel\Acumulus\Helpers\Form
    */
-  protected function getForm($task) {
+  public function getForm($task) {
     // Get the form.
     if (!isset($this->form)) {
       switch ($task) {
@@ -68,23 +68,6 @@ class AcumulusModelAcumulus extends JModelLegacy {
   }
 
   /**
-   * Processes the form at hand.
-   *
-   * @param string $task
-   * @return array
-   *   Array with 2 - possibly empty - lists of messages: 'success' and 'error'.
-   */
-  public function processForm($task) {
-    $form = $this->getForm($task);
-    $form->process();
-    // Return messages.
-    return array(
-      'success' => $form->getSuccessMessages(),
-      'error' => $form->getErrorMessages(),
-    );
-  }
-
-  /**
    * Processes an order update by notifying the invoiceManager.
    *
    * @param \TableOrders $order
@@ -96,7 +79,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
   public function sourceStatusChange(TableOrders $order, $old_order_status) {
     $result = ConfigInterface::Status_NotSent;
     if ($order->order_status !== $old_order_status) {
-      $source = $this->acumulusConfig->getSource(Source::Order, $order);
+      $source = $this->acumulusConfig->getSource(Source::Order, $order->virtuemart_order_id);
       $result = $this->acumulusConfig->getManager()->sourceStatusChange($source, $order->order_status);
     }
     return $result;

@@ -59,7 +59,7 @@ class AcumulusView extends JViewLegacy {
    */
   public function display($tpl = NULL) {
     // Get the config form.
-    $this->form = $this->getForm();
+    $this->form = $this->getModel()->getForm($this->task);
     // Get the fields and their values for display.
     $this->form->addValues();
 

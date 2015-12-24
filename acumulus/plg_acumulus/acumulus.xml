@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="plugin" group="vmcoupon" version="3.4" method="upgrade">
-  <name>Acumulus (verstuurt facturen automatisch naar Acumulus bij bepaalde bestellingsstatus wijzigingen)</name>
+  <name>Acumulus (verstuurt facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen)</name>
   <creationDate>December 2015</creationDate>
   <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
   <authorEmail>support@burorader.com</authorEmail>
@@ -8,7 +8,7 @@
   <copyright>Copyright Siel 2015</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>4.1.2</version>
+  <version>4.2.0-alpha3</version>
   <description>Acumulus koppeling voor VirtueMart 3.x</description>
 
   <files>

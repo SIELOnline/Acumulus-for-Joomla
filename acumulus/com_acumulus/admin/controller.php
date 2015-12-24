@@ -36,13 +36,14 @@ class AcumulusController extends JControllerLegacy {
 
   protected function executeTask($task) {
     /** @var AcumulusModelAcumulus $model */
-    $model = $this->getModel('Acumulus');
-    $messages = $model->processForm($task);
+    $form = $this->getModel('Acumulus')->getForm($task);
+    $form->process();
+
     // Show messages.
-    foreach($messages['success'] as $message) {
+    foreach($form->getSuccessMessages() as $message) {
       JFactory::getApplication()->enqueueMessage($message, 'message');
     }
-    foreach($messages['error'] as $message) {
+    foreach($form->getErrorMessages() as $message) {
       JFactory::getApplication()->enqueueMessage($message, 'error');
     }
 

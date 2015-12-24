@@ -44,8 +44,12 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
    */
   protected function init() {
     if (!$this->initialized) {
-      // Get access to our classes via the auto loader.
-      JLoader::registerNamespace('Siel', JPATH_ADMINISTRATOR . '/components/com_acumulus/libraries');
+      $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
+      // Get access to our models and tables.
+      JModelLegacy::addIncludePath("$componentPath/models", 'AcumulusModel');
+      JTable::addIncludePath("$componentPath/tables");
+      // Get access to our library classes via the auto loader.
+      JLoader::registerNamespace('Siel', "$componentPath/libraries");
       $this->initialized = TRUE;
     }
   }
@@ -59,7 +63,7 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
    */
   public function getModel($config = array()) {
     if ($this->model === null) {
-      $this->model = JModelLegacy::getInstance('Acumulus', '', $config);
+      $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel', $config);
     }
     return $this->model;
   }
@@ -84,5 +88,25 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
     // VirtueMartModelOrders::updateStatusForOneOrder().
     return null;
   }
+
+  /*
+   * Methods we don't want to be implemented.
+   */
+  public function loadJLangThis($fname, $type = 0, $name = 0) {
+    return;
+  }
+
+  public function onStoreInstallPluginTable($psType, $name = FALSE) {
+    return TRUE;
+  }
+
+  protected function removePluginInternalData($id, $primaryKey = 0) {
+    return;
+  }
+
+  public function renderByLayout($layout = 'default', $viewData = NULL, $name = NULL, $psType = NULL) {
+    return;
+  }
+
 }
 
