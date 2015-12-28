@@ -13,7 +13,7 @@ acumulus/com_acumulus/admin/libraries/*
 
 # Duplicate files
 acumulus/com_acumulus/acumulus.xml
-acumulus/com_acumulus/acumulusInstallerScript.php
+acumulus/com_acumulus/com_acumulusInstallerScript.php
 
 # Shared files
 changelog.txt
