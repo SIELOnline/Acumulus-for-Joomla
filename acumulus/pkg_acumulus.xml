@@ -9,15 +9,13 @@
   <copyright>Copyright Siel 2015</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.2.0-beta1</version>
-  <description>Acumulus koppeling package voor VirtueMart 3.x</description>
+  <version>4.2.0-alpha3</version>
+  <description>Acumulus koppeling package voor VirtueMart 3.x en HikaShop</description>
 
   <files folder="packages">
     <file type="component" id="com_acumulus" >com_acumulus.zip</file>
-<!--    <file type="module" id="acumulus" client="site">mod_acumulus.zip</file> -->
-<!--    <file type="library" id="siel">lib_siel_acumulus.zip</file> -->
-    <file type="plugin" id="acumulus" group="vmcoupon">plg_acumulus.zip</file>
-<!--    <file type="template" id="acumlus" client="site">tpl_acumulus.zip</file> -->
+    <file type="plugin" id="acumulus_vm3" group="vmcoupon">plg_acumulus_vm3.zip</file>
+    <file type="plugin" id="acumulus_hs" group="hikashop">plg_acumulus_hs.zip</file>
   </files>
 </extension>
  

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="plugin" group="vmcoupon" version="3.4" method="upgrade">
+<extension type="plugin" group="hikashop" version="3.4" method="upgrade">
   <name>Acumulus (verstuurt facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen)</name>
   <creationDate>December 2015</creationDate>
   <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
@@ -9,9 +9,9 @@
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
   <version>4.2.0-alpha3</version>
-  <description>Acumulus koppeling voor VirtueMart 3.x</description>
+  <description>Acumulus plugin voor HikaShop</description>
 
   <files>
-    <filename plugin="acumulus">acumulus.php</filename>
+    <filename plugin="acumulus_hs">acumulus.php</filename>
   </files>
 </extension>
