@@ -1,5 +1,7 @@
 <?php
 
+use Siel\Acumulus\Invoice\Source;
+
 defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists('vmCouponPlugin')) {
@@ -8,7 +10,7 @@ if (!class_exists('vmCouponPlugin')) {
 }
 
 /**
- * Acumulus plugin to react to order status changes.
+ * Acumulus plugin to react to VirtueMart order status changes.
  *
  * We have chosen to listen to the plgVmCouponUpdateOrderStatus event as this
  * is the last event that gets triggered when an order gets updated through
@@ -16,7 +18,7 @@ if (!class_exists('vmCouponPlugin')) {
  * shipment and payment plugins have been called successfully, and the order
  * and order history have been stored successfully.
  *
- * Events we did not choose to  use:
+ * Events we did not choose to use:
  * - plgVmOnUpdateOrderShipment: too early as it gets called before the
  *   payment plugin can have reacted to the order update.
  * - plgVmOnUpdateOrderPayment: still quite early as we might get called
@@ -81,8 +83,11 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
    *   (for now only VirtueMartModelOrders::updateStatusForOneOrder)
    */
   public function plgVmCouponUpdateOrderStatus(TableOrders $order, $old_order_status) {
-    $this->init();
-    $this->getModel()->sourceStatusChange($order, $old_order_status);
+    if ($order->order_status != $old_order_status) {
+      $this->init();
+      $source = $this->getModel()->getSource(Source::Order, $order->virtuemart_order_id);
+      $this->getModel()->sourceStatusChange($source, $order->order_status);
+    }
 
     // We return null as we do not want to influence the return value of
     // VirtueMartModelOrders::updateStatusForOneOrder().

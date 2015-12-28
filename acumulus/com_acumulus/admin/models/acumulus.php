@@ -4,7 +4,6 @@ use Siel\Acumulus\Shop\Config;
 use Siel\Acumulus\Joomla\Helpers\FormRenderer;
 use Siel\Acumulus\Joomla\Shop\BatchForm;
 use Siel\Acumulus\Joomla\VirtueMart\Shop\ConfigForm;
-use Siel\Acumulus\Web\ConfigInterface;
 
 /**
  * Acumulus Model
@@ -17,10 +16,61 @@ class AcumulusModelAcumulus extends JModelLegacy {
   /** @var \Siel\Acumulus\Helpers\Form */
   protected $form;
 
+  /** @var string */
+  protected $shopNamespace;
+
   public function __construct($config = array()) {
     parent::__construct($config);
+    if ($this->loadVirtueMart()) {
+      $this->shopNamespace = 'Joomla\\VirtueMart';
+    }
+    else if ($this->loadHikaShop()) {
+      $this->shopNamespace = 'Joomla\\HikaShop';
+    }
+    $this->acumulusConfig = new Config($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
+  }
 
-    $this->acumulusConfig = new Config('Joomla\\VirtueMart', substr(JFactory::getLanguage()->getTag(), 0, 2));
+  /**
+   * Checks if VirtueMart is installed and enabled and loads its base classes.
+   *
+   * @return bool
+   *   true if VirtueMart is installed and enabled, false otherwise.
+   */
+  protected function loadVirtueMart() {
+    if (JComponentHelper::isEnabled('com_virtuemart')) {
+      // Load VirtueMart: we need access to its models and data.
+      // Copied from administrator/components/com_virtuemart/virtuemart.php
+      if (!class_exists('VmConfig')) {
+        /** @noinspection PhpIncludeInspection */
+        require_once(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+      }
+      VmConfig::loadConfig();
+
+      if (!class_exists('VmController')) {
+        /** @noinspection PhpIncludeInspection */
+        require(VMPATH_ADMIN . '/helpers/vmcontroller.php');
+      }
+      if (!class_exists('VmModel')) {
+        /** @noinspection PhpIncludeInspection */
+        require(VMPATH_ADMIN . '/helpers/vmmodel.php');
+      }
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Checks if HikaShop is installed and enabled and loads its base classes.
+   *
+   * @return bool
+   *   true if HikaShop is installed and enabled, false otherwise.
+   */
+  protected function loadHikaShop() {
+    if (JComponentHelper::isEnabled('com_hikashop')) {
+      // @todo: Load HikaShop: we need access to its models and data.
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
@@ -68,21 +118,32 @@ class AcumulusModelAcumulus extends JModelLegacy {
   }
 
   /**
-   * Processes an order update by notifying the invoiceManager.
+   * Wrapper method around \Siel\Acumulus\Shop\InvoiceManager::sourceStatusChange().
    *
-   * @param \TableOrders $order
-   * @param string $old_order_status
+   * @param Source $source
+   * @param int|string $status
    *
    * @return int
-   *   Status, one of the WebConfigInterface::Status_ constants.
+   *   Sent status, one of the WebConfigInterface::Status_ constants.
    */
-  public function sourceStatusChange(TableOrders $order, $old_order_status) {
-    $result = ConfigInterface::Status_NotSent;
-    if ($order->order_status !== $old_order_status) {
-      $source = $this->acumulusConfig->getSource(Source::Order, $order->virtuemart_order_id);
-      $result = $this->acumulusConfig->getManager()->sourceStatusChange($source, $order->order_status);
-    }
-    return $result;
+  public function sourceStatusChange(Source $source, $status) {
+    return $this->acumulusConfig->getManager()->sourceStatusChange($source, $status);
+  }
+
+  /**
+   * Wrapper method around \Siel\Acumulus\Shop\Config::getSource().
+   *
+   * @param string $invoiceSourceType
+   *   The type of the invoice source to create.
+   * @param string|object|array $invoiceSourceOrId
+   *   The invoice source itself or its id to create a Source wrapper for.
+   *
+   * @return \Siel\Acumulus\Invoice\Source
+   *   A wrapper object around a shop specific invoice source object.
+
+   */
+  public function getSource($invoiceSourceType, $invoiceSourceOrId) {
+    return $this->acumulusConfig->getSource($invoiceSourceType, $invoiceSourceOrId);
   }
 
 }

@@ -89,24 +89,41 @@ class com_acumulusInstallerScript {
       }
     }
 
+    // @todo: add an alternative check on hikashop
     // Check if VirtueMart is installed.
     jimport('joomla.application.component.controller');
-    if (!JComponentHelper::isEnabled('com_virtuemart')) {
-      JInstaller::getInstance()->abort("'The Acumulus component $version requires VirtueMart to be installed and enabled.");
-      return FALSE;
+    if (JComponentHelper::isEnabled('com_virtuemart')) {
+      // Check Virtuemart version.
+      /** @var JTableExtension $extension */
+      $extension = JTable::getInstance('extension');
+      $id = $extension->find(array('element' => 'com_virtuemart'));
+      $extension->load($id);
+      /** @noinspection PhpUndefinedFieldInspection */
+      $componentInfo = json_decode($extension->manifest_cache, TRUE);
+      $shopVersion = $componentInfo['version'];
+      $minVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
+      if (version_compare($shopVersion, $minVersion, '<')) {
+        JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion.");
+        return FALSE;
+      }
     }
-
-    // Check Virtuemart version.
-    /** @var JTableExtension $extension */
-    $extension = JTable::getInstance('extension');
-    $id = $extension->find(array('element' => 'com_virtuemart'));
-    $extension->load($id);
-    /** @noinspection PhpUndefinedFieldInspection */
-    $componentInfo = json_decode($extension->manifest_cache, TRUE);
-    $shopVersion = $componentInfo['version'];
-    $minVirtueMartVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
-    if (version_compare($shopVersion, $minVirtueMartVersion, '<')) {
-      JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVirtueMartVersion.");
+    else if (JComponentHelper::isEnabled('com_hikashop')) {
+      // Check HikaShop version.
+      /** @var JTableExtension $extension */
+      $extension = JTable::getInstance('extension');
+      $id = $extension->find(array('element' => 'com_hikashop'));
+      $extension->load($id);
+      /** @noinspection PhpUndefinedFieldInspection */
+      $componentInfo = json_decode($extension->manifest_cache, TRUE);
+      $shopVersion = $componentInfo['version'];
+      $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
+      if (version_compare($shopVersion, $minVersion, '<')) {
+        JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion.");
+        return FALSE;
+      }
+    }
+    else {
+      JInstaller::getInstance()->abort("'The Acumulus component $version requires VirtueMart or HikaShop to be installed and enabled.");
       return FALSE;
     }
 
