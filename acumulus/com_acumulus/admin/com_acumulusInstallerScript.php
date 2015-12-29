@@ -89,10 +89,9 @@ class com_acumulusInstallerScript {
       }
     }
 
-    // @todo: add an alternative check on hikashop
     // Check if VirtueMart is installed.
     jimport('joomla.application.component.controller');
-    if (JComponentHelper::isEnabled('com_virtuemart')) {
+    if ($this->isEnabled('com_virtuemart')) {
       // Check Virtuemart version.
       /** @var JTableExtension $extension */
       $extension = JTable::getInstance('extension');
@@ -107,7 +106,7 @@ class com_acumulusInstallerScript {
         return FALSE;
       }
     }
-    else if (JComponentHelper::isEnabled('com_hikashop')) {
+    else if ($this->isEnabled('com_hikashop')) {
       // Check HikaShop version.
       /** @var JTableExtension $extension */
       $extension = JTable::getInstance('extension');
@@ -118,7 +117,7 @@ class com_acumulusInstallerScript {
       $shopVersion = $componentInfo['version'];
       $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
       if (version_compare($shopVersion, $minVersion, '<')) {
-        JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion.");
+        JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion.");
         return FALSE;
       }
     }
@@ -129,7 +128,18 @@ class com_acumulusInstallerScript {
 
     // Check extension requirements.
     // Get access to our classes via the auto loader.
-    JLoader::registerNamespace('Siel', dirname(__FILE__) . '/admin/libraries');
+    $componentPath = dirname(__FILE__);
+    JLog::add($componentPath);
+    if (is_dir("$componentPath/libraries")) {
+      // Installing directly from administrator/components/com_acumulus:
+      // probably via the discovery feature of the extensions manager.
+      $libraryPath = "$componentPath/libraries";
+    }
+    else /* if (is_dir("$componentPath/admin/libraries")) */ {
+      // Installing from the zip.
+      $libraryPath = "$componentPath/admin/libraries";
+    }
+    JLoader::registerNamespace('Siel', $libraryPath);
     $errors = Requirements::check();
     if (!empty($errors)) {
       JInstaller::getInstance()->abort(implode(' ', $errors));
@@ -149,4 +159,24 @@ class com_acumulusInstallerScript {
    */
   public function postflight($type, $parent) {
   }
+
+  /**
+   * Checks if a component is installed and enabled.
+   *
+   * Note that JComponentHelper::isEnabled shows a warning if the component is
+   * not installed, which we don't want.
+   *
+   * @param string $component
+   *   The element/name of the extension.
+   *
+   * @return bool
+   *   True if the extension is installed and enabled, false otherwise
+   */
+  protected function isEnabled($component) {
+    $db = JFactory::getDbo();
+    $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s'", $db->escape($component)));
+    $enabled = $db->loadResult();
+    return $enabled == 1;
+  }
+
 }

@@ -4,13 +4,8 @@ use Siel\Acumulus\Invoice\Source;
 
 defined('_JEXEC') or die('Restricted access');
 
-if (!class_exists('vmCouponPlugin')) {
-  /** @noinspection PhpIncludeInspection */
-  require(JPATH_VM_PLUGINS . DS . 'vmcouponplugin.php');
-}
-
 /**
- * Acumulus plugin to react to VirtueMart order status changes.
+ * Acumulus plugin to react to HikaShop order status changes.
  *
  * We have chosen to listen to the plgVmCouponUpdateOrderStatus event as this
  * is the last event that gets triggered when an order gets updated through
@@ -27,18 +22,13 @@ if (!class_exists('vmCouponPlugin')) {
  *   been stored: so the database might not be used at that point as it is
  *   "outdated".
  */
-class plgVmCouponAcumulus extends vmCouponPlugin {
+class plgHikashopAcumulus extends JPlugin {
 
   /** @var bool */
   protected $initialized = FALSE;
 
   /** @var AcumulusModelAcumulus */
   protected $model;
-
-  public function __construct(& $subject, $config) {
-    parent::__construct($subject, $config);
-    $this->_tablename = '';
-  }
 
   /**
    * Initializes the environment for the plugin:
@@ -74,44 +64,19 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
   /**
    * Event observer to react to order updates.
    *
-   * @param TableOrders $order
-   * @param string $old_order_status
+   * @param object $order
+   * param bool $send_email
    *
-   * @return bool|null
-   *   True on success, false on failure, or null when this method does not want
-   *   to influence the return value of the dispatching method
-   *   (for now only VirtueMartModelOrders::updateStatusForOneOrder)
+   * @return bool
+   *   True on success, false on failure.
    */
-  public function plgVmCouponUpdateOrderStatus(TableOrders $order, $old_order_status) {
-    if ($order->order_status != $old_order_status) {
+  public function onAfterOrderUpdate(&$order/*, &$send_email*/) {
+    if(!empty($order->order_id) && !empty($order->order_status)) {
       $this->init();
-      $source = $this->getModel()->getSource(Source::Order, $order->virtuemart_order_id);
+      $source = $this->getModel()->getSource(Source::Order, $order->order_id);
       $this->getModel()->sourceStatusChange($source, $order->order_status);
     }
-
-    // We return null as we do not want to influence the return value of
-    // VirtueMartModelOrders::updateStatusForOneOrder().
-    return null;
-  }
-
-  /*
-   * Methods we don't want to be implemented.
-   */
-  public function loadJLangThis($fname, $type = 0, $name = 0) {
-    return;
-  }
-
-  public function onStoreInstallPluginTable($psType, $name = FALSE) {
-    return TRUE;
-  }
-
-  protected function removePluginInternalData($id, $primaryKey = 0) {
-    return;
-  }
-
-  public function renderByLayout($layout = 'default', $viewData = NULL, $name = NULL, $psType = NULL) {
-    return;
+    return true;
   }
 
 }
-

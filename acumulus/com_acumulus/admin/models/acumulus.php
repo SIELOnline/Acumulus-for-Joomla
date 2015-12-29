@@ -37,7 +37,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    *   true if VirtueMart is installed and enabled, false otherwise.
    */
   protected function loadVirtueMart() {
-    if (JComponentHelper::isEnabled('com_virtuemart')) {
+    if ($this->isEnabled('com_virtuemart')) {
       // Load VirtueMart: we need access to its models and data.
       // Copied from administrator/components/com_virtuemart/virtuemart.php
       if (!class_exists('VmConfig')) {
@@ -66,11 +66,30 @@ class AcumulusModelAcumulus extends JModelLegacy {
    *   true if HikaShop is installed and enabled, false otherwise.
    */
   protected function loadHikaShop() {
-    if (JComponentHelper::isEnabled('com_hikashop')) {
-      // @todo: Load HikaShop: we need access to its models and data.
-      return TRUE;
+    if ($this->isEnabled('com_hikashop')) {
+      /** @noinspection PhpIncludeInspection */
+      return include_once(JPATH_ADMINISTRATOR . '/components/com_hikashop/helpers/helper.php');
     }
     return FALSE;
+  }
+
+  /**
+   * Checks if a component is installed and enabled.
+   *
+   * Note that JComponentHelper::isEnabled shows a warning if the component is
+   * not installed, which we don't want.
+   *
+   * @param string $component
+   *   The element/name of the extension.
+   *
+   * @return bool
+   *   True if the extension is installed and enabled, false otherwise
+   */
+  protected function isEnabled($component) {
+    $db = JFactory::getDbo();
+    $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s'", $db->escape($component)));
+    $enabled = $db->loadResult();
+    return $enabled == 1;
   }
 
   /**
@@ -102,32 +121,9 @@ class AcumulusModelAcumulus extends JModelLegacy {
   public function getForm($task) {
     // Get the form.
     if (!isset($this->form)) {
-      switch ($task) {
-        case 'batch':
-          $this->form = new BatchForm($this->acumulusConfig->getTranslator(), $this->acumulusConfig->getManager());
-          break;
-        case 'config':
-          $this->form = new ConfigForm($this->acumulusConfig->getTranslator(), $this->acumulusConfig);
-          break;
-        default:
-          $this->acumulusConfig->getLog()->error('InvoiceManager::getForm(): unknown formType "%s"', $task);
-          break;
-      }
+      $this->form = $this->acumulusConfig->getForm($task);
     }
     return $this->form;
-  }
-
-  /**
-   * Wrapper method around \Siel\Acumulus\Shop\InvoiceManager::sourceStatusChange().
-   *
-   * @param Source $source
-   * @param int|string $status
-   *
-   * @return int
-   *   Sent status, one of the WebConfigInterface::Status_ constants.
-   */
-  public function sourceStatusChange(Source $source, $status) {
-    return $this->acumulusConfig->getManager()->sourceStatusChange($source, $status);
   }
 
   /**
@@ -144,6 +140,19 @@ class AcumulusModelAcumulus extends JModelLegacy {
    */
   public function getSource($invoiceSourceType, $invoiceSourceOrId) {
     return $this->acumulusConfig->getSource($invoiceSourceType, $invoiceSourceOrId);
+  }
+
+  /**
+   * Wrapper method around \Siel\Acumulus\Shop\InvoiceManager::sourceStatusChange().
+   *
+   * @param Source $source
+   * @param int|string $status
+   *
+   * @return int
+   *   Sent status, one of the WebConfigInterface::Status_ constants.
+   */
+  public function sourceStatusChange(Source $source, $status) {
+    return $this->acumulusConfig->getManager()->sourceStatusChange($source, $status);
   }
 
 }
