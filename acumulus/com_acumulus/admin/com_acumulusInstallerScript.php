@@ -71,7 +71,7 @@ class com_acumulusInstallerScript {
     // Check Joomla version
     $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
     if (version_compare($joomlaVersion, '3.1', '<')) {
-      JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion.");
+      JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
       return FALSE;
     }
     if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
@@ -102,7 +102,7 @@ class com_acumulusInstallerScript {
       $shopVersion = $componentInfo['version'];
       $minVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
       if (version_compare($shopVersion, $minVersion, '<')) {
-        JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion.");
+        JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion, found $shopVersion.");
         return FALSE;
       }
     }
@@ -117,7 +117,7 @@ class com_acumulusInstallerScript {
       $shopVersion = $componentInfo['version'];
       $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
       if (version_compare($shopVersion, $minVersion, '<')) {
-        JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion.");
+        JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion, found $shopVersion.");
         return FALSE;
       }
     }
