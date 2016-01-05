@@ -87,7 +87,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    */
   protected function isEnabled($component) {
     $db = JFactory::getDbo();
-    $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s'", $db->escape($component)));
+    $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
     $enabled = $db->loadResult();
     return $enabled == 1;
   }

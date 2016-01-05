@@ -83,7 +83,7 @@ class com_acumulusInstallerScript {
     if ($type == 'update') {
       $currentInfo = json_decode($parent->get('extension')->manifest_cache, TRUE);
       $currentRelease = $currentInfo['version'];
-      if (version_compare($version, $currentRelease, 'lt')) {
+      if (version_compare($version, $currentRelease, '<')) {
         JInstaller::getInstance()->abort("The Acumulus component ($currentRelease) cannot be downgraded to $version.");
         return FALSE;
       }
@@ -91,45 +91,32 @@ class com_acumulusInstallerScript {
 
     // Check if VirtueMart is installed.
     jimport('joomla.application.component.controller');
-    if ($this->isEnabled('com_virtuemart')) {
-      // Check Virtuemart version.
-      /** @var JTableExtension $extension */
-      $extension = JTable::getInstance('extension');
-      $id = $extension->find(array('element' => 'com_virtuemart'));
-      $extension->load($id);
-      /** @noinspection PhpUndefinedFieldInspection */
-      $componentInfo = json_decode($extension->manifest_cache, TRUE);
-      $shopVersion = $componentInfo['version'];
+    $shopVersion = $this->getVersion('com_virtuemart');
+    if (!empty($shopVersion)) {
       $minVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
       if (version_compare($shopVersion, $minVersion, '<')) {
         JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion, found $shopVersion.");
         return FALSE;
       }
     }
-    else if ($this->isEnabled('com_hikashop')) {
-      // Check HikaShop version.
-      /** @var JTableExtension $extension */
-      $extension = JTable::getInstance('extension');
-      $id = $extension->find(array('element' => 'com_hikashop'));
-      $extension->load($id);
-      /** @noinspection PhpUndefinedFieldInspection */
-      $componentInfo = json_decode($extension->manifest_cache, TRUE);
-      $shopVersion = $componentInfo['version'];
-      $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
-      if (version_compare($shopVersion, $minVersion, '<')) {
-        JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion, found $shopVersion.");
+    else {
+      $shopVersion = $this->getVersion('com_hikashop');
+      if (!empty($shopVersion)) {
+        $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
+        if (version_compare($shopVersion, $minVersion, '<')) {
+          JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion, found $shopVersion.");
+          return FALSE;
+        }
+      }
+      else {
+        JInstaller::getInstance()->abort("'The Acumulus component $version requires VirtueMart or HikaShop to be installed and enabled.");
         return FALSE;
       }
-    }
-    else {
-      JInstaller::getInstance()->abort("'The Acumulus component $version requires VirtueMart or HikaShop to be installed and enabled.");
-      return FALSE;
     }
 
     // Check extension requirements.
     // Get access to our classes via the auto loader.
     $componentPath = dirname(__FILE__);
-    JLog::add($componentPath);
     if (is_dir("$componentPath/libraries")) {
       // Installing directly from administrator/components/com_acumulus:
       // probably via the discovery feature of the extensions manager.
@@ -161,7 +148,7 @@ class com_acumulusInstallerScript {
   }
 
   /**
-   * Checks if a component is installed and enabled.
+   * Returns the version of a component (if installed and enabled).
    *
    * Note that JComponentHelper::isEnabled shows a warning if the component is
    * not installed, which we don't want.
@@ -169,14 +156,21 @@ class com_acumulusInstallerScript {
    * @param string $component
    *   The element/name of the extension.
    *
-   * @return bool
-   *   True if the extension is installed and enabled, false otherwise
+   * @return string
+   *   The version string if the extension is installed and enabled, the empty
+   *   string otherwise.
    */
-  protected function isEnabled($component) {
+  protected function getVersion($component) {
+    $result = '';
     $db = JFactory::getDbo();
-    $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s'", $db->escape($component)));
-    $enabled = $db->loadResult();
-    return $enabled == 1;
+    $db->setQuery(sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
+    $manifestCache = $db->loadResult();
+    JLog::add("$component: $manifestCache");
+    if (!empty($manifestCache)) {
+      $componentInfo = json_decode($manifestCache, TRUE);
+      $result = $componentInfo['version'];
+    }
+    return $result;
   }
 
 }
