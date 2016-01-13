@@ -165,7 +165,6 @@ class com_acumulusInstallerScript {
     $db = JFactory::getDbo();
     $db->setQuery(sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
     $manifestCache = $db->loadResult();
-    JLog::add("$component: $manifestCache");
     if (!empty($manifestCache)) {
       $componentInfo = json_decode($manifestCache, TRUE);
       $result = $componentInfo['version'];
