@@ -83,9 +83,9 @@ class AcumulusView extends JViewLegacy {
     $input->set('hidemainmenu', false);
 
     // Add title and buttons.
-    JToolBarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
-    JToolBarHelper::save($this->task, $this->t($this->saveButton));
-    JToolBarHelper::cancel('cancel', $this->t('button_cancel'));
+    JToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
+    JToolbarHelper::save($this->task, $this->t($this->saveButton));
+    JToolbarHelper::cancel('cancel', $this->t('button_cancel'));
   }
 
   /**

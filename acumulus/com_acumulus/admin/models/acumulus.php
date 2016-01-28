@@ -2,8 +2,6 @@
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Shop\Config;
 use Siel\Acumulus\Joomla\Helpers\FormRenderer;
-use Siel\Acumulus\Joomla\Shop\BatchForm;
-use Siel\Acumulus\Joomla\VirtueMart\Shop\ConfigForm;
 
 /**
  * Acumulus Model
@@ -12,9 +10,6 @@ class AcumulusModelAcumulus extends JModelLegacy {
 
   /** @var \Siel\Acumulus\Shop\Config */
   protected $acumulusConfig;
-
-  /** @var \Siel\Acumulus\Helpers\Form */
-  protected $form;
 
   /** @var string */
   protected $shopNamespace;
@@ -34,7 +29,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    * Checks if VirtueMart is installed and enabled and loads its base classes.
    *
    * @return bool
-   *   true if VirtueMart is installed and enabled, false otherwise.
+   *   True if VirtueMart is installed and enabled, false otherwise.
    */
   protected function loadVirtueMart() {
     if ($this->isEnabled('com_virtuemart')) {
@@ -63,7 +58,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    * Checks if HikaShop is installed and enabled and loads its base classes.
    *
    * @return bool
-   *   true if HikaShop is installed and enabled, false otherwise.
+   *   True if HikaShop is installed and enabled, false otherwise.
    */
   protected function loadHikaShop() {
     if ($this->isEnabled('com_hikashop')) {
@@ -120,10 +115,7 @@ class AcumulusModelAcumulus extends JModelLegacy {
    */
   public function getForm($task) {
     // Get the form.
-    if (!isset($this->form)) {
-      $this->form = $this->acumulusConfig->getForm($task);
-    }
-    return $this->form;
+    return $this->acumulusConfig->getForm($task);
   }
 
   /**
