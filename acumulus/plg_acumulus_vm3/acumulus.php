@@ -75,19 +75,17 @@ class plgVmCouponAcumulus extends vmCouponPlugin {
    * Event observer to react to order updates.
    *
    * @param TableOrders $order
-   * @param string $old_order_status
+   * param string $old_order_status
    *
    * @return bool|null
    *   True on success, false on failure, or null when this method does not want
    *   to influence the return value of the dispatching method
    *   (for now only VirtueMartModelOrders::updateStatusForOneOrder)
    */
-  public function plgVmCouponUpdateOrderStatus(TableOrders $order, $old_order_status) {
-    if ($order->order_status != $old_order_status) {
-      $this->init();
-      $source = $this->getModel()->getSource(Source::Order, $order->virtuemart_order_id);
-      $this->getModel()->sourceStatusChange($source, $order->order_status);
-    }
+  public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/) {
+    $this->init();
+    $source = $this->getModel()->getSource(Source::Order, $order->virtuemart_order_id);
+    $this->getModel()->sourceStatusChange($source);
 
     // We return null as we do not want to influence the return value of
     // VirtueMartModelOrders::updateStatusForOneOrder().

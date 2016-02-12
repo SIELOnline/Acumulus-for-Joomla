@@ -60,7 +60,6 @@ class plgHikashopAcumulus extends JPlugin {
     return $this->model;
   }
 
-
   /**
    * Event observer to react to order updates.
    *
@@ -71,11 +70,9 @@ class plgHikashopAcumulus extends JPlugin {
    *   True on success, false on failure.
    */
   public function onAfterOrderUpdate(&$order/*, &$send_email*/) {
-    if(!empty($order->order_id) && !empty($order->order_status)) {
-      $this->init();
-      $source = $this->getModel()->getSource(Source::Order, $order->order_id);
-      $this->getModel()->sourceStatusChange($source, $order->order_status);
-    }
+    $this->init();
+    $source = $this->getModel()->getSource(Source::Order, $order->order_id);
+    $this->getModel()->sourceStatusChange($source);
     return true;
   }
 

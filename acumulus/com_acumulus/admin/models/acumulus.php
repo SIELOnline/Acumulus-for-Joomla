@@ -138,13 +138,12 @@ class AcumulusModelAcumulus extends JModelLegacy {
    * Wrapper method around \Siel\Acumulus\Shop\InvoiceManager::sourceStatusChange().
    *
    * @param Source $source
-   * @param int|string $status
    *
    * @return int
    *   Sent status, one of the WebConfigInterface::Status_ constants.
    */
-  public function sourceStatusChange(Source $source, $status) {
-    return $this->acumulusConfig->getManager()->sourceStatusChange($source, $status);
+  public function sourceStatusChange(Source $source) {
+    return $this->acumulusConfig->getManager()->sourceStatusChange($source);
   }
 
 }

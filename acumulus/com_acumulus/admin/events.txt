@@ -110,7 +110,7 @@ Example 1
 add_filter('acumulus_invoice_created', 'acumulus_stop_null');
 
 function acumulus_stop_null(array $invoice, WC_Abstract_Order $order) {
-	if ($invoice['customer']['invoice']['meta-invoiceamountinc'] == 0) {
+	if ($invoice['customer']['invoice']['meta-invoice-amountinc'] == 0) {
 	  return NULL;
 	}
 	else {
