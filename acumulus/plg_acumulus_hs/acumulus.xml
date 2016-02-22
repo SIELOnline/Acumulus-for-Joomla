@@ -5,10 +5,10 @@
   <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
-  <copyright>Copyright Siel 2015</copyright>
+  <copyright>Copyright Siel 2015/2016</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>4.2.0</version>
+  <version>4.2.1</version>
   <description>Verstuurt HikaShop facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen.</description>
 
   <files>
