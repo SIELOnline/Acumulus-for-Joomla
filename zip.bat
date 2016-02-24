@@ -1,6 +1,12 @@
 @echo off
+rem Check usage and arguments.
+if dummy==dummy%1 (
+echo Usage: %~n0 version
+exit /B 1;
+)
+set version=%1
 
-del Joomla-Acumulus-4.x.zip 2> nul
+del Joomla-Acumulus-%version%.zip 2> nul
 cd acumulus
 rem zip component.
 del packages\com_acumulus.zip 2> nul
@@ -17,6 +23,6 @@ del packages\plg_acumulus_hs.zip 2> nul
 "C:\Program Files\7-Zip\7z.exe" t packages\plg_acumulus_hs.zip | findstr /i "Processing Everything Failed Error"
 
 rem zip package.
-"C:\Program Files\7-Zip\7z.exe" a -tzip ..\Joomla-Acumulus-4.x.zip *.xml packages | findstr /i "Failed Error"
+"C:\Program Files\7-Zip\7z.exe" a -tzip ..\Joomla-Acumulus-%version%.zip *.xml packages | findstr /i "Failed Error"
 cd ..
-"C:\Program Files\7-Zip\7z.exe" t Joomla-Acumulus-4.x.zip | findstr /i "Processing Everything Failed Error" 
+"C:\Program Files\7-Zip\7z.exe" t Joomla-Acumulus-%version%.zip | findstr /i "Processing Everything Failed Error" 
