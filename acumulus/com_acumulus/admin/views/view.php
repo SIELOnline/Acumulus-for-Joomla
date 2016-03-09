@@ -1,101 +1,111 @@
 <?php
 /**
- * Acumulus config view.
+ * @copyright   Buro RaDer.
+ * @license     GPLv3; see license.txt
  */
-class AcumulusView extends JViewLegacy {
-  /** @var string */
-  protected $action;
 
-  /** @var string */
-  protected $task;
+/**
+ * Acumulus view, shared by both the config and the batch view.
+ */
+class AcumulusView extends JViewLegacy
+{
+    /** @var string */
+    protected $action;
 
-  /** @var string */
-  protected $saveButton;
+    /** @var string */
+    protected $task;
 
-  /** @var \Siel\Acumulus\Helpers\Form */
-  protected $form;
+    /** @var string */
+    protected $saveButton;
 
-  public function __construct($config = array()) {
-    $this->_defaultModel = 'Acumulus';
-    $this->saveButton = 'button_save';
-    parent::__construct($config);
-  }
+    /** @var \Siel\Acumulus\Helpers\Form */
+    protected $form;
 
-  /**
-   * Override only for improved type checking and auto complete.
-   *
-   * @param string|null $name
-   *
-   * @return AcumulusModelAcumulus
-   */
-  public function getModel($name = null) {
-    return parent::getModel($name);
-  }
+    public function __construct($config = array())
+    {
+        $this->_defaultModel = 'Acumulus';
+        $this->saveButton = 'button_save';
+        parent::__construct($config);
+    }
 
-  /**
-   * Helper method to translate strings.
-   *
-   * @param string $key
-   *  The key to get a translation for.
-   *
-   * @return string
-   *   The translation for the given key or the key itself if no translation
-   *   could be found.
-   */
-  protected function t($key) {
-    return $this->getModel()->t($key);
-  }
+    /**
+     * Override only for improved type checking and auto complete.
+     *
+     * @param string|null $name
+     *
+     * @return AcumulusModelAcumulus
+     */
+    public function getModel($name = null)
+    {
+        return parent::getModel($name);
+    }
 
-  /**
-   * Display the Acumulus view
-   *
-   * @param string $tpl
-   *   The name of the template file to parse; automatically searches through
-   *   the template paths.
-   *
-   * @return void
-   *
-   * @throws \Exception
-   */
-  public function display($tpl = NULL) {
-    // Get the config form.
-    $this->form = $this->getModel()->getForm($this->task);
-    // Get the fields and their values for display.
-    $this->form->addValues();
+    /**
+     * Helper method to translate strings.
+     *
+     * @param string $key
+     *  The key to get a translation for.
+     *
+     * @return string
+     *   The translation for the given key or the key itself if no translation
+     *   could be found.
+     */
+    protected function t($key)
+    {
+        return $this->getModel()->t($key);
+    }
 
-    // Display the template.
-    parent::display($tpl);
+    /**
+     * Display the Acumulus view
+     *
+     * @param string $tpl
+     *   The name of the template file to parse; automatically searches through
+     *   the template paths.
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function display($tpl = null)
+    {
+        // Get the config form.
+        $this->form = $this->getModel()->getForm($this->task);
+        // Get the fields and their values for display.
+        $this->form->addValues();
 
-    $this->addToolBar();
-    $this->setDocument();
-  }
+        // Display the template.
+        parent::display($tpl);
 
-  /**
-   * Add the page title and toolbar.
-   *
-   * @return  void
-   *
-   * @since   1.6
-   */
-  protected function addToolBar() {
-    // Show Joomla Administrator Main menu.
-    $input = JFactory::getApplication()->input;
-    $input->set('hidemainmenu', false);
+        $this->addToolBar();
+        $this->setDocument();
+    }
 
-    // Add title and buttons.
-    JToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
-    JToolbarHelper::save($this->task, $this->t($this->saveButton));
-    JToolbarHelper::cancel('cancel', $this->t('button_cancel'));
-  }
+    /**
+     * Add the page title and toolbar.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    protected function addToolBar()
+    {
+        // Show Joomla Administrator Main menu.
+        $input = JFactory::getApplication()->input;
+        $input->set('hidemainmenu', false);
 
-  /**
-   * Method to set up the document properties.
-   */
-  protected function setDocument() {
-    $document = JFactory::getDocument();
-    $document->setTitle($this->t($this->task . '_form_title'));
-    $document->addStyleDeclaration('.icon-acumulus ' .
-      '{background-image: url(./components/com_acumulus/media/logo-acumulus-16.png);}');
-  }
+        // Add title and buttons.
+        JToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
+        JToolbarHelper::save($this->task, $this->t($this->saveButton));
+        JToolbarHelper::cancel('cancel', $this->t('button_cancel'));
+    }
 
+    /**
+     * Method to set up the document properties.
+     */
+    protected function setDocument()
+    {
+        $document = JFactory::getDocument();
+        $document->setTitle($this->t($this->task . '_form_title'));
+        $document->addStyleDeclaration('.icon-acumulus ' . '{background-image: url(./components/com_acumulus/media/logo-acumulus-16.png);}');
+    }
 }
