@@ -1,5 +1,10 @@
 <?php
 /**
+ * @copyright   Buro RaDer.
+ * @license     GPLv3; see license.txt.
+ */
+
+/**
  * Controller of the Acumulus component.
  */
 class AcumulusController extends JControllerLegacy

@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright   Buro RaDer
- * @license     GPLv3; see license.txt
+ * @license     GPLv3; see license.txt.
  */
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Shop\Config;

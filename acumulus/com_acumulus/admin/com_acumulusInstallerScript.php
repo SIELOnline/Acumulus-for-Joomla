@@ -1,8 +1,9 @@
 <?php
 /**
  * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt
+ * @license     GPLv3; see license.txt.
  */
+
 use Siel\Acumulus\Helpers\Requirements;
 
 /**

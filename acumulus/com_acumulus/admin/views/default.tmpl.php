@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt
+ * @license     GPLv3; see license.txt.
  * 
  * Default template file for the Acumulus component views.
  *

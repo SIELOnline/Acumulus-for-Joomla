@@ -1,5 +1,8 @@
 <?php
 /**
+ * @copyright   Buro RaDer.
+ * @license     GPLv3; see license.txt.
+ *
  * Main entry point for Joomla to the Acumulus component.
  * 
  * This file has side effects, so checking if Joomla has been initialized is in place.

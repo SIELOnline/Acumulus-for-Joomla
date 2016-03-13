@@ -6,10 +6,10 @@
   <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
-  <copyright>Copyright Siel 2015</copyright>
+  <copyright>Copyright Buro RaDer</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.2.0-alpha4</version>
+  <version>4.3.0</version>
   <description>Acumulus koppeling package voor VirtueMart 3.x en HikaShop</description>
 
   <files folder="packages">

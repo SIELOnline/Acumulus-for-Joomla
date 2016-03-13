@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt
+ * @license     GPLv3; see license.txt.
  */
 require_once __DIR__ . '/../view.php';
 
