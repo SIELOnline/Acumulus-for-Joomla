@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__acumulus_entry`
-
+(
     `id` int(11) NOT NULL auto_increment,
     `entry_id` int(11) NOT NULL,
     `token` char(32) NOT NULL,
