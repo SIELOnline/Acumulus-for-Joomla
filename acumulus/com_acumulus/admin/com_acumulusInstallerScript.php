@@ -11,6 +11,12 @@ use Siel\Acumulus\Helpers\Requirements;
  */
 class com_acumulusInstallerScript
 {
+    /** @var string */
+    private $newVersion;
+
+    /** @var string */
+    private $currentVersion;
+
     /**
      * Method to install the extension
      * $parent is the class calling this method
@@ -27,8 +33,10 @@ class com_acumulusInstallerScript
     }
 
     /**
-     * Method to uninstall the extension
-     * $parent is the class calling this method
+     * Method to uninstall the extension.
+     *
+     * param JAdapterInstance $parent
+     *   The class calling this method.
      *
      * @return void
      */
@@ -38,17 +46,21 @@ class com_acumulusInstallerScript
     }
 
     /**
-     * Method to update the extension
-     * $parent is the class calling this method
+     * Method to update the extension.
      *
-     * @param JAdapterInstance $parent
+     * param JAdapterInstance $parent
+     *   The class calling this method.
      *
      * @throws \Exception
      */
-    public function update($parent)
+    public function update(/*$parent*/)
     {
-        $version = (string) $parent->get('manifest')->version;
-        JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version $version.", 'message');
+        // The autoloader should have been set by the preflight method.
+        // Get an instance of the controller prefixed by Acumulus.
+        /** @var AcumulusController $controller */
+        $controller = JControllerLegacy::getInstance('Acumulus');
+        $controller->getModel('Acumulus')->getAcumulusConfig()->upgrade($this->newVersion, $this->currentVersion);
+        JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version {$this->newVersion}.", 'message');
     }
 
     /**
@@ -70,27 +82,27 @@ class com_acumulusInstallerScript
      */
     public function preflight($type, $parent)
     {
-        $version = (string) $parent->get("manifest")->version;
+        $this->newVersion = (string) $parent->get("manifest")->version;
         $joomlaVersion = new JVersion();
         $joomlaVersion = $joomlaVersion->getShortVersion();
 
         // Check Joomla version
         $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
         if (version_compare($joomlaVersion, '3.1', '<')) {
-            JInstaller::getInstance()->abort("The Acumulus component ($version) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
+            JInstaller::getInstance()->abort("The Acumulus component ({$this->newVersion}) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
             return false;
         }
         if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
-            JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
+            JFactory::getApplication()->enqueueMessage("The Acumulus component ({$this->newVersion}) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
             return false;
         }
 
         // Check downgrade.
         if ($type == 'update') {
             $currentInfo = json_decode($parent->get('extension')->manifest_cache, true);
-            $currentRelease = $currentInfo['version'];
-            if (version_compare($version, $currentRelease, '<')) {
-                JInstaller::getInstance()->abort("The Acumulus component ($currentRelease) cannot be downgraded to $version.");
+            $this->currentVersion = $currentInfo['version'];
+            if (version_compare($this->newVersion, $this->currentVersion, '<')) {
+                JInstaller::getInstance()->abort("The Acumulus component ({$this->currentVersion}) cannot be downgraded to {$this->newVersion}.");
                 return false;
             }
         }
@@ -101,19 +113,20 @@ class com_acumulusInstallerScript
         if (!empty($shopVersion)) {
             $minVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
             if (version_compare($shopVersion, $minVersion, '<')) {
-                JInstaller::getInstance()->abort("The Acumulus component $version requires at least VirtueMart $minVersion, found $shopVersion.");
+                JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires at least VirtueMart $minVersion, found $shopVersion.");
                 return false;
             }
         } else {
+            // if VM is not installed, check if HikaShop is installed.
             $shopVersion = $this->getVersion('com_hikashop');
             if (!empty($shopVersion)) {
                 $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
                 if (version_compare($shopVersion, $minVersion, '<')) {
-                    JInstaller::getInstance()->abort("The Acumulus component $version requires at least HikaShop $minVersion, found $shopVersion.");
+                    JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires at least HikaShop $minVersion, found $shopVersion.");
                     return false;
                 }
             } else {
-                JInstaller::getInstance()->abort("'The Acumulus component $version requires VirtueMart or HikaShop to be installed and enabled.");
+                JInstaller::getInstance()->abort("'The Acumulus component {$this->newVersion} requires VirtueMart or HikaShop to be installed and enabled.");
                 return false;
             }
         }

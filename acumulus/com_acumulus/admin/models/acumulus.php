@@ -110,6 +110,14 @@ class AcumulusModelAcumulus extends JModelLegacy
     }
 
     /**
+     * @return \Siel\Acumulus\Shop\Config
+     */
+    public function getAcumulusConfig()
+    {
+        return $this->acumulusConfig;
+    }
+
+    /**
      * @return \Siel\Acumulus\Helpers\FormRenderer
      */
     public function getFormRenderer()
