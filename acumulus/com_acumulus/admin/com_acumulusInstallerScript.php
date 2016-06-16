@@ -59,7 +59,7 @@ class com_acumulusInstallerScript
         // Get an instance of the controller prefixed by Acumulus.
         /** @var AcumulusController $controller */
         $controller = JControllerLegacy::getInstance('Acumulus');
-        $controller->getModel('Acumulus')->getAcumulusConfig()->upgrade($this->newVersion, $this->currentVersion);
+        $controller->getModel('Acumulus')->getAcumulusConfig()->upgrade($this->currentVersion);
         JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version {$this->newVersion}.", 'message');
     }
 
