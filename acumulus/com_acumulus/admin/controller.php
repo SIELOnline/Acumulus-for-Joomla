@@ -27,22 +27,58 @@ class AcumulusController extends JControllerLegacy
         return $this->model;
     }
 
+    /**
+     * Executes the default task (batch).
+     *
+     * @param bool $cachable
+     * @param array $urlparams
+     *
+     * @return \JControllerLegacy
+     */
     public function display($cachable = false, $urlparams = array())
     {
-        $this->default_view = 'batch';
-        return parent::display($cachable, $urlparams);
+        return $this->batch();
     }
 
+    /**
+     * Executes the com_acumulus/batch task.
+     *
+     * @return \JControllerLegacy
+     */
     public function batch()
     {
         return $this->executeTask('batch');
     }
 
+    /**
+     * Executes the com_acumulus/config task.
+     *
+     * @return \JControllerLegacy
+     */
     public function config()
     {
         return $this->executeTask('config');
     }
 
+    /**
+     * Executes the com_acumulus/advanced task.
+     *
+     * @return \JControllerLegacy
+     */
+    public function advanced()
+    {
+        return $this->executeTask('advanced');
+    }
+
+    /**
+     * Executes the given task.
+     *
+     * @param string $task
+     *
+     * @return \JControllerLegacy
+     *
+     * @throws \Exception
+     */
     protected function executeTask($task)
     {
         /** @var AcumulusModelAcumulus $model */
