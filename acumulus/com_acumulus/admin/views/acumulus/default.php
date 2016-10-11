@@ -2,14 +2,14 @@
 /**
  * @copyright   Buro RaDer.
  * @license     GPLv3; see license.txt.
- * 
+ *
  * Default template file for the Acumulus component views.
  *
  * This file has side effects, so checking if Joomla has been initialized is in place.
  */
 defined('_JEXEC') or die('Restricted Access');
 
-/** @var AcumulusView $this */
+/** @var AcumulusViewAcumulus $this */
 ?>
 <style>
 div.control-label {

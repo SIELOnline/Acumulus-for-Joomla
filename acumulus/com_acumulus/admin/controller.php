@@ -37,7 +37,8 @@ class AcumulusController extends JControllerLegacy
      */
     public function display($cachable = false, $urlparams = array())
     {
-        return $this->batch();
+        $this->task = 'batch';
+        return $this->executeTask();
     }
 
     /**
@@ -47,7 +48,7 @@ class AcumulusController extends JControllerLegacy
      */
     public function batch()
     {
-        return $this->executeTask('batch');
+        return $this->executeTask();
     }
 
     /**
@@ -57,7 +58,7 @@ class AcumulusController extends JControllerLegacy
      */
     public function config()
     {
-        return $this->executeTask('config');
+        return $this->executeTask();
     }
 
     /**
@@ -67,22 +68,20 @@ class AcumulusController extends JControllerLegacy
      */
     public function advanced()
     {
-        return $this->executeTask('advanced');
+        return $this->executeTask();
     }
 
     /**
      * Executes the given task.
      *
-     * @param string $task
-     *
      * @return \JControllerLegacy
      *
      * @throws \Exception
      */
-    protected function executeTask($task)
+    protected function executeTask()
     {
         /** @var AcumulusModelAcumulus $model */
-        $form = $this->getModel('Acumulus')->getForm($task);
+        $form = $this->getModel('Acumulus')->getForm($this->task);
         $form->process();
 
         // Show messages.
@@ -98,7 +97,18 @@ class AcumulusController extends JControllerLegacy
             throw new Exception(implode('<br />', $errors), 500);
         }
 
-        $this->default_view = $task;
+        $this->default_view = '';
         return parent::display();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getView($name = '', $type = '', $prefix = '', $config = array())
+    {
+        $config['task'] = $this->task;
+        return parent::getView($name, $type, $prefix, $config);
+    }
+
+
 }

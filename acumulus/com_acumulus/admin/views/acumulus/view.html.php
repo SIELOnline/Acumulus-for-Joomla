@@ -5,9 +5,9 @@
  */
 
 /**
- * Acumulus view, shared by both the config and the batch view.
+ * Generic Acumulus view.
  */
-class AcumulusView extends JViewLegacy
+class AcumulusViewAcumulus extends JViewLegacy
 {
     /** @var string */
     protected $action;
@@ -23,8 +23,10 @@ class AcumulusView extends JViewLegacy
 
     public function __construct($config = array())
     {
+        $this->task = $config['task'];
+        $this->action = "index.php?option=com_acumulus&task={$this->task}";
         $this->_defaultModel = 'Acumulus';
-        $this->saveButton = 'button_save';
+        $this->saveButton = $this->task === 'batch' ? 'button_send' : 'button_save';
         parent::__construct($config);
     }
 
@@ -74,6 +76,7 @@ class AcumulusView extends JViewLegacy
         $this->form->addValues();
 
         // Display the template.
+        $this->_addPath('template', __DIR__);
         parent::display($tpl);
 
         $this->addToolBar();
