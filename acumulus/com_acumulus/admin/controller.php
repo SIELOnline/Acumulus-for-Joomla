@@ -88,6 +88,9 @@ class AcumulusController extends JControllerLegacy
         foreach ($form->getSuccessMessages() as $message) {
             JFactory::getApplication()->enqueueMessage($message, 'message');
         }
+        foreach ($form->getWarningMessages() as $message) {
+            JFactory::getApplication()->enqueueMessage($message, 'warning');
+        }
         foreach ($form->getErrorMessages() as $message) {
             JFactory::getApplication()->enqueueMessage($message, 'error');
         }
