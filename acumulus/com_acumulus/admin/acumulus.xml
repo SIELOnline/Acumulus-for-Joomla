@@ -9,7 +9,7 @@
   <copyright>Copyright Buro RaDer</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.6.0</version>
+  <version>4.6.4</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x of HikaShop</description>
   <!-- Minimal VirtueMart or HikaShop version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
@@ -38,7 +38,7 @@
     <submenu>
       <menu link="option=com_acumulus&amp;task=batch" img="./media/logo-acumulus-16.png">Batchverzending</menu>
       <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Instellingen</menu>
-      <menu link="option=com_acumulus&amp;task=advanced" img="./media/logo-acumulus-16.png">Geavanceerde&nbsp;instellingen</menu>
+      <menu link="option=com_acumulus&amp;task=advanced" img="./media/logo-acumulus-16.png">Geavanceerde instellingen</menu>
     </submenu>
 
     <!-- Administration Main File Copy Section -->
@@ -46,12 +46,13 @@
       <!-- Admin Main File Copy Section -->
       <filename>acumulus.xml</filename>
       <filename>acumulus.php</filename>
-      <filename>controller.php</filename>
-      <filename>com_acumulusInstallerScript.php</filename>
       <filename>changelog.txt</filename>
+      <filename>com_acumulusInstallerScript.php</filename>
+      <filename>controller.php</filename>
+      <filename>events.txt</filename>
+      <filename>leesmij.txt</filename>
       <filename>license.txt</filename>
       <filename>licentie-nl.pdf</filename>
-      <filename>leesmij.txt</filename>
       <folder>libraries</folder>
       <folder>media</folder>
       <folder>models</folder>

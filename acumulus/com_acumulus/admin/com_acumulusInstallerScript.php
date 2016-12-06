@@ -28,7 +28,8 @@ class com_acumulusInstallerScript
     public function install($parent)
     {
         $version = (string) $parent->get('manifest')->version;
-        JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has been installed. Please fill in the settings form.", 'message');
+        $shopName = $this->getVersion('com_virtuemart') !== '' ? 'VirtueMart 3' : 'HikaShop';
+        JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has been installed. Please fill in the settings form and enable the Acumulus plugin for $shopName.", 'message');
         JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=config');
     }
 
