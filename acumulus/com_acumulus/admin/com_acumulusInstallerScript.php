@@ -18,10 +18,10 @@ class com_acumulusInstallerScript
     private $currentVersion;
 
     /**
-     * Method to install the extension
-     * $parent is the class calling this method
+     * Method to install the extension.
      *
      * @param JAdapterInstance $parent
+     *   The class calling this method.
      *
      * @throws \Exception
      */
