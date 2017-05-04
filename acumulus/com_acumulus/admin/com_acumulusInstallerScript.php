@@ -127,7 +127,7 @@ class com_acumulusInstallerScript
                     return false;
                 }
             } else {
-                JInstaller::getInstance()->abort("'The Acumulus component {$this->newVersion} requires VirtueMart or HikaShop to be installed and enabled.");
+                JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires VirtueMart or HikaShop to be installed and enabled.");
                 return false;
             }
         }
