@@ -25,6 +25,7 @@ class AcumulusViewAcumulus extends JViewLegacy
     {
         $this->task = $config['task'];
         $this->action = "index.php?option=com_acumulus&task={$this->task}";
+        /** @noinspection PhpUndefinedFieldInspection */
         $this->_defaultModel = 'Acumulus';
         $this->saveButton = $this->task === 'batch' ? 'button_send' : 'button_save';
         parent::__construct($config);

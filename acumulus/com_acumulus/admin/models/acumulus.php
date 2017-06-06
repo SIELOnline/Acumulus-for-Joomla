@@ -3,17 +3,17 @@
  * @copyright   Buro RaDer
  * @license     GPLv3; see license.txt.
  */
+
+use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\Shop\Config;
-use Siel\Acumulus\Joomla\Helpers\FormRenderer;
 
 /**
  * Acumulus Model
  */
 class AcumulusModelAcumulus extends JModelLegacy
 {
-    /** @var \Siel\Acumulus\Shop\Config */
-    protected $acumulusConfig;
+    /** @var \Siel\Acumulus\Helpers\ContainerInterface */
+    protected $container;
 
     /** @var string */
     protected $shopNamespace;
@@ -26,7 +26,7 @@ class AcumulusModelAcumulus extends JModelLegacy
         } else if ($this->loadHikaShop()) {
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
-        $this->acumulusConfig = new Config($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
+        $this->container = new Container($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
     }
 
     /**
@@ -106,23 +106,15 @@ class AcumulusModelAcumulus extends JModelLegacy
      */
     public function t($key)
     {
-        return $this->acumulusConfig->getTranslator()->get($key);
+        return $this->container->getTranslator()->get($key);
     }
 
     /**
-     * @return \Siel\Acumulus\Shop\Config
+     * @return \Siel\Acumulus\Shop\ConfigInterface
      */
     public function getAcumulusConfig()
     {
-        return $this->acumulusConfig;
-    }
-
-    /**
-     * @return \Siel\Acumulus\Helpers\FormRenderer
-     */
-    public function getFormRenderer()
-    {
-        return new FormRenderer();
+        return $this->container->getConfig();
     }
 
     /**
@@ -133,7 +125,15 @@ class AcumulusModelAcumulus extends JModelLegacy
     public function getForm($task)
     {
         // Get the form.
-        return $this->acumulusConfig->getForm($task);
+        return $this->container->getForm($task);
+    }
+
+    /**
+     * @return \Siel\Acumulus\Helpers\FormRenderer
+     */
+    public function getFormRenderer()
+    {
+        return $this->container->getFormRenderer();
     }
 
     /**
@@ -149,7 +149,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      */
     public function getSource($invoiceSourceType, $invoiceSourceOrId)
     {
-        return $this->acumulusConfig->getSource($invoiceSourceType, $invoiceSourceOrId);
+        return $this->container->getSource($invoiceSourceType, $invoiceSourceOrId);
     }
 
     /**
@@ -162,6 +162,6 @@ class AcumulusModelAcumulus extends JModelLegacy
      */
     public function sourceStatusChange(Source $source)
     {
-        return $this->acumulusConfig->getManager()->sourceStatusChange($source);
+        return $this->container->getManager()->sourceStatusChange($source);
     }
 }
