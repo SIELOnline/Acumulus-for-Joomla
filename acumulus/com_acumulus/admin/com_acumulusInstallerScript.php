@@ -4,7 +4,7 @@
  * @license     GPLv3; see license.txt.
  */
 
-use Siel\Acumulus\Helpers\Requirements;
+use Siel\Acumulus\Helpers\Container;
 
 /**
  * Installer file of the Acumulus component.
@@ -117,6 +117,7 @@ class com_acumulusInstallerScript
                 JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires at least VirtueMart $minVersion, found $shopVersion.");
                 return false;
             }
+            $shopNamespace = 'Joomla\\VirtueMart';
         } else {
             // if VM is not installed, check if HikaShop is installed.
             $shopVersion = $this->getVersion('com_hikashop');
@@ -130,6 +131,7 @@ class com_acumulusInstallerScript
                 JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires VirtueMart or HikaShop to be installed and enabled.");
                 return false;
             }
+            $shopNamespace = 'Joomla\\HikaShop';
         }
 
         // Check extension requirements.
@@ -144,7 +146,8 @@ class com_acumulusInstallerScript
             $libraryPath = "$componentPath/admin/libraries";
         }
         JLoader::registerNamespace('Siel', $libraryPath);
-        $errors = Requirements::check();
+        $container = new Container($shopNamespace, 'en');
+        $errors = $container->getRequirements()->check();
         if (!empty($errors)) {
             JInstaller::getInstance()->abort(implode(' ', $errors));
             return false;

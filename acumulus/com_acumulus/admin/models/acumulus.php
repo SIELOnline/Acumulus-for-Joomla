@@ -110,7 +110,7 @@ class AcumulusModelAcumulus extends JModelLegacy
     }
 
     /**
-     * @return \Siel\Acumulus\Shop\ConfigInterface
+     * @return \Siel\Acumulus\Config\ConfigInterface
      */
     public function getAcumulusConfig()
     {
@@ -158,7 +158,8 @@ class AcumulusModelAcumulus extends JModelLegacy
      * @param Source $source
      *
      * @return int
-     *   Sent status, one of the WebConfigInterface::Status_ constants.
+     *   Sent status, one of the Plugin::Status_ constants.
+     * @todo: return value can ontain a mix of values
      */
     public function sourceStatusChange(Source $source)
     {
