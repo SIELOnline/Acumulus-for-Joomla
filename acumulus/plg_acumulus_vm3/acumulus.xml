@@ -8,7 +8,7 @@
   <copyright>Copyright Buro RaDer</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>4.9.1</version>
+  <version>4.9.2</version>
   <description>Verstuurt VirtueMart facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen.</description>
 
   <files>
