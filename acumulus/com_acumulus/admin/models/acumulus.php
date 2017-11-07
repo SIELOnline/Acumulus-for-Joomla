@@ -157,9 +157,8 @@ class AcumulusModelAcumulus extends JModelLegacy
      *
      * @param Source $source
      *
-     * @return int
-     *   Sent status, one of the Plugin::Status_ constants.
-     * @todo: return value can ontain a mix of values
+     * @return \Siel\Acumulus\Invoice\Result
+     *   The result of sending (or not sending) the invoice.
      */
     public function sourceStatusChange(Source $source)
     {
