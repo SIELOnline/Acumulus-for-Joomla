@@ -9,20 +9,8 @@ use Siel\Acumulus\Invoice\Source;
 /**
  * Acumulus plugin to react to HikaShop order status changes.
  *
- * We have chosen to listen to the plgVmCouponUpdateOrderStatus event as this
- * is the last event that gets triggered when an order gets updated through
- * VirtueMartModelOrders::updateStatusForOneOrder(). At that moment the
- * shipment and payment plugins have been called successfully, and the order
- * and order history have been stored successfully.
+ * These status changes are advertised via the onAfterOrderUpdate event.
  *
- * Events we did not choose to use:
- * - plgVmOnUpdateOrderShipment: too early as it gets called before the
- *   payment plugin can have reacted to the order update.
- * - plgVmOnUpdateOrderPayment: still quite early as we might get called
- *   before the actual payment plugin can have reacted to it (and possibly
- *   indicate failure) and the order itself and the order history have not yet
- *   been stored: so the database might not be used at that point as it is
- *   "outdated".
  */
 class plgHikashopAcumulus extends JPlugin
 {

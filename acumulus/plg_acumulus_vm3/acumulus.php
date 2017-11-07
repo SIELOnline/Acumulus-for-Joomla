@@ -69,7 +69,7 @@ class plgVmCouponAcumulus extends vmCouponPlugin
      *
      * @return AcumulusModelAcumulus
      */
-    public function getModel($config = array())
+    protected function getModel($config = array())
     {
         if ($this->model === null) {
             $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel', $config);

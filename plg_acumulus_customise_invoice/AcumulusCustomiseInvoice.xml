@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="plugin" group="acumulus" version="3.7" method="upgrade">
+  <name>Voorbeeldplugin om te reageren op de Acumulus events</name>
+  <creationDate>November 2017</creationDate>
+  <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
+  <authorEmail>support@burorader.com</authorEmail>
+  <authorUrl>http://www.burorader.com/</authorUrl>
+  <copyright>Copyright SIEL B.V.</copyright>
+  <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+  <!--  The version string is recorded in the extension table -->
+  <version>4.9.3</version>
+  <description>Bevat voorbeeldcode om te reageren op de Acumulus events.</description>
+
+  <files>
+    <filename plugin="AcumulusCustomiseInvoice">AcumulusCustomiseInvoice.php</filename>
+  </files>
+</extension>
