@@ -9,7 +9,7 @@
   <copyright>Copyright Buro RaDer</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.9.3</version>
+  <version>5.0.1</version>
   <description>Acumulus koppeling package voor VirtueMart 3.x en HikaShop</description>
 
   <files folder="packages">

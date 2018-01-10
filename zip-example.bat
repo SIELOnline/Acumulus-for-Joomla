@@ -5,8 +5,10 @@ echo Usage: %~n0 version
 exit /B 1;
 )
 set version=%1
+set z7="C:\Program Files\7-Zip\7z.exe"
+set archive=Joomla-Acumulus-Customise-Invoice-%version%.zip
 
-del Joomla-Acumulus-Customise-Invoice-%version%.zip 2> nul
-rem zip plugin.
-"C:\Program Files\7-Zip\7z.exe" a -tzip Joomla-Acumulus-Customise-Invoice-%version%.zip plg_acumulus_customise_invoice | findstr /i "Failed Error"
-"C:\Program Files\7-Zip\7z.exe" t Joomla-Acumulus-Customise-Invoice-%version%.zip | findstr /i "Processing Everything Failed Error"
+rem delete, recreate and check zip package.
+del %archive% 2> nul
+%z7% a -tzip %archive% plg_acumulus_customise_invoice | findstr /i "Failed Error"
+%z7% t %archive% | findstr /i "Processing Everything Failed Error"

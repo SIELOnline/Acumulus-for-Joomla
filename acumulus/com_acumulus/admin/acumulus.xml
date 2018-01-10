@@ -3,13 +3,13 @@
 
   <name>Acumulus</name>
   <creationDate>October 2015</creationDate>
-  <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
+  <author>Buro RaDer</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
-  <copyright>Copyright Buro RaDer</copyright>
+  <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>4.9.3</version>
+  <version>5.0.1</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x of HikaShop</description>
   <!-- Minimal VirtueMart or HikaShop version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
@@ -46,14 +46,13 @@
       <!-- Admin Main File Copy Section -->
       <filename>acumulus.xml</filename>
       <filename>acumulus.php</filename>
-      <filename>changelog.txt</filename>
       <filename>com_acumulusInstallerScript.php</filename>
       <filename>controller.php</filename>
       <filename>events.txt</filename>
       <filename>leesmij.txt</filename>
       <filename>license.txt</filename>
       <filename>licentie-nl.pdf</filename>
-      <folder>libraries</folder>
+      <folder>lib</folder>
       <folder>media</folder>
       <folder>models</folder>
       <folder>sql</folder>

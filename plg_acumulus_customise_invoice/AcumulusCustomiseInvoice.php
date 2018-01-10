@@ -1,8 +1,8 @@
 <?php
 /**
- * @author      Buro RaDer i.o.v. SIEL - Acumulus, http://www.burorader.com/
- * @copyright   SIEL.
- * @license     GPLv3.
+ * @author      Buro RaDer (i.o.v. SIEL - Acumulus) http://www.burorader.com/
+ * @copyright   SIEL BV https://www.siel.nl/acumulus/
+ * @license     GPLv3
  */
 
 use Siel\Acumulus\Api;
@@ -106,7 +106,6 @@ class PlgAcumulusAcumulusCustomiseInvoice extends JPlugin
 	    }
 
 		// Change invoice here.
-
         return true;
     }
 
@@ -134,7 +133,7 @@ class PlgAcumulusAcumulusCustomiseInvoice extends JPlugin
 	    // Here you can make changes to the invoice based on your specific
 	    // situation, e.g. setting the payment status to its correct value:
 	    if (!empty($invoice)) {
-		    $invoice['customer']['invoice'][Tag::PaymentStatus] = $this->isOrderPaid($invoiceSource) ? Api::PaymentStatus_Paid : Api::PaymentStatus_Due;
+		    //$invoice['customer']['invoice'][Tag::PaymentStatus] = $this->isOrderPaid($invoiceSource) ? Api::PaymentStatus_Paid : Api::PaymentStatus_Due;
 	    }
         return true;
     }
@@ -154,7 +153,7 @@ class PlgAcumulusAcumulusCustomiseInvoice extends JPlugin
      * @return bool
      *   True on success, false otherwise.
      */
-    public function onAcumulusInvoiceSendAfter(array &$invoice, Source $invoiceSource, Result $result)
+    public function onAcumulusInvoiceSendAfter(array $invoice, Source $invoiceSource, Result $result)
     {
 	    if ($result->getException()) {
 		    // Serious error:
@@ -228,6 +227,3 @@ class PlgAcumulusAcumulusCustomiseInvoice extends JPlugin
 		return true;
 	}
 }
-
-$i = 3;
-$j = 4;

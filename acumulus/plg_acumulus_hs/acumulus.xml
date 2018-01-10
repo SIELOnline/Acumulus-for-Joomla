@@ -2,13 +2,13 @@
 <extension type="plugin" group="hikashop" version="3.4" method="upgrade">
   <name>Acumulus plugin voor HikaShop</name>
   <creationDate>October 2015</creationDate>
-  <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
+  <author>Buro RaDer</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
-  <copyright>Copyright Buro RaDer</copyright>
+  <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>4.9.3</version>
+  <version>5.0.1</version>
   <description>Verstuurt HikaShop facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen.</description>
 
   <files>

@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt.
+ * @author      Buro RaDer (i.o.v. SIEL - Acumulus) http://www.burorader.com/
+ * @copyright   SIEL BV https://www.siel.nl/acumulus/
+ * @license     GPLv3
  */
 
 use Siel\Acumulus\Helpers\Container;

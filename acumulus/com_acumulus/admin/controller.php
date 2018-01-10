@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt.
+ * @author      Buro RaDer (i.o.v. SIEL - Acumulus) http://www.burorader.com/
+ * @copyright   SIEL BV https://www.siel.nl/acumulus/
+ * @license     GPLv3
  */
 
 /**
@@ -34,6 +35,8 @@ class AcumulusController extends JControllerLegacy
      * @param array $urlparams
      *
      * @return \JControllerLegacy
+     *
+     * @throws \Exception
      */
     public function display($cachable = false, $urlparams = array())
     {
@@ -45,6 +48,8 @@ class AcumulusController extends JControllerLegacy
      * Executes the com_acumulus/batch task.
      *
      * @return \JControllerLegacy
+     *
+     * @throws \Exception
      */
     public function batch()
     {
@@ -55,6 +60,8 @@ class AcumulusController extends JControllerLegacy
      * Executes the com_acumulus/config task.
      *
      * @return \JControllerLegacy
+     *
+     * @throws \Exception
      */
     public function config()
     {
@@ -65,6 +72,8 @@ class AcumulusController extends JControllerLegacy
      * Executes the com_acumulus/advanced task.
      *
      * @return \JControllerLegacy
+     *
+     * @throws \Exception
      */
     public function advanced()
     {
