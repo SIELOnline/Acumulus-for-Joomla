@@ -1,13 +1,15 @@
 <?php
 /**
- * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt.
+ * @author    Buro RaDer, http://www.burorader.com/
+ * @copyright SIEL BV, https://www.siel.nl/acumulus/
+ * @license   GPL v3, see license.txt
  *
  * Default template file for the Acumulus component views.
  *
  * This file has side effects, so checking if Joomla has been initialized is in place.
  */
-defined('_JEXEC') or die('Restricted Access');
+
+defined('_JEXEC') or die;
 
 /** @var AcumulusViewAcumulus $this */
 ?>

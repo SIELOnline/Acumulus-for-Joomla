@@ -3,14 +3,14 @@
   <name>Acumulus Package</name>
   <packagename>acumulus</packagename>
   <creationDate>December 2015</creationDate>
-  <author>Buro RaDer i.o.v. SIEL - Acumulus</author>
+  <author>Buro RaDer</author>
   <authorEmail>support@burorader.com</authorEmail>
   <authorUrl>http://www.burorader.com/</authorUrl>
-  <copyright>Copyright Buro RaDer</copyright>
+  <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
-  <!--  The version string is recorded in the components table -->
-  <version>5.0.1</version>
-  <description>Acumulus koppeling package voor VirtueMart 3.x en HikaShop</description>
+  <!--  The version string is recorded in the extension table -->
+  <version>5.0.5</version>
+  <description>Acumulus package voor VirtueMart 3.x en HikaShop</description>
 
   <files folder="packages">
     <file type="component" id="com_acumulus" >com_acumulus.zip</file>

@@ -1,14 +1,15 @@
 <?php
 /**
- * @author      Buro RaDer (i.o.v. SIEL - Acumulus) http://www.burorader.com/
- * @copyright   SIEL BV https://www.siel.nl/acumulus/
- * @license     GPLv3
+ * @author    Buro RaDer, http://www.burorader.com/
+ * @copyright SIEL BV, https://www.siel.nl/acumulus/
+ * @license   GPL v3, see license.txt
  *
  * Main entry point for Joomla to the Acumulus component.
  *
  * This file has side effects, so checking if Joomla has been initialized is in place.
  */
-defined('_JEXEC') or die('Restricted access');
+
+defined('_JEXEC') or die;
 
 // Get access to our classes via the auto loader.
 JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/lib/siel/acumulus/src', false, false, 'psr4');

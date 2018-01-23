@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt
+ * @author    Buro RaDer, http://www.burorader.com/
+ * @copyright SIEL BV, https://www.siel.nl/acumulus/
+ * @license   GPL v3, see license.txt
  */
+
+defined('_JEXEC') or die;
 
 use Siel\Acumulus\Invoice\Source;
 

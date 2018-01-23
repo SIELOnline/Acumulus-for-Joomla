@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright   Buro RaDer.
- * @license     GPLv3; see license.txt
+ * @author    Buro RaDer, http://www.burorader.com/
+ * @copyright SIEL BV, https://www.siel.nl/acumulus/
+ * @license   GPL v3, see license.txt
  *
  * This file may have side effects, so checking if Joomla has been initialized is in place.
  */
-defined('_JEXEC') or die('Restricted access');
+
+defined('_JEXEC') or die;
 
 use Siel\Acumulus\Invoice\Source;
 
