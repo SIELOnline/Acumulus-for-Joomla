@@ -17,5 +17,9 @@
     <file type="plugin" id="acumulus" group="vmcoupon">plg_acumulus_vm3.zip</file>
     <file type="plugin" id="acumulus" group="hikashop">plg_acumulus_hs.zip</file>
   </files>
+
+  <updateservers>
+    <server type="extension" name="SIEL Acumulus Update Site">https://raw.githubusercontent.com/SIELOnline/Acumulus-Update-Server-for-Joomla/master/version.xml</server>
+  </updateservers>
 </extension>
  

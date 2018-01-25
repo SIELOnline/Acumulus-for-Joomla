@@ -8,18 +8,6 @@ interdiff.txt
 # PHPStorm
 .idea/*
 
-# Common library
-acumulus/com_acumulus/admin/lib/*
-
-# Duplicate files
-acumulus/com_acumulus/acumulus.xml
-acumulus/com_acumulus/com_acumulusInstallerScript.php
-
-# Shared files
-acumulus/com_acumulus/admin/license.txt
-acumulus/com_acumulus/admin/licentie-nl.pdf
-acumulus/com_acumulus/admin/leesmij.txt
-
 # Resulting installer files
 /*.zip
-acumulus/packages/*
+packages/*
