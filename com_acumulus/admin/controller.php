@@ -5,6 +5,8 @@
  * @license   GPL v3, see license.txt
  */
 
+use Joomla\CMS\Installer\Manifest\PackageManifest;
+
 defined('_JEXEC') or die;
 
 /**
@@ -83,6 +85,31 @@ class AcumulusController extends JControllerLegacy
     }
 
     /**
+     * Executes the com_acumulus/update task and redirects.
+     *
+     * @throws \Exception
+     */
+    public function update()
+    {
+        $extensionTable = new JtableExtension(JFactory::getDbo());
+        $extensionTable->load(array('element' => 'com_acumulus'));
+        $manifest_cache = $extensionTable->get('manifest_cache');
+        $manifest_cache = json_decode($manifest_cache);
+        if (!empty($manifest_cache->version) && $this->getModel('Acumulus')->getAcumulusConfig()->upgrade($manifest_cache->version)) {
+            $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
+            $manifest_cache->version = $manifest->version;
+            // Reload as the upgrade may have changed the config.
+            $extensionTable->load(array('element' => 'com_acumulus'));
+            $extensionTable->set('manifest_cache', json_encode($manifest_cache));
+            $extensionTable->store();
+            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
+        } else {
+            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module not upgraded');
+        }
+        $this->redirect();
+    }
+
+    /**
      * Executes the given task.
      *
      * @return \JControllerLegacy
@@ -91,9 +118,16 @@ class AcumulusController extends JControllerLegacy
      */
     protected function executeTask()
     {
+
         /** @var AcumulusModelAcumulus $model */
         $form = $this->getModel('Acumulus')->getForm($this->task);
+        if ($form->isSubmitted()) {
+            JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        }
         $form->process();
+        // Force the creation of the fields to get connection error messages
+        // shown.
+        $form->getFields();
 
         // Show messages.
         foreach ($form->getSuccessMessages() as $message) {

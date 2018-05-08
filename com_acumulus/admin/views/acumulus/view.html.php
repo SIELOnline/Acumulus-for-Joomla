@@ -93,6 +93,7 @@ class AcumulusViewAcumulus extends JViewLegacy
      * @return  void
      *
      * @since   1.6
+     * @throws \Exception
      */
     protected function addToolBar()
     {

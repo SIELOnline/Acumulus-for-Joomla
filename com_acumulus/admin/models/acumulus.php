@@ -15,7 +15,7 @@ use Siel\Acumulus\Invoice\Source;
  */
 class AcumulusModelAcumulus extends JModelLegacy
 {
-    /** @var \Siel\Acumulus\Helpers\ContainerInterface */
+    /** @var \Siel\Acumulus\Helpers\Container */
     protected $container;
 
     /** @var string */
@@ -113,7 +113,7 @@ class AcumulusModelAcumulus extends JModelLegacy
     }
 
     /**
-     * @return \Siel\Acumulus\Config\ConfigInterface
+     * @return \Siel\Acumulus\Config\Config
      */
     public function getAcumulusConfig()
     {
@@ -165,6 +165,6 @@ class AcumulusModelAcumulus extends JModelLegacy
      */
     public function sourceStatusChange(Source $source)
     {
-        return $this->container->getManager()->sourceStatusChange($source);
+        return $this->container->getInvoiceManager()->sourceStatusChange($source);
     }
 }

@@ -36,6 +36,7 @@ class com_acumulusInstallerScript
         JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=config');
     }
 
+    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Method to uninstall the extension.
      *
@@ -46,6 +47,7 @@ class com_acumulusInstallerScript
      */
     public function uninstall(/*$parent*/)
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         JFactory::getApplication()->enqueueMessage('The Acumulus component has been uninstalled.', 'message');
     }
 
@@ -67,6 +69,7 @@ class com_acumulusInstallerScript
         JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version {$this->newVersion}.", 'message');
     }
 
+    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Method to run before an install/update/uninstall method.
      *
@@ -97,6 +100,7 @@ class com_acumulusInstallerScript
             return false;
         }
         if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             JFactory::getApplication()->enqueueMessage("The Acumulus component ({$this->newVersion}) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
             return false;
         }
