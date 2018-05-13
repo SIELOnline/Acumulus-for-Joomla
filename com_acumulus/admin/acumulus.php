@@ -16,7 +16,7 @@ JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/lib/siel/acumulus/src',
 
 // Set some global property.
 $document = JFactory::getDocument();
-$document->addStyleDeclaration('.icon-acumulus {background-image: url(./com_acumulus/media/logo-acumulus-16.png);}');
+$document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');
 
 // Get an instance of the controller prefixed by Acumulus.
 /** @noinspection PhpUnhandledExceptionInspection */

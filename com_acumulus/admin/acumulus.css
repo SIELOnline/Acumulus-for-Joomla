@@ -1,0 +1,14 @@
+.icon-acumulus {
+  background-image: url(./media/logo-acumulus-48.png);
+}
+
+summary {
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 18px;
+  font-size: 19.5px;
+  line-height: 36px;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+}
