@@ -144,15 +144,15 @@ class com_acumulusInstallerScript
         // Check extension requirements.
         // Get access to our classes via the auto loader.
         $componentPath = dirname(__FILE__);
-        if (is_dir("$componentPath/libraries")) {
+        if (is_dir("$componentPath/lib")) {
             // Installing directly from administrator/components/com_acumulus:
             // probably via the discovery feature of the extensions manager.
-            $libraryPath = "$componentPath/libraries";
-        } else /* if (is_dir("$componentPath/admin/libraries")) */ {
+            $libraryPath = "$componentPath";
+        } else /* if (is_dir("$componentPath/admin/lib")) */ {
             // Installing from the zip.
-            $libraryPath = "$componentPath/admin/libraries";
+            $libraryPath = "$componentPath/admin";
         }
-        JLoader::registerNamespace('Siel', $libraryPath);
+        JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
         $container = new Container($shopNamespace, 'en');
         $errors = $container->getRequirements()->check();
         if (!empty($errors)) {

@@ -152,7 +152,7 @@ class com_acumulusInstallerScript
             // Installing from the zip.
             $libraryPath = "$componentPath/admin";
         }
-        JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src');
+        JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
         $container = new Container($shopNamespace, 'en');
         $errors = $container->getRequirements()->check();
         if (!empty($errors)) {
