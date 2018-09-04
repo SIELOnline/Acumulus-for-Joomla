@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_acumulus" section="component">
+			<action name="core.manage" title="COM_ACUMULUS_MANAGE" description="COM_ACUMULUS_MANAGE_DESC" />
+			<action name="core.create" title="COM_ACUMULUS_SEND" description="COM_ACUMULUS_SEND_DESC" />
+		</field>
+	</fieldset>
+</config>

@@ -57,6 +57,10 @@ class AcumulusController extends JControllerLegacy
      */
     public function batch()
     {
+        if (!JFactory::getUser()->authorise('core.create', 'com_acumulus'))
+        {
+            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+        }
         return $this->executeTask();
     }
 
@@ -69,6 +73,10 @@ class AcumulusController extends JControllerLegacy
      */
     public function config()
     {
+        if (!JFactory::getUser()->authorise('core.manage', 'com_acumulus'))
+        {
+            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+        }
         return $this->executeTask();
     }
 
@@ -81,6 +89,10 @@ class AcumulusController extends JControllerLegacy
      */
     public function advanced()
     {
+        if (!JFactory::getUser()->authorise('core.manage', 'com_acumulus'))
+        {
+            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+        }
         return $this->executeTask();
     }
 
