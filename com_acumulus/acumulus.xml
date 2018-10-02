@@ -62,8 +62,8 @@
       <folder>views</folder>
     </files>
     <languages folder="admin">
-      <language tag="en-GB">language/en-GB.com_acumulus.ini</language>
-      <language tag="nl-NL">language/nl-NL.com_acumulus.ini</language>
+      <language tag="en-GB">language/en-GB/en-GB.com_acumulus.ini</language>
+      <language tag="nl-NL">language/nl-NL/nl-NL.com_acumulus.ini</language>
     </languages>
   </administration>
 </extension>

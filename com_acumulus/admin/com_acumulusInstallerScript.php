@@ -20,6 +20,9 @@ class com_acumulusInstallerScript
     /** @var string */
     private $currentVersion;
 
+    /** @var \Siel\Acumulus\Helpers\Container */
+    private $container;
+
     /**
      * Method to install the extension.
      *
@@ -63,9 +66,7 @@ class com_acumulusInstallerScript
     {
         // The autoloader should have been set by the preflight method.
         // Get an instance of the controller prefixed by Acumulus.
-        /** @var AcumulusController $controller */
-        $controller = JControllerLegacy::getInstance('Acumulus');
-        $controller->getModel('Acumulus')->getAcumulusConfig()->upgrade($this->currentVersion);
+        $this->container->getConfig()->upgrade($this->currentVersion);
         JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version {$this->newVersion}.", 'message');
     }
 
@@ -153,8 +154,8 @@ class com_acumulusInstallerScript
             $libraryPath = "$componentPath/admin";
         }
         JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
-        $container = new Container($shopNamespace, 'en');
-        $errors = $container->getRequirements()->check();
+        $this->container = new Container($shopNamespace, 'en');
+        $errors = $this->container->getRequirements()->check();
         if (!empty($errors)) {
             JInstaller::getInstance()->abort(implode(' ', $errors));
             return false;
