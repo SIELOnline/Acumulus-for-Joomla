@@ -73,7 +73,7 @@ class AcumulusController extends JControllerLegacy
      */
     public function config()
     {
-        if (!JFactory::getUser()->authorise('core.manage', 'com_acumulus'))
+        if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
@@ -89,7 +89,7 @@ class AcumulusController extends JControllerLegacy
      */
     public function advanced()
     {
-        if (!JFactory::getUser()->authorise('core.manage', 'com_acumulus'))
+        if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
