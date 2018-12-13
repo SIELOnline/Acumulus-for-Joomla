@@ -5,11 +5,11 @@
   <creationDate>December 2015</creationDate>
   <author>Buro RaDer</author>
   <authorEmail>support@burorader.com</authorEmail>
-  <authorUrl>http://www.burorader.com/</authorUrl>
+  <authorUrl>https://burorader.com/</authorUrl>
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>5.5.0</version>
+  <version>5.5.1</version>
   <description>Acumulus package voor VirtueMart en HikaShop</description>
 
   <files folder="packages">
