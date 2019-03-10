@@ -153,7 +153,8 @@ class AcumulusController extends JControllerLegacy
         }
 
         // Check for serious errors.
-        if (count($errors = $this->get('Errors'))) {
+        $errors = $this->getErrors();
+        if (count($errors) > 0) {
             throw new Exception(implode('<br />', $errors), 500);
         }
 
