@@ -23,6 +23,9 @@ class AcumulusModelAcumulus extends JModelLegacy
 
     public function __construct($config = array())
     {
+        // Get access to our classes via the auto loader.
+        JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/../lib/siel/acumulus/src', false, false, 'psr4');
+
         parent::__construct($config);
         if ($this->loadVirtueMart()) {
             $this->shopNamespace = 'Joomla\\VirtueMart';

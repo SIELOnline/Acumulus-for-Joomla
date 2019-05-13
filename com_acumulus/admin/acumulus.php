@@ -11,9 +11,6 @@
 
 defined('_JEXEC') or die;
 
-// Get access to our classes via the auto loader.
-JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/lib/siel/acumulus/src', false, false, 'psr4');
-
 // Set some global property.
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');

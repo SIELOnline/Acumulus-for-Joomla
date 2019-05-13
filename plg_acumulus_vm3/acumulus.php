@@ -3,17 +3,11 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
- *
- * This file may have side effects, so checking if Joomla has been initialized is in place.
  */
 
 defined('_JEXEC') or die;
 
 use Siel\Acumulus\Invoice\Source;
-
-if (!class_exists('vmCouponPlugin')) {
-    require(JPATH_VM_PLUGINS . '/vmcouponplugin.php');
-}
 
 /**
  * Acumulus plugin to react to VirtueMart order status changes.
@@ -33,19 +27,13 @@ if (!class_exists('vmCouponPlugin')) {
  *   been stored: so the database might not be used at that point as it is
  *   "outdated".
  */
-class plgVmCouponAcumulus extends vmCouponPlugin
+class plgVmCouponAcumulus extends JPlugin
 {
     /** @var bool */
     protected $initialized = false;
 
     /** @var AcumulusModelAcumulus */
     protected $model;
-
-    public function __construct(& $subject, $config)
-    {
-        parent::__construct($subject, $config);
-        $this->_tablename = '';
-    }
 
     /**
      * Initializes the environment for the plugin:
@@ -58,8 +46,6 @@ class plgVmCouponAcumulus extends vmCouponPlugin
             // Get access to our models and tables.
             JModelLegacy::addIncludePath("$componentPath/models", 'AcumulusModel');
             JTable::addIncludePath("$componentPath/tables");
-            // Get access to our library classes via the auto loader.
-			JLoader::registerNamespace('Siel\\Acumulus', "$componentPath/lib/siel/acumulus/src", false, false, 'psr4');
             $this->initialized = true;
         }
     }
@@ -78,7 +64,6 @@ class plgVmCouponAcumulus extends vmCouponPlugin
         }
         return $this->model;
     }
-
 
     /**
      * Event observer to react to order updates.
@@ -101,28 +86,4 @@ class plgVmCouponAcumulus extends vmCouponPlugin
         // VirtueMartModelOrders::updateStatusForOneOrder().
         return null;
     }
-
-    /*
-     * Methods we don't want to be implemented.
-     */
-    public function loadJLangThis($fname, $type = 0, $name = 0)
-    {
-        return;
-    }
-
-    public function onStoreInstallPluginTable($psType, $name = false)
-    {
-        return true;
-    }
-
-    protected function removePluginInternalData($id, $primaryKey = 0)
-    {
-        return;
-    }
-
-    public function renderByLayout($layout = 'default', $viewData = null, $name = null, $psType = null)
-    {
-        return;
-    }
 }
-

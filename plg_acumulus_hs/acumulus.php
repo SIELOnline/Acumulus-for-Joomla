@@ -34,8 +34,6 @@ class plgHikashopAcumulus extends JPlugin
             // Get access to our models and tables.
             JModelLegacy::addIncludePath("$componentPath/models", 'AcumulusModel');
             JTable::addIncludePath("$componentPath/tables");
-            // Get access to our library classes via the auto loader.
-			JLoader::registerNamespace('Siel\\Acumulus', "$componentPath/lib/siel/acumulus/src", false, false, 'psr4');
             $this->initialized = true;
         }
     }
@@ -47,7 +45,7 @@ class plgHikashopAcumulus extends JPlugin
      *
      * @return AcumulusModelAcumulus
      */
-    public function getModel($config = array())
+    protected function getModel($config = array())
     {
         if ($this->model === null) {
             $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel', $config);
