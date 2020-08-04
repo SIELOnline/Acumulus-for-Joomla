@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 
 /** @var AcumulusViewAcumulus $this */
 ?>
+<!--suppress CssUnusedSymbol -->
 <style>
 div.control-label {
     max-width: 180px;

@@ -1,5 +1,8 @@
 <?php
 /**
+ * @noinspection PhpUnused
+ * @noinspection SqlNoDataSourceInspection
+ *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
@@ -96,7 +99,7 @@ class com_acumulusInstallerScript
 
         // Check Joomla version
         $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
-        if (version_compare($joomlaVersion, '3.1', '<')) {
+        if (version_compare($joomlaVersion, '3.9', '<')) {
             JInstaller::getInstance()->abort("The Acumulus component ({$this->newVersion}) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
             return false;
         }
@@ -107,7 +110,7 @@ class com_acumulusInstallerScript
         }
 
         // Check downgrade.
-        if ($type == 'update') {
+        if ($type === 'update') {
             $currentInfo = json_decode($parent->get('extension')->manifest_cache, true);
             $this->currentVersion = $currentInfo['version'];
             if (version_compare($this->newVersion, $this->currentVersion, '<')) {
@@ -193,6 +196,7 @@ class com_acumulusInstallerScript
     {
         $result = '';
         $db = JFactory::getDbo();
+        /** @noinspection SqlResolve */
         $db->setQuery(sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $manifestCache = $db->loadResult();
         if (!empty($manifestCache)) {

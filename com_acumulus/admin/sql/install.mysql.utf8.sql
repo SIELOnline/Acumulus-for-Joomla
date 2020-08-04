@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS `#__acumulus_entry`
     `created` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated` timestamp NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_acumulus_entry` (`entry_id`),
+    INDEX `idx_acumulus_entry` (`entry_id`),
     UNIQUE INDEX `idx_acumulus_source` (`source_id`, `source_type`)
 );

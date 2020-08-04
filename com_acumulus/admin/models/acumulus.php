@@ -1,5 +1,7 @@
 <?php
 /**
+ * @noinspection SqlNoDataSourceInspection
+ *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
@@ -95,6 +97,7 @@ class AcumulusModelAcumulus extends JModelLegacy
     protected function isEnabled($component)
     {
         $db = JFactory::getDbo();
+        /** @noinspection SqlResolve */
         $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $enabled = $db->loadResult();
         return $enabled == 1;

@@ -5,6 +5,8 @@
  * @license   GPL v3, see license.txt
  */
 
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 defined('_JEXEC') or die;
 
 /**
@@ -28,7 +30,6 @@ class AcumulusViewAcumulus extends JViewLegacy
     {
         $this->task = $config['task'];
         $this->action = "index.php?option=com_acumulus&task={$this->task}";
-        /** @noinspection PhpUndefinedFieldInspection */
         $this->_defaultModel = 'Acumulus';
         $this->saveButton = $this->task === 'batch' ? 'button_send' : 'button_save';
         parent::__construct($config);
@@ -102,9 +103,9 @@ class AcumulusViewAcumulus extends JViewLegacy
         $input->set('hidemainmenu', false);
 
         // Add title and buttons.
-        JToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
-        JToolbarHelper::save($this->task, $this->t($this->saveButton));
-        JToolbarHelper::cancel('cancel', $this->t('button_cancel'));
+        ToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
+        ToolbarHelper::save($this->task, $this->t($this->saveButton));
+        ToolbarHelper::cancel('cancel', $this->t('button_cancel'));
     }
 
     /**

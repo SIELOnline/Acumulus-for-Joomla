@@ -1,11 +1,14 @@
 <?php
-/**
+/** @noinspection PhpUnused
+ *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
  */
 
 use Joomla\CMS\Installer\Manifest\PackageManifest;
+use Siel\Acumulus\Helpers\Message;
+use Siel\Acumulus\Helpers\Severity;
 
 defined('_JEXEC') or die;
 
@@ -142,14 +145,11 @@ class AcumulusController extends JControllerLegacy
         $form->getFields();
 
         // Show messages.
-        foreach ($form->getSuccessMessages() as $message) {
-            JFactory::getApplication()->enqueueMessage($message, 'message');
-        }
-        foreach ($form->getWarningMessages() as $message) {
-            JFactory::getApplication()->enqueueMessage($message, 'warning');
-        }
-        foreach ($form->getErrorMessages() as $message) {
-            JFactory::getApplication()->enqueueMessage($message, 'error');
+        foreach ($form->getMessages() as $message) {
+            JFactory::getApplication()->enqueueMessage(
+                $message->format(Message::Format_PlainWithSeverity),
+                $this->getJoomlaMessageType($message->getSeverity())
+            );
         }
 
         // Check for serious errors.
@@ -160,6 +160,32 @@ class AcumulusController extends JControllerLegacy
 
         $this->default_view = '';
         return parent::display();
+    }
+
+    /**
+     * Returns the joomla equivalent of the severity.
+     *
+     * @param int $severity
+     *   One of the Severity::... constants.
+     *
+     * @return string
+     *   the Joomla message type equivalent of the severity.
+     */
+    protected function getJoomlaMessageType($severity)
+    {
+        switch ($severity) {
+            case Severity::Success:
+            default:
+                return 'message';
+            case Severity::Info:
+            case Severity::Notice:
+                return 'notice';
+            case Severity::Warning:
+                return 'warning';
+            case Severity::Error:
+            case Severity::Exception:
+                return 'error';
+        }
     }
 
     /**
