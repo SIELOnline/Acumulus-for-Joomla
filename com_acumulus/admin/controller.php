@@ -100,6 +100,22 @@ class AcumulusController extends JControllerLegacy
     }
 
     /**
+     * Executes the com_acumulus/register task.
+     *
+     * @return \JControllerLegacy
+     *
+     * @throws \Exception
+     */
+    public function register()
+    {
+        if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
+        {
+            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+        }
+        return $this->executeTask();
+    }
+
+    /**
      * Executes the com_acumulus/update task and redirects.
      *
      * @throws \Exception

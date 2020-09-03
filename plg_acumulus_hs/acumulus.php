@@ -39,7 +39,7 @@ class plgHikashopAcumulus extends JPlugin
     }
 
     /**
-     * Returns an Acumulus model
+     * Returns an Acumulus model.
      *
      * @param array $config
      *

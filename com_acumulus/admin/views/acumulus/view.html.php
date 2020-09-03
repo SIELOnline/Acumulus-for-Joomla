@@ -31,7 +31,7 @@ class AcumulusViewAcumulus extends JViewLegacy
         $this->task = $config['task'];
         $this->action = "index.php?option=com_acumulus&task={$this->task}";
         $this->_defaultModel = 'Acumulus';
-        $this->saveButton = $this->task === 'batch' ? 'button_send' : 'button_save';
+        $this->saveButton = "button_submit_{$this->task}";
         parent::__construct($config);
     }
 
@@ -104,8 +104,10 @@ class AcumulusViewAcumulus extends JViewLegacy
 
         // Add title and buttons.
         ToolbarHelper::title($this->t($this->task . '_form_header'), 'acumulus');
-        ToolbarHelper::save($this->task, $this->t($this->saveButton));
-        ToolbarHelper::cancel('cancel', $this->t('button_cancel'));
+        if ($this->form->needsFormAndSubmitButton()) {
+            ToolbarHelper::save($this->task, $this->t($this->saveButton));
+            ToolbarHelper::cancel('cancel', $this->t('button_cancel'));
+        }
     }
 
     /**

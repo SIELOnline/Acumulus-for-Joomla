@@ -119,6 +119,14 @@ class AcumulusModelAcumulus extends JModelLegacy
     }
 
     /**
+     * @return \Siel\Acumulus\Helpers\Container
+     */
+    public function getAcumulusContainer()
+    {
+        return $this->container;
+    }
+
+    /**
      * @return \Siel\Acumulus\Config\Config
      */
     public function getAcumulusConfig()
