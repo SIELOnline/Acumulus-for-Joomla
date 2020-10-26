@@ -12,3 +12,15 @@ summary {
   border: none;
   border-bottom: 1px solid #e5e5e5;
 }
+
+.description {
+  font-style: italic;
+}
+
+textarea {
+  min-width: 90%;
+}
+
+#intro {
+  margin-top: 3em;
+}
