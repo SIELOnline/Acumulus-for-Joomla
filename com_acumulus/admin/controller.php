@@ -9,6 +9,7 @@
 use Joomla\CMS\Installer\Manifest\PackageManifest;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
+use Siel\Acumulus\Invoice\Source;
 
 defined('_JEXEC') or die;
 
@@ -21,16 +22,12 @@ class AcumulusController extends JControllerLegacy
     protected $model;
 
     /**
-     * @param string $name
-     * @param string $prefix
-     * @param array $config
-     *
      * @return AcumulusModelAcumulus
      */
-    public function getModel($name = '', $prefix = '', $config = array())
+    protected function getAcumulusModel()
     {
         if ($this->model === null) {
-            $this->model = parent::getModel('Acumulus', $prefix, $config + array('name' => $name));
+            $this->model = $this->getModel('Acumulus', '', array('name' => 'Acumulus'));
         }
         return $this->model;
     }
@@ -47,8 +44,13 @@ class AcumulusController extends JControllerLegacy
      */
     public function display($cachable = false, $urlparams = array())
     {
-        $this->task = 'batch';
-        return $this->executeTask();
+        if (empty($this->task)) {
+            $this->task = 'batch';
+            $this->batch();
+        } else {
+            parent::display($cachable, $urlparams);
+        }
+        return $this;
     }
 
     /**
@@ -64,7 +66,8 @@ class AcumulusController extends JControllerLegacy
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
-        return $this->executeTask();
+        $this->executeTask();
+        return $this;
     }
 
     /**
@@ -80,7 +83,8 @@ class AcumulusController extends JControllerLegacy
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
-        return $this->executeTask();
+        $this->executeTask();
+        return $this;
     }
 
     /**
@@ -96,7 +100,8 @@ class AcumulusController extends JControllerLegacy
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
-        return $this->executeTask();
+        $this->executeTask();
+        return $this;
     }
 
     /**
@@ -112,32 +117,38 @@ class AcumulusController extends JControllerLegacy
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
-        return $this->executeTask();
+        $this->executeTask();
+        return $this;
     }
 
     /**
-     * Executes the com_acumulus/update task and redirects.
+     * Executes the com_acumulus/invoice task.
+     *
+     * @return \JControllerLegacy
      *
      * @throws \Exception
      */
-    public function update()
+    public function invoice($orderId = null)
     {
-        $extensionTable = new JtableExtension(JFactory::getDbo());
-        $extensionTable->load(array('element' => 'com_acumulus'));
-        $manifest_cache = $extensionTable->get('manifest_cache');
-        $manifest_cache = json_decode($manifest_cache);
-        if (!empty($manifest_cache->version) && $this->getModel('Acumulus')->getAcumulusConfig()->upgrade($manifest_cache->version)) {
-            $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
-            $manifest_cache->version = $manifest->version;
-            // Reload as the upgrade may have changed the config.
-            $extensionTable->load(array('element' => 'com_acumulus'));
-            $extensionTable->set('manifest_cache', json_encode($manifest_cache));
-            $extensionTable->store();
-            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
-        } else {
-            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module not upgraded');
+        if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
+        {
+            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
-        $this->redirect();
+        if ($orderId !== null) {
+            JFactory::getDocument()->addScript(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
+            $this->task = 'invoice';
+            $orgView = $this->input->get('view');
+            $this->input->set('view', null);
+
+            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $form */
+            $form = $this->getAcumulusModel()->getForm($this->getTask());
+            $form->setSource($this->getAcumulusModel()->getAcumulusContainer()->getSource(Source::Order, $orderId));
+        }
+        $this->executeTask();
+        if ($orderId !== null) {
+            $this->input->set('view', $orgView);
+        }
+        return $this;
     }
 
     /**
@@ -149,9 +160,7 @@ class AcumulusController extends JControllerLegacy
      */
     protected function executeTask()
     {
-
-        /** @var AcumulusModelAcumulus $model */
-        $form = $this->getModel('Acumulus')->getForm($this->task);
+        $form = $this->getAcumulusModel()->getForm($this->task);
         if ($form->isSubmitted()) {
             JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         }
@@ -175,7 +184,8 @@ class AcumulusController extends JControllerLegacy
         }
 
         $this->default_view = '';
-        return parent::display();
+        $this->display();
+        return $this;
     }
 
     /**
@@ -209,9 +219,33 @@ class AcumulusController extends JControllerLegacy
      */
     public function getView($name = '', $type = '', $prefix = '', $config = array())
     {
-        $config['task'] = $this->task;
+        $config['type'] = $this->task;
+        $config['isJson'] = $this->input->get('ajax') == 1;
         return parent::getView($name, $type, $prefix, $config);
     }
 
-
+    /**
+     * Executes the com_acumulus/update task and redirects.
+     *
+     * @throws \Exception
+     */
+    public function update()
+    {
+        $extensionTable = new JtableExtension(JFactory::getDbo());
+        $extensionTable->load(array('element' => 'com_acumulus'));
+        $manifest_cache = $extensionTable->get('manifest_cache');
+        $manifest_cache = json_decode($manifest_cache);
+        if (!empty($manifest_cache->version) && $this->getAcumulusModel()->getAcumulusConfig()->upgrade($manifest_cache->version)) {
+            $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
+            $manifest_cache->version = $manifest->version;
+            // Reload as the upgrade may have changed the config.
+            $extensionTable->load(array('element' => 'com_acumulus'));
+            $extensionTable->set('manifest_cache', json_encode($manifest_cache));
+            $extensionTable->store();
+            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
+        } else {
+            $this->setRedirect(JRoute::_('index.php?option=com_installer&view=manage', false), 'Module not upgraded');
+        }
+        $this->redirect();
+    }
 }

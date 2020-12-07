@@ -1,5 +1,5 @@
 .icon-acumulus {
-  background-image: url(./media/logo-acumulus-48.png);
+  background-image: url(./media/logo-acumulus-16.png);
 }
 
 summary {
@@ -23,4 +23,98 @@ textarea {
 
 #intro {
   margin-top: 3em;
+}
+
+div.control-label {
+  max-width: 180px;
+}
+
+/*
+ * Invoice status overview.
+ */
+#acumulus-invoice {
+  margin-top: 2em;
+}
+
+#acumulus-invoice .adminform {
+  border: none;
+}
+
+#acumulus-invoice .adminform > legend {
+  background-image: url("./media/siel-logo.svg");
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  padding-left: 32px;
+  margin-bottom: 0;
+}
+
+#acumulus-invoice .adminform .control-label {
+  padding-top: 0;
+}
+
+#acumulus-invoice .adminform .control-group {
+  display: block;
+  line-height: 18px;
+  padding: 1em;
+  border-top: 1px solid #ddd;
+  margin: 0;
+}
+
+#acumulus-invoice .adminform .control-group:nth-child(10) {
+  border-top-width: 0;
+  padding-top: 0;
+}
+
+#acumulus-invoice .notice-info {
+  color: #3a87ad;
+}
+
+#acumulus-invoice .notice-warning {
+  color: #c09853;
+}
+
+#acumulus-invoice .notice-warning {
+}
+
+#acumulus-invoice .notice-error {
+  color: #b94a48;
+}
+
+#acumulus-invoice .notice-success {
+  color: #468847;
+}
+
+#acumulus-invoice label.notice-warning {
+  font-size: larger;
+  font-weight: 900;
+}
+
+.acumulus-amount .amount {
+  display: block;
+  width: 6em;
+  text-align: right;
+}
+
+.acumulus-amount .amount:nth-child(2) {
+  display: inline-block;
+}
+
+.acumulus-amount .amount:last-child {
+  border-top: 1px solid #444;
+}
+
+.acumulus-amount .amount .sign,
+.acumulus-amount .amount .currency {
+  float: left;
+  width: 0.25em;
+}
+
+#acumulus-invoice .pdf {
+  display: inline-block;
+  padding-left: 15px;
+  margin: 0.1em 1.5em 0.2em 0;
+  background-image: url('./media/icon-pdf.svg');
+  background-size: 12px 16px;
+  background-repeat: no-repeat;
+  background-position: left center;
 }

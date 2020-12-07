@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-use Siel\Acumulus\Invoice\Source;
-
 /**
  * Acumulus plugin to react to VirtueMart order status changes.
  *
@@ -35,6 +33,9 @@ class plgVmCouponAcumulus extends JPlugin
     /** @var AcumulusModelAcumulus */
     protected $model;
 
+    /** @var \AcumulusController */
+    protected $controller;
+
     /**
      * Initializes the environment for the plugin:
      * - Register autoloader for our own library.
@@ -51,18 +52,32 @@ class plgVmCouponAcumulus extends JPlugin
     }
 
     /**
-     * Returns an Acumulus model
-     *
-     * @param array $config
+     * Returns an Acumulus model.
      *
      * @return AcumulusModelAcumulus
      */
-    protected function getModel($config = array())
+    protected function getModel()
     {
         if ($this->model === null) {
-            $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel', $config);
+            $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel');
         }
         return $this->model;
+    }
+
+    /**
+     * Returns an Acumulus controller.
+     *
+     * @return \AcumulusController
+     *
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    protected function getController()
+    {
+        if ($this->controller === null) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $this->controller = JControllerLegacy::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
+        }
+        return $this->controller;
     }
 
     /**
@@ -75,15 +90,35 @@ class plgVmCouponAcumulus extends JPlugin
      *   True on success, false on failure, or null when this method does not want
      *   to influence the return value of the dispatching method
      *   (for now only VirtueMartModelOrders::updateStatusForOneOrder)
+     *
+     * @noinspection PhpUnused event handler.
      */
     public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/)
     {
         $this->init();
-        $source = $this->getModel()->getSource(Source::Order, $order->virtuemart_order_id);
-        $this->getModel()->sourceStatusChange($source);
+        $this->getModel()->sourceStatusChange($order->virtuemart_order_id);
 
         // We return null as we do not want to influence the return value of
         // VirtueMartModelOrders::updateStatusForOneOrder().
         return null;
+    }
+
+    /**
+     * Event observer to add our own info to the order detail screen.
+     *
+     * @param int $orderId
+     *
+     * @return string
+     *   The rendered invoice status overview form.
+     *
+     * @throws \Exception
+     * @noinspection PhpUnused event handler.
+     */
+    public function plgVmOnUpdateOrderBEPayment($orderId)
+    {
+        $this->init();
+        ob_start();
+        $this->getController()->invoice($orderId);
+        return ob_get_clean();
     }
 }

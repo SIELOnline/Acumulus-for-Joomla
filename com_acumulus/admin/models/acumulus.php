@@ -18,6 +18,9 @@ use Siel\Acumulus\Invoice\Source;
 class AcumulusModelAcumulus extends JModelLegacy
 {
     /** @var \Siel\Acumulus\Helpers\Container */
+    protected static $instance;
+
+    /** @var \Siel\Acumulus\Helpers\Container */
     protected $container;
 
     /** @var string */
@@ -34,7 +37,10 @@ class AcumulusModelAcumulus extends JModelLegacy
         } else if ($this->loadHikaShop()) {
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
-        $this->container = new Container($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
+        if (static::$instance === null) {
+            static::$instance = new Container($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
+        }
+        $this->container = static::$instance;
     }
 
     /**
@@ -77,7 +83,7 @@ class AcumulusModelAcumulus extends JModelLegacy
     {
         if ($this->isEnabled('com_hikashop')) {
             /** @noinspection PhpIncludeInspection */
-            return include_once JPATH_ADMINISTRATOR . '/components/com_hikashop/helpers/helper.php';
+            return require_once JPATH_ROOT . '/administrator/components/com_hikashop/helpers/helper.php';
         }
         return false;
     }
@@ -172,13 +178,14 @@ class AcumulusModelAcumulus extends JModelLegacy
     /**
      * Wrapper method around \Siel\Acumulus\Shop\InvoiceManager::sourceStatusChange().
      *
-     * @param Source $source
+     * @param int $orderId
      *
      * @return \Siel\Acumulus\Invoice\Result
      *   The result of sending (or not sending) the invoice.
      */
-    public function sourceStatusChange(Source $source)
+    public function sourceStatusChange($orderId)
     {
+        $source = $this->getSource(Source::Order, $orderId);
         return $this->container->getInvoiceManager()->sourceStatusChange($source);
     }
 }

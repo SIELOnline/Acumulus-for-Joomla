@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-use Siel\Acumulus\Invoice\Source;
-
 /**
  * Acumulus plugin to react to HikaShop order status changes.
  *
@@ -61,12 +59,13 @@ class plgHikashopAcumulus extends JPlugin
      *
      * @return bool
      *   True on success, false on failure.
+     *
+     * @noinspection PhpUnused event handler.
      */
-    public function onAfterOrderUpdate(&$order/*, &$send_email*/)
+    public function onAfterOrderUpdate($order/*, &$send_email*/)
     {
         $this->init();
-        $source = $this->getModel()->getSource(Source::Order, $order->order_id);
-        $this->getModel()->sourceStatusChange($source);
+        $this->getModel()->sourceStatusChange($order->order_id);
         return true;
     }
 }

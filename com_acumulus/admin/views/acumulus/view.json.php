@@ -8,7 +8,7 @@
 require_once 'view.php';
 
 /**
- * Generic Acumulus view.
+ * Generic Acumulus view that outputs json format.
  */
 class AcumulusViewAcumulus extends AcumulusView
 {
