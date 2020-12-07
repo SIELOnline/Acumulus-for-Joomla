@@ -1,0 +1,58 @@
+/*
+ * Invoice status overview for virtuemart.
+ */
+
+#acumulus-invoice .adminform > legend {
+  background-image: url("./media/siel-logo.svg");
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  padding-left: 32px;
+  margin-bottom: 0;
+}
+
+#acumulus-invoice .adminform {
+  display: table;
+}
+
+#acumulus-invoice .adminform .fieldset-description {
+  padding-bottom: 1.2em;
+}
+
+#acumulus-invoice .adminform .control-group {
+  display: table-row;
+  margin: 0;
+}
+
+#acumulus-invoice .adminform .control-label {
+  float:none;
+  display: table-cell;
+  border-top: 1px solid #e9e9e9;
+  padding: 8px;
+  line-height: 18px;
+  background-color: #f6f6f6;
+  border-right: 1px solid #e9e9e9;
+  color: #666;
+  font-weight: bold;
+  text-align: right;
+  vertical-align: top;
+  width: 157px;
+}
+
+#acumulus-invoice .adminform .controls {
+  display: table-cell;
+  border-top: 1px solid #ddd;
+  padding: 8px;
+  line-height: 18px;
+  text-align: left;
+  vertical-align: top;
+}
+
+#acumulus-invoice .adminform .control-group:nth-child(9) .controls,
+#acumulus-invoice .adminform .control-group:nth-child(10) .controls {
+  border-top-width: 0;
+}
+
+#acumulus-invoice .adminform .control-group:last-child .control-label,
+#acumulus-invoice .adminform .control-group:last-child .controls {
+  border-bottom: 1px solid #ddd;
+}

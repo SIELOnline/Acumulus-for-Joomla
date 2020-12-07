@@ -1,0 +1,36 @@
+/*
+ * Invoice status overview for virtuemart.
+ */
+#acumulus-invoice {
+  margin-top: 2em;
+}
+
+#acumulus-invoice .adminform {
+  border: none;
+}
+
+#acumulus-invoice .adminform > legend {
+  background-image: url("./media/siel-logo.svg");
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  padding-left: 32px;
+  margin-bottom: 0;
+}
+
+#acumulus-invoice .adminform .control-label {
+  padding-top: 0;
+}
+
+#acumulus-invoice .adminform .control-group {
+  display: block;
+  line-height: 18px;
+  padding: 1em;
+  border-top: 1px solid #ddd;
+  margin: 0;
+}
+
+#acumulus-invoice .adminform .control-group:nth-child(9),
+#acumulus-invoice .adminform .control-group:nth-child(10) {
+  border-top-width: 0;
+  padding-top: 0;
+}

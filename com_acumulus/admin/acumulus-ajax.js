@@ -2,7 +2,8 @@
 (function($) {
   function addAcumulusAjaxHandling() {
     const buttonSelector = "button, input[type=button], input[type=submit]";
-    $(buttonSelector, ".acumulus-area").addClass("button button-primary"); // jQuery
+    $(buttonSelector, ".com_virtuemart .acumulus-area").addClass("button button-primary"); // jQuery
+    $(buttonSelector, ".com_hikashop .acumulus-area").addClass("btn btn-primary"); // jQuery
     $(".acumulus-ajax").click(function() { // jQuery
       // Area is the element that is going to be replaced and serves as the
       // parent in which we will search for form elements.

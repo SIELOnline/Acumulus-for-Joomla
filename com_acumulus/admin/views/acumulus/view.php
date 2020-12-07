@@ -56,12 +56,21 @@ class AcumulusView extends JViewLegacy
      */
     public function display($tpl = null)
     {
+        /** @var \AcumulusModelAcumulus $acumulusModel */
+        $acumulusModel = $this->getModel();
+
         // Add styling.
         $document = JFactory::getDocument();
         $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');
+        if ($acumulusModel->isVirtueMart) {
+            $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-vm.css');
+        }
+        if ($acumulusModel->isHikaShop) {
+            $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-hs.css');
+        }
 
         // Get and populate the form.
-        $form = $this->getModel()->getForm($this->type);
+        $form = $acumulusModel->getForm($this->type);
         $form->addValues();
 
         $type = $this->type;
@@ -80,7 +89,7 @@ class AcumulusView extends JViewLegacy
 
         $output = '';
         $output .= $wrapperBefore;
-        $output .= $this->getModel()->getFormRenderer()->render($form);
+        $output .= $acumulusModel->getFormRenderer()->render($form);
         $output .= "<input type='hidden' name='task' value='{$this->type}'>";
         $output .= $wrapperAfter;
 

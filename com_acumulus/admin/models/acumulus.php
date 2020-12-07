@@ -26,6 +26,12 @@ class AcumulusModelAcumulus extends JModelLegacy
     /** @var string */
     protected $shopNamespace;
 
+    /** @var bool  */
+    public $isVirtueMart = false;
+
+    /** @var bool  */
+    public $isHikaShop = false;
+
     public function __construct($config = array())
     {
         // Get access to our classes via the auto loader.
@@ -33,8 +39,10 @@ class AcumulusModelAcumulus extends JModelLegacy
 
         parent::__construct($config);
         if ($this->loadVirtueMart()) {
+            $this->isVirtueMart = true;
             $this->shopNamespace = 'Joomla\\VirtueMart';
         } else if ($this->loadHikaShop()) {
+            $this->isHikaShop = true;
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
         if (static::$instance === null) {

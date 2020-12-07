@@ -24,7 +24,8 @@ defined('_JEXEC') or die;
  *   indicate failure) and the order itself and the order history have not yet
  *   been stored: so the database might not be used at that point as it is
  *   "outdated".
- */
+ *
+ * @noinspection PhpUnused */
 class plgVmCouponAcumulus extends JPlugin
 {
     /** @var bool */
