@@ -118,8 +118,11 @@ class plgVmCouponAcumulus extends JPlugin
     public function plgVmOnUpdateOrderBEPayment($orderId)
     {
         $this->init();
-        ob_start();
-        $this->getController()->invoice($orderId);
-        return ob_get_clean();
+        if ($this->getModel()->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+            ob_start();
+            $this->getController()->invoice($orderId);
+            return ob_get_clean();
+        }
+        return '';
     }
 }

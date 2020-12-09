@@ -102,7 +102,9 @@ class plgHikashopAcumulus extends JPlugin
     {
         if ($type === 'order_back_show') {
             $this->init();
-            $this->getController()->invoice($order->order_id);
+            if ($this->getModel()->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+                $this->getController()->invoice($order->order_id);
+            }
         }
         return true;
     }
