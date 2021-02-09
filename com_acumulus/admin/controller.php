@@ -124,6 +124,8 @@ class AcumulusController extends JControllerLegacy
     /**
      * Executes the com_acumulus/invoice task.
      *
+     * @param int|null $orderId
+     *
      * @return \JControllerLegacy
      *
      * @throws \Exception
