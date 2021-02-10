@@ -9,7 +9,7 @@
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>6.1.2</version>
+  <version>6.2.0</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x of HikaShop</description>
   <!-- Minimal VirtueMart or HikaShop version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
