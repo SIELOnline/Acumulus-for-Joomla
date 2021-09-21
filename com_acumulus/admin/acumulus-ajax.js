@@ -1,10 +1,10 @@
 "use strict";
 (function($) {
-  function addAcumulusAjaxHandling() {
+  function addAcumulusAjaxHandling(elt) {
     const buttonSelector = "button, input[type=button], input[type=submit]";
     $(buttonSelector, ".com_virtuemart .acumulus-area").addClass("button button-primary"); // jQuery
     $(buttonSelector, ".com_hikashop .acumulus-area").addClass("btn btn-primary"); // jQuery
-    $(".acumulus-ajax").click(function() { // jQuery
+    $(".acumulus-ajax", elt).click(function() { // jQuery
       // Area is the element that is going to be replaced and serves as the
       // parent in which we will search for form elements.
       const clickedElt = this;
@@ -44,16 +44,16 @@
 
       const url = area.getAttribute("data-acumulus-url");
       $.post(url, data, function(response) { // jQuery
-        area.insertAdjacentHTML("beforebegin", response.data);
+        area.insertAdjacentHTML('beforebegin', response.data);
+        const newArea = area.previousElementSibling;
         area.parentNode.removeChild(area);
-        addAcumulusAjaxHandling();
-        $(document.body).trigger("post-load"); // jQuery
+        addAcumulusAjaxHandling(newArea);
       });
     });
   }
 
   $(document).ready(function() { // jQuery
-    addAcumulusAjaxHandling();
+    addAcumulusAjaxHandling(document);
     $(".acumulus-auto-click").click(); // jQuery
   });
 }(jQuery));
