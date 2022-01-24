@@ -172,7 +172,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      *
      * @param string $invoiceSourceType
      *   The type of the invoice source to create.
-     * @param string|object|array $invoiceSourceOrId
+     * @param int|array $invoiceSourceOrId
      *   The invoice source itself or its id to create a Source wrapper for.
      *
      * @return \Siel\Acumulus\Invoice\Source
