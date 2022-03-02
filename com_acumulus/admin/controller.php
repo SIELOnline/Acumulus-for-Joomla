@@ -237,7 +237,7 @@ class AcumulusController extends JControllerLegacy
         $extensionTable->load(array('element' => 'com_acumulus'));
         $manifest_cache = $extensionTable->get('manifest_cache');
         $manifest_cache = json_decode($manifest_cache);
-        if (!empty($manifest_cache->version) && $this->getAcumulusModel()->getAcumulusConfig()->upgrade($manifest_cache->version)) {
+        if (!empty($manifest_cache->version) && $this->getAcumulusModel()->getAcumulusConfigUpgrade()->upgrade($manifest_cache->version)) {
             $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
             $manifest_cache->version = $manifest->version;
             // Reload as the upgrade may have changed the config.

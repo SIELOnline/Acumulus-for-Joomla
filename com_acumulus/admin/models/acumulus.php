@@ -141,11 +141,11 @@ class AcumulusModelAcumulus extends JModelLegacy
     }
 
     /**
-     * @return \Siel\Acumulus\Config\Config
+     * @return \Siel\Acumulus\Config\ConfigUpgrade
      */
-    public function getAcumulusConfig()
+    public function getAcumulusConfigUpgrade()
     {
-        return $this->container->getConfig();
+        return $this->container->getConfigUpgrade();
     }
 
     /**
