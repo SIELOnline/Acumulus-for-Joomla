@@ -44,6 +44,9 @@
 
       const url = area.getAttribute("data-acumulus-url");
       $.post(url, data, function(response) { // jQuery
+        // response.data: form.
+        // response.messages.{severity}[]: messages of type {severity} (error,
+        // warning, ...).
         area.insertAdjacentHTML('beforebegin', response.data);
         const newArea = area.previousElementSibling;
         area.parentNode.removeChild(area);

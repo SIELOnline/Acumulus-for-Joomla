@@ -1,7 +1,10 @@
 <?php
 /**
+ * @noinspection PhpMissingParamTypeInspection
+ * @noinspection PhpMissingReturnTypeInspection
  * @noinspection PhpUnused
  * @noinspection SqlNoDataSourceInspection
+ *
  *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
@@ -10,7 +13,10 @@
 
 defined('_JEXEC') or die;
 
+use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Helpers\Container;
+
+use const Siel\Acumulus\Version;
 
 /**
  * Installer file of the Acumulus component.
@@ -29,38 +35,46 @@ class com_acumulusInstallerScript
     /**
      * Method to install the extension.
      *
-     * @param JAdapterInstance $parent
+     * @param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The class calling this method.
      *
      * @throws \Exception
      */
     public function install($parent)
     {
-        $version = (string) $parent->get('manifest')->version;
+        $version = (string) $parent->getManifest()->version;
+        // Set initial config version.
+        if (empty($this->container->getConfig()->get(Config::configVersion))) {
+            $values = [Config::configVersion => Version];
+            $this->container->getConfig()->save($values);
+        }
+
         $shopName = $this->getVersion('com_virtuemart') !== '' ? 'VirtueMart 3' : 'HikaShop';
-        JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has been installed. Please fill in the settings form and enable the Acumulus plugin for $shopName.", 'message');
+        JFactory::getApplication()->enqueueMessage("The Acumulus component ($version) has been installed. Please fill in the settings form and enable the Acumulus plugin for $shopName."
+        );
         JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=config');
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Method to uninstall the extension.
      *
-     * param JAdapterInstance $parent
+     * param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The class calling this method.
      *
      * @return void
+     *
+     * @noinspection PhpDocMissingThrowsInspection
      */
     public function uninstall(/*$parent*/)
     {
         /** @noinspection PhpUnhandledExceptionInspection */
-        JFactory::getApplication()->enqueueMessage('The Acumulus component has been uninstalled.', 'message');
+        JFactory::getApplication()->enqueueMessage('The Acumulus component has been uninstalled.');
     }
 
     /**
      * Method to update the extension.
      *
-     * param JAdapterInstance $parent
+     * param \Joomla\CMS\Updater\UpdateAdapter $parent
      *   The class calling this method.
      *
      * @throws \Exception
@@ -68,14 +82,18 @@ class com_acumulusInstallerScript
     public function update(/*$parent*/)
     {
         // The autoloader should have been set by the preflight method.
-        // Get an instance of the controller prefixed by Acumulus.
-        $this->container->getConfig()->upgrade($this->currentVersion);
-        JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version {$this->newVersion}.", 'message');
+        // The config class will start updating itself as soon as the
+        // configVersion key has been set.
+        if (empty($this->container->getConfig()->get(Config::configVersion))) {
+            $values = [Config::configVersion => $this->currentVersion];
+            $this->container->getConfig()->save($values);
+        }
+        JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version $this->newVersion.");
     }
 
     /** @noinspection PhpDocMissingThrowsInspection */
     /**
-     * Method to run before an install/update/uninstall method.
+     * Method to run before an installation/update/uninstall method.
      *
      * This method checks:
      * - The Joomla version against the version attribute in the manifest.
@@ -86,26 +104,27 @@ class com_acumulusInstallerScript
      *
      * @param string $type
      *   The type of change (install, update or discover_install)
-     * @param JInstallerAdapter $parent
+     * @param \Joomla\CMS\Installer\InstallerAdapter|\Joomla\CMS\Updater\UpdateAdapter $parent
      *   The object calling this method.
      *
      * @return bool
      */
     public function preflight($type, $parent)
     {
-        $this->newVersion = (string) $parent->get("manifest")->version;
+        $this->newVersion = (string) $parent->getManifest()->version;
         $joomlaVersion = new JVersion();
         $joomlaVersion = $joomlaVersion->getShortVersion();
 
         // Check Joomla version
-        $minJoomlaVersion = $parent->get("manifest")->attributes()->version;
+        $minJoomlaVersion = $parent->getManifest()->attributes()->version;
         if (version_compare($joomlaVersion, '3.9', '<')) {
-            JInstaller::getInstance()->abort("The Acumulus component ({$this->newVersion}) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
+            JInstaller::getInstance()->abort("The Acumulus component ($this->newVersion) requires at least Joomla $minJoomlaVersion, found $joomlaVersion.");
             return false;
         }
         if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
             /** @noinspection PhpUnhandledExceptionInspection */
-            JFactory::getApplication()->enqueueMessage("The Acumulus component ({$this->newVersion}) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities.", 'message');
+            JFactory::getApplication()->enqueueMessage("The Acumulus component ($this->newVersion) has not been tested on Joomla $joomlaVersion. Please report any incompatibilities."
+            );
             return false;
         }
 
@@ -114,7 +133,7 @@ class com_acumulusInstallerScript
             $currentInfo = json_decode($parent->get('extension')->manifest_cache, true);
             $this->currentVersion = $currentInfo['version'];
             if (version_compare($this->newVersion, $this->currentVersion, '<')) {
-                JInstaller::getInstance()->abort("The Acumulus component ({$this->currentVersion}) cannot be downgraded to {$this->newVersion}.");
+                JInstaller::getInstance()->abort("The Acumulus component ($this->currentVersion) cannot be downgraded to $this->newVersion.");
                 return false;
             }
         }
@@ -123,9 +142,9 @@ class com_acumulusInstallerScript
         jimport('joomla.application.component.controller');
         $shopVersion = $this->getVersion('com_virtuemart');
         if (!empty($shopVersion)) {
-            $minVersion = (string) $parent->get("manifest")->minVirtueMartVersion;
+            $minVersion = (string) $parent->getManifest()->minVirtueMartVersion;
             if (version_compare($shopVersion, $minVersion, '<')) {
-                JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires at least VirtueMart $minVersion, found $shopVersion.");
+                JInstaller::getInstance()->abort("The Acumulus component $this->newVersion requires at least VirtueMart $minVersion, found $shopVersion.");
                 return false;
             }
             $shopNamespace = 'Joomla\\VirtueMart';
@@ -133,13 +152,13 @@ class com_acumulusInstallerScript
             // if VM is not installed, check if HikaShop is installed.
             $shopVersion = $this->getVersion('com_hikashop');
             if (!empty($shopVersion)) {
-                $minVersion = (string) $parent->get("manifest")->minHikaShopVersion;
+                $minVersion = (string) $parent->getManifest()->minHikaShopVersion;
                 if (version_compare($shopVersion, $minVersion, '<')) {
-                    JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires at least HikaShop $minVersion, found $shopVersion.");
+                    JInstaller::getInstance()->abort("The Acumulus component $this->newVersion requires at least HikaShop $minVersion, found $shopVersion.");
                     return false;
                 }
             } else {
-                JInstaller::getInstance()->abort("The Acumulus component {$this->newVersion} requires VirtueMart or HikaShop to be installed and enabled.");
+                JInstaller::getInstance()->abort("The Acumulus component $this->newVersion requires VirtueMart or HikaShop to be installed and enabled.");
                 return false;
             }
             $shopNamespace = 'Joomla\\HikaShop';
@@ -168,7 +187,7 @@ class com_acumulusInstallerScript
     }
 
     /**
-     * Method to run after an install/update/uninstall method
+     * Method to run after an installation/update/uninstall method
      * $parent is the class calling this method
      * $type is the type of change (install, update or discover_install)
      *
@@ -196,7 +215,7 @@ class com_acumulusInstallerScript
     {
         $result = '';
         $db = JFactory::getDbo();
-        /** @noinspection SqlResolve */
+        /** @noinspection SqlDialectInspection */
         $db->setQuery(sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $manifestCache = $db->loadResult();
         if (!empty($manifestCache)) {
