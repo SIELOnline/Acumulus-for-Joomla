@@ -96,6 +96,7 @@ class plgHikashopAcumulus extends JPlugin
      *   True on success, false on failure.
      *
      * @throws \Exception
+     *
      * @noinspection PhpUnused event handler.
      */
     public function onAfterOrderProductsListingDisplay($order, $type)
