@@ -188,7 +188,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      *
      * @param int $orderId
      *
-     * @return \Siel\Acumulus\Invoice\InvoiceAddResult
+     * @return \Siel\Acumulus\Invoice\Result
      *   The result of sending (or not sending) the invoice.
      */
     public function sourceStatusChange($orderId)
