@@ -25,7 +25,8 @@ defined('_JEXEC') or die;
  *   been stored: so the database might not be used at that point as it is
  *   "outdated".
  *
- * @noinspection PhpUnused */
+ * @noinspection PhpUnused
+ */
 class plgVmCouponAcumulus extends JPlugin
 {
     /** @var bool */
@@ -57,7 +58,7 @@ class plgVmCouponAcumulus extends JPlugin
      *
      * @return AcumulusModelAcumulus
      */
-    protected function getModel()
+    protected function getModel(): AcumulusModelAcumulus
     {
         if ($this->model === null) {
             $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel');
@@ -72,7 +73,7 @@ class plgVmCouponAcumulus extends JPlugin
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
-    protected function getController()
+    protected function getController(): AcumulusController
     {
         if ($this->controller === null) {
             /** @noinspection PhpUnhandledExceptionInspection */
@@ -88,13 +89,16 @@ class plgVmCouponAcumulus extends JPlugin
      * param string $old_order_status
      *
      * @return bool|null
-     *   True on success, false on failure, or null when this method does not want
-     *   to influence the return value of the dispatching method
-     *   (for now only VirtueMartModelOrders::updateStatusForOneOrder)
+     *   True on success, false on failure, or null when this method does not
+     *   want to influence the return value of the dispatching method.
+     *   For now only VirtueMartModelOrders::updateStatusForOneOrder is
+     *   dispatching this, and we always return null.
      *
-     * @noinspection PhpUnused event handler.
+     * @throws \Throwable
+     *
+     * @noinspection PhpUnused  event handler: not called directly.
      */
-    public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/)
+    public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/): ?bool
     {
         $this->init();
         $this->getModel()->sourceStatusChange($order->virtuemart_order_id);
@@ -112,13 +116,14 @@ class plgVmCouponAcumulus extends JPlugin
      * @return string
      *   The rendered invoice status overview form.
      *
-     * @throws \Exception
-     * @noinspection PhpUnused event handler.
+     * @throws \Throwable
+     *
+     * @noinspection PhpUnused  event handler: not called directly.
      */
-    public function plgVmOnUpdateOrderBEPayment($orderId)
+    public function plgVmOnUpdateOrderBEPayment(int $orderId): string
     {
         $this->init();
-        if ($this->getModel()->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+        if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
             ob_start();
             $this->getController()->invoice($orderId);
             return ob_get_clean();

@@ -9,7 +9,14 @@
 
 defined('_JEXEC') or die;
 
+use Siel\Acumulus\Config\Config;
+use Siel\Acumulus\Config\ConfigUpgrade;
 use Siel\Acumulus\Helpers\Container;
+use Siel\Acumulus\Helpers\CrashReporter;
+use Siel\Acumulus\Helpers\Form;
+use Siel\Acumulus\Helpers\FormRenderer;
+use Siel\Acumulus\Helpers\Log;
+use Siel\Acumulus\Invoice\InvoiceAddResult;
 use Siel\Acumulus\Invoice\Source;
 
 /**
@@ -41,7 +48,7 @@ class AcumulusModelAcumulus extends JModelLegacy
         if ($this->loadVirtueMart()) {
             $this->isVirtueMart = true;
             $this->shopNamespace = 'Joomla\\VirtueMart';
-        } else if ($this->loadHikaShop()) {
+        } elseif ($this->loadHikaShop()) {
             $this->isHikaShop = true;
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
@@ -57,7 +64,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      * @return bool
      *   True if VirtueMart is installed and enabled, false otherwise.
      */
-    protected function loadVirtueMart()
+    protected function loadVirtueMart(): bool
     {
         if ($this->isEnabled('com_virtuemart')) {
             // Load VirtueMart: we need access to its models and data.
@@ -87,7 +94,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      * @return bool
      *   True if HikaShop is installed and enabled, false otherwise.
      */
-    protected function loadHikaShop()
+    protected function loadHikaShop(): bool
     {
         if ($this->isEnabled('com_hikashop')) {
             /** @noinspection PhpIncludeInspection */
@@ -108,7 +115,7 @@ class AcumulusModelAcumulus extends JModelLegacy
      * @return bool
      *   True if the extension is installed and enabled, false otherwise
      */
-    protected function isEnabled($component)
+    protected function isEnabled(string $component): bool
     {
         $db = JFactory::getDbo();
         /** @noinspection SqlResolve */
@@ -127,44 +134,44 @@ class AcumulusModelAcumulus extends JModelLegacy
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    public function t($key)
+    public function t(string $key): string
     {
-        return $this->container->getTranslator()->get($key);
+        return $this->getAcumulusContainer()->getTranslator()->get($key);
     }
 
-    /**
-     * @return \Siel\Acumulus\Helpers\Container
-     */
-    public function getAcumulusContainer()
+    protected function getAcumulusContainer(): Container
     {
         return $this->container;
     }
 
-    /**
-     * @return \Siel\Acumulus\Config\ConfigUpgrade
-     */
-    public function getAcumulusConfigUpgrade()
+    public function getCrashReporter(): CrashReporter
     {
-        return $this->container->getConfigUpgrade();
+        return $this->getAcumulusContainer()->getCrashReporter();
     }
 
-    /**
-     * @param string $task
-     *
-     * @return \Siel\Acumulus\Helpers\Form
-     */
-    public function getForm($task)
+    public function getAcumulusConfig(): Config
     {
-        // Get the form.
-        return $this->container->getForm($task);
+        return $this->getAcumulusContainer()->getConfig();
     }
 
-    /**
-     * @return \Siel\Acumulus\Helpers\FormRenderer
-     */
-    public function getFormRenderer()
+    public function getAcumulusConfigUpgrade(): ConfigUpgrade
     {
-        return $this->container->getFormRenderer();
+        return $this->getAcumulusContainer()->getConfigUpgrade();
+    }
+
+    public function getLog(): Log
+    {
+        return $this->getAcumulusContainer()->getLog();
+    }
+
+    public function getForm(string $task): Form
+    {
+        return $this->getAcumulusContainer()->getForm($task);
+    }
+
+    public function getFormRenderer(): FormRenderer
+    {
+        return $this->getAcumulusContainer()->getFormRenderer();
     }
 
     /**
@@ -178,9 +185,9 @@ class AcumulusModelAcumulus extends JModelLegacy
      * @return \Siel\Acumulus\Invoice\Source
      *   A wrapper object around a shop specific invoice source object.
      */
-    public function getSource($invoiceSourceType, $invoiceSourceOrId)
+    public function getSource(string $invoiceSourceType, $invoiceSourceOrId): Source
     {
-        return $this->container->getSource($invoiceSourceType, $invoiceSourceOrId);
+        return $this->getAcumulusContainer()->createSource($invoiceSourceType, $invoiceSourceOrId);
     }
 
     /**
@@ -188,12 +195,26 @@ class AcumulusModelAcumulus extends JModelLegacy
      *
      * @param int $orderId
      *
-     * @return \Siel\Acumulus\Invoice\InvoiceAddResult
+     * @return \Siel\Acumulus\Invoice\InvoiceAddResult|null
      *   The result of sending (or not sending) the invoice.
+     *
+     * @throws \Throwable
      */
-    public function sourceStatusChange($orderId)
+    public function sourceStatusChange(int $orderId): ?InvoiceAddResult
     {
-        $source = $this->getSource(Source::Order, $orderId);
-        return $this->container->getInvoiceManager()->sourceStatusChange($source);
+        try {
+            $source = $this->getSource(Source::Order, $orderId);
+            return $this->getAcumulusContainer()->getInvoiceManager()->sourceStatusChange($source);
+        } catch (Throwable $e) {
+            try {
+                $crashReporter = $this->getCrashReporter();
+                $crashReporter->logAndMail($e);
+                return null;
+            } catch (Throwable $inner) {
+                // We do not know if we have informed the user per mail or
+                // screen, so assume not, and rethrow the original exception.
+                throw $e;
+            }
+        }
     }
 }

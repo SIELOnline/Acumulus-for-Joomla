@@ -1,9 +1,10 @@
 <?php
-/** @noinspection PhpUnused
- *
+/**
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+ *
+ * @noinspection PhpUnused
  */
 
 use Joomla\CMS\Installer\Manifest\PackageManifest;
@@ -24,7 +25,7 @@ class AcumulusController extends JControllerLegacy
     /**
      * @return AcumulusModelAcumulus
      */
-    protected function getAcumulusModel()
+    protected function getAcumulusModel(): AcumulusModelAcumulus
     {
         if ($this->model === null) {
             $this->model = $this->getModel('Acumulus', '', array('name' => 'Acumulus'));
@@ -40,9 +41,9 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array()): JControllerLegacy
     {
         if (empty($this->task)) {
             $this->task = 'batch';
@@ -58,9 +59,9 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function batch()
+    public function batch(): JControllerLegacy
     {
         if (!JFactory::getUser()->authorise('core.create', 'com_acumulus'))
         {
@@ -75,9 +76,9 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function config()
+    public function config(): JControllerLegacy
     {
         if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
@@ -92,9 +93,9 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function advanced()
+    public function advanced(): JControllerLegacy
     {
         if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
@@ -109,9 +110,9 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function register()
+    public function register(): JControllerLegacy
     {
         if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
@@ -128,23 +129,16 @@ class AcumulusController extends JControllerLegacy
      *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function invoice($orderId = null)
+    public function invoice(?int $orderId = null): JControllerLegacy
     {
         if (!JFactory::getUser()->authorise('core.admin', 'com_acumulus'))
         {
             throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
         }
         if ($orderId !== null) {
-            JFactory::getDocument()->addScript(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
-            $this->task = 'invoice';
             $orgView = $this->input->get('view');
-            $this->input->set('view', null);
-
-            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $form */
-            $form = $this->getAcumulusModel()->getForm($this->getTask());
-            $form->setSource($this->getAcumulusModel()->getAcumulusContainer()->getSource(Source::Order, $orderId));
         }
         $this->executeTask();
         if ($orderId !== null) {
@@ -156,30 +150,56 @@ class AcumulusController extends JControllerLegacy
     /**
      * Executes the given task.
      *
+     * @param int|null $orderId
+     *   If the form needs an orderId it can be passed via this parameter.
+     *
      * @return \JControllerLegacy
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    protected function executeTask()
+    protected function executeTask(?int $orderId = null): JControllerLegacy
     {
-        $form = $this->getAcumulusModel()->getForm($this->task);
-        if ($form->isSubmitted()) {
-            JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-        }
-        $form->process();
-        // Force the creation of the fields to get connection error messages
-        // shown.
-        $form->getFields();
+        try {
+            if ($orderId !== null) {
+                /**
+                 * @noinspection PhpDeprecationInspection  method is not deprecated,
+                 *   only a variant with a different set of parameters.
+                 */
+                JFactory::getDocument()->addScript(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
+                $this->task = 'invoice';
+                $this->input->set('view', null);
 
-        // Show messages.
-        foreach ($form->getMessages() as $message) {
-            JFactory::getApplication()->enqueueMessage(
-                $message->format(Message::Format_PlainWithSeverity),
-                $this->getJoomlaMessageType($message->getSeverity())
-            );
+                /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $form */
+                $form = $this->getAcumulusModel()->getForm($this->getTask());
+                $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
+            }
+            $form = $this->getAcumulusModel()->getForm($this->task);
+            if ($form->isSubmitted()) {
+                JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+            }
+            $form->process();// Force the creation of the fields to get connection error messages
+            // shown.
+            $form->getFields();// Show messages.
+            foreach ($form->getMessages() as $message) {
+                JFactory::getApplication()->enqueueMessage(
+                    $message->format(Message::Format_PlainWithSeverity),
+                    $this->getJoomlaMessageType($message->getSeverity())
+                );
+            }
+        } catch (Throwable $e) {
+            try {
+                $crashReporter = $this->getAcumulusModel()->getCrashReporter();
+                $message = $crashReporter->logAndMail($e);
+                JFactory::getApplication()->enqueueMessage($message, 'error');
+            } catch (Throwable $inner) {
+                // We do not know if we have informed the user per mail or
+                // screen, so assume not, and rethrow the original exception.
+                throw $e;
+            }
         }
 
         // Check for serious errors.
+        /** @noinspection PhpDeprecationInspection  @todo: how to replace this? */
         $errors = $this->getErrors();
         if (count($errors) > 0) {
             throw new Exception(implode('<br />', $errors), 500);
@@ -199,9 +219,10 @@ class AcumulusController extends JControllerLegacy
      * @return string
      *   the Joomla message type equivalent of the severity.
      */
-    protected function getJoomlaMessageType($severity)
+    protected function getJoomlaMessageType(int $severity): string
     {
         switch ($severity) {
+            case Severity::Log:
             case Severity::Success:
             default:
                 return 'message';
@@ -219,7 +240,7 @@ class AcumulusController extends JControllerLegacy
     /**
      * @inheritDoc
      */
-    public function getView($name = '', $type = '', $prefix = '', $config = array())
+    public function getView($name = '', $type = '', $prefix = '', $config = array()): JViewLegacy
     {
         $config['type'] = $this->task;
         $config['isJson'] = $this->input->get('ajax') == 1;

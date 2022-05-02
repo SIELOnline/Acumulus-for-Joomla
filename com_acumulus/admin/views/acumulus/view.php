@@ -20,7 +20,7 @@ class AcumulusView extends JViewLegacy
     /** @var bool */
     protected $isJson;
 
-    public function __construct($config = array())
+    public function __construct(array $config = array())
     {
         $this->type = $config['type'];
         $this->isJson = $config['isJson'];
@@ -38,7 +38,7 @@ class AcumulusView extends JViewLegacy
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    protected function t($key)
+    protected function t(string $key): string
     {
         return $this->getModel()->t($key);
     }
@@ -61,11 +61,17 @@ class AcumulusView extends JViewLegacy
 
         // Add styling.
         $document = JFactory::getDocument();
+        /**
+         * @noinspection PhpDeprecationInspection  method is not deprecated,
+         *   only a variant with a different set of parameters.
+         */
         $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');
         if ($acumulusModel->isVirtueMart) {
+            /** @noinspection PhpDeprecationInspection */
             $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-vm.css');
         }
         if ($acumulusModel->isHikaShop) {
+            /** @noinspection PhpDeprecationInspection */
             $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-hs.css');
         }
 
@@ -90,7 +96,7 @@ class AcumulusView extends JViewLegacy
         $output = '';
         $output .= $wrapperBefore;
         $output .= $acumulusModel->getFormRenderer()->render($form);
-        $output .= "<input type='hidden' name='task' value='{$this->type}'>";
+        $output .= "<input type='hidden' name='task' value='$this->type'>";
         $output .= $wrapperAfter;
 
         if ($this->isJson) {

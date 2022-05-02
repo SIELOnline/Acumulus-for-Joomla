@@ -1,18 +1,18 @@
 <?php
 /**
- * @noinspection PhpMissingParamTypeInspection
- * @noinspection PhpMissingReturnTypeInspection
- * @noinspection PhpUnused
- * @noinspection SqlNoDataSourceInspection
- *
- *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+ *
+ * @noinspection PhpUnused
+ *
+ * @noinspection PhpDeprecationInspection
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Adapter\AdapterInstance;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Helpers\Container;
 
@@ -40,7 +40,7 @@ class com_acumulusInstallerScript
      *
      * @throws \Exception
      */
-    public function install($parent)
+    public function install(InstallerAdapter $parent)
     {
         $version = (string) $parent->getManifest()->version;
         // Set initial config version.
@@ -65,7 +65,7 @@ class com_acumulusInstallerScript
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
-    public function uninstall(/*$parent*/)
+    public function uninstall(/*InstallerAdapter $parent*/)
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         JFactory::getApplication()->enqueueMessage('The Acumulus component has been uninstalled.');
@@ -79,7 +79,7 @@ class com_acumulusInstallerScript
      *
      * @throws \Exception
      */
-    public function update(/*$parent*/)
+    public function update(/*UpdateAdapter $parent*/)
     {
         // The autoloader should have been set by the preflight method.
         // The config class will start updating itself as soon as the
@@ -91,7 +91,6 @@ class com_acumulusInstallerScript
         JFactory::getApplication()->enqueueMessage("The Acumulus component has been updated to version $this->newVersion.");
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Method to run before an installation/update/uninstall method.
      *
@@ -108,8 +107,12 @@ class com_acumulusInstallerScript
      *   The object calling this method.
      *
      * @return bool
+     *
+     * @noinspection PhpDocMissingThrowsInspection
+     * @noinspection PhpDeprecationInspection AdapterInstance:
+     *   5.0 Will be removed without replacement.
      */
-    public function preflight($type, $parent)
+    public function preflight(string $type, AdapterInstance $parent): bool
     {
         $this->newVersion = (string) $parent->getManifest()->version;
         $joomlaVersion = new JVersion();
@@ -194,7 +197,7 @@ class com_acumulusInstallerScript
      * @param string $type
      * @param object $parent
      */
-    public function postflight($type, $parent)
+    public function postflight(string $type, object $parent)
     {
     }
 
@@ -211,11 +214,11 @@ class com_acumulusInstallerScript
      *   The version string if the extension is installed and enabled, the empty
      *   string otherwise.
      */
-    protected function getVersion($component)
+    protected function getVersion(string $component): string
     {
         $result = '';
         $db = JFactory::getDbo();
-        /** @noinspection SqlDialectInspection */
+        /** @noinspection SqlNoDataSourceInspection */
         $db->setQuery(sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $manifestCache = $db->loadResult();
         if (!empty($manifestCache)) {

@@ -12,7 +12,8 @@ defined('_JEXEC') or die;
  *
  * These status changes are advertised via the onAfterOrderUpdate event.
  *
- * @noinspection PhpUnused */
+ * @noinspection PhpUnused
+ */
 class plgHikashopAcumulus extends JPlugin
 {
     /** @var bool */
@@ -44,7 +45,7 @@ class plgHikashopAcumulus extends JPlugin
      *
      * @return AcumulusModelAcumulus
      */
-    protected function getModel()
+    protected function getModel(): AcumulusModelAcumulus
     {
         if ($this->model === null) {
             $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel');
@@ -59,7 +60,7 @@ class plgHikashopAcumulus extends JPlugin
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
-    protected function getController()
+    protected function getController(): AcumulusController
     {
         if ($this->controller === null) {
             /** @noinspection PhpUnhandledExceptionInspection */
@@ -77,9 +78,11 @@ class plgHikashopAcumulus extends JPlugin
      * @return bool
      *   True on success, false on failure.
      *
-     * @noinspection PhpUnused event handler.
+     * @throws \Throwable
+     *
+     * @noinspection PhpUnused  event handler: not called directly.
      */
-    public function onAfterOrderUpdate($order/*, &$send_email*/)
+    public function onAfterOrderUpdate(object $order/*, &$send_email*/): bool
     {
         $this->init();
         $this->getModel()->sourceStatusChange($order->order_id);
@@ -95,14 +98,15 @@ class plgHikashopAcumulus extends JPlugin
      * @return bool
      *   True on success, false on failure.
      *
-     * @throws \Exception
-     * @noinspection PhpUnused event handler.
+     * @throws \Throwable
+     *
+     * @noinspection PhpUnused  event handler: not called directly.
      */
-    public function onAfterOrderProductsListingDisplay($order, $type)
+    public function onAfterOrderProductsListingDisplay(object $order, string $type): bool
     {
         if ($type === 'order_back_show') {
             $this->init();
-            if ($this->getModel()->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+            if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
                 $this->getController()->invoice($order->order_id);
             }
         }

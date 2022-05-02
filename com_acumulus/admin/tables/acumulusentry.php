@@ -36,12 +36,12 @@ class AcumulusTableAcumulusEntry extends JTable
     /**
      * Constructor
      *
-     * @param JDatabaseDriver $db
+     * @param \JDatabaseDriver|null $db
      *   A database connector object. Leave empty for the default instance.
      */
-    public function __construct(JDatabaseDriver $db = null)
+    public function __construct(?JDatabaseDriver $db = null)
     {
-        parent::__construct('#__acumulus_entry', 'id', $db ? $db : JFactory::getDbo());
+        parent::__construct('#__acumulus_entry', 'id', $db ?? JFactory::getDbo());
     }
 
     /**
@@ -53,9 +53,10 @@ class AcumulusTableAcumulusEntry extends JTable
      * @return AcumulusTableAcumulusEntry[]
      *   The, possibly empty, result set.
      */
-    public function loadMultiple(array $keys) {
+    public function loadMultiple(array $keys): array
+    {
         $reset = true;
-
+        /** @noinspection PhpConditionAlreadyCheckedInspection @todo: why this construction here/ */
         if ($reset)
         {
             $this->reset();
