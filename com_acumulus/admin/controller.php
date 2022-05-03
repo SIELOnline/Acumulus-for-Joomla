@@ -140,7 +140,8 @@ class AcumulusController extends JControllerLegacy
         if ($orderId !== null) {
             $orgView = $this->input->get('view');
         }
-        $this->executeTask();
+        $this->task = 'invoice';
+        $this->executeTask($orderId);
         if ($orderId !== null) {
             $this->input->set('view', $orgView);
         }
@@ -160,32 +161,42 @@ class AcumulusController extends JControllerLegacy
     protected function executeTask(?int $orderId = null): JControllerLegacy
     {
         try {
+            $form = $this->getAcumulusModel()->getForm($this->task);
             if ($orderId !== null) {
                 /**
-                 * @noinspection PhpDeprecationInspection  method is not deprecated,
-                 *   only a variant with a different set of parameters.
+                 * @noinspection PhpDeprecationInspection  method is not
+                 *   deprecated, only a variant with a different set of
+                 *   parameters.
                  */
                 JFactory::getDocument()->addScript(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
-                $this->task = 'invoice';
                 $this->input->set('view', null);
-
-                /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $form */
-                $form = $this->getAcumulusModel()->getForm($this->getTask());
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
             }
-            $form = $this->getAcumulusModel()->getForm($this->task);
             if ($form->isSubmitted()) {
                 JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
             }
-            $form->process();// Force the creation of the fields to get connection error messages
+            $form->process();
+            // Force the creation of the fields to get connection error messages
             // shown.
-            $form->getFields();// Show messages.
+            $form->getFields();
+            // Show messages.
             foreach ($form->getMessages() as $message) {
                 JFactory::getApplication()->enqueueMessage(
                     $message->format(Message::Format_PlainWithSeverity),
                     $this->getJoomlaMessageType($message->getSeverity())
                 );
             }
+
+            // Check for serious errors.
+            /** @noinspection PhpDeprecationInspection  @todo: how to replace this? */
+            $errors = $this->getErrors();
+            if (count($errors) > 0) {
+                throw new Exception(implode('<br />', $errors), 500);
+            }
+
+            $this->default_view = '';
+            $this->display();
         } catch (Throwable $e) {
             try {
                 $crashReporter = $this->getAcumulusModel()->getCrashReporter();
@@ -197,16 +208,6 @@ class AcumulusController extends JControllerLegacy
                 throw $e;
             }
         }
-
-        // Check for serious errors.
-        /** @noinspection PhpDeprecationInspection  @todo: how to replace this? */
-        $errors = $this->getErrors();
-        if (count($errors) > 0) {
-            throw new Exception(implode('<br />', $errors), 500);
-        }
-
-        $this->default_view = '';
-        $this->display();
         return $this;
     }
 

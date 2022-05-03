@@ -98,7 +98,7 @@ class com_acumulusInstallerScript
      * - The Joomla version against the version attribute in the manifest.
      * - If this is not a downgrade of this module.
      * - If VirtueMart is installed.
-     * - The Virtuemart against the minVirtueMartVersion element in the manifest.
+     * - The VirtueMart against the minVirtueMartVersion element in the manifest.
      * - The dependencies on PHP extensions of this module.
      *
      * @param string $type
@@ -172,7 +172,7 @@ class com_acumulusInstallerScript
         $componentPath = dirname(__FILE__);
         if (is_dir("$componentPath/lib")) {
             // Installing directly from administrator/components/com_acumulus:
-            // probably via the discovery feature of the extensions manager.
+            // probably via the discovery feature of the extension manager.
             $libraryPath = "$componentPath";
         } else /* if (is_dir("$componentPath/admin/lib")) */ {
             // Installing from the zip.
