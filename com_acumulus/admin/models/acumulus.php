@@ -208,6 +208,8 @@ class AcumulusModelAcumulus extends JModelLegacy
         } catch (Throwable $e) {
             try {
                 $crashReporter = $this->getCrashReporter();
+                // We do not know if we are on the admin side, so we should not
+                // try to display the message returned by logAndMail().
                 $crashReporter->logAndMail($e);
                 return null;
             } catch (Throwable $inner) {
