@@ -9,7 +9,7 @@
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>7.1.1</version>
+  <version>7.2.2</version>
   <description>Acumulus webservice koppeling voor VirtueMart 3.x of HikaShop</description>
   <!-- Minimal VirtueMart or HikaShop version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
@@ -45,6 +45,9 @@
     <files folder="admin">
       <!-- Admin Main File Copy Section -->
       <filename>acumulus.css</filename>
+      <filename>acumulus-hs.css</filename>
+      <filename>acumulus-vm.css</filename>
+      <filename>acumulus-ajax.js</filename>
       <filename>acumulus.php</filename>
       <filename>acumulus.xml</filename>
       <filename>com_acumulusInstallerScript.php</filename>
