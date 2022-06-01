@@ -12,13 +12,18 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 // Get an instance of the controller prefixed by Acumulus.
 /** @noinspection PhpUnhandledExceptionInspection */
-$controller = JControllerLegacy::getInstance('Acumulus');
+$app = Factory::getApplication();
+require_once 'controller.php';
+/** @noinspection PhpParamsInspection : Parameters are for J4 */
+$controller = new AcumulusController([], null, $app, $app->input);
 
-// Perform the Request task.
+// Perform the requested task.
 /** @noinspection PhpUnhandledExceptionInspection */
-$controller->execute(JFactory::getApplication()->input->getCmd('task'));
+$controller->execute($app->input->getCmd('task'));
 
 // Redirect if set by the controller.
 $controller->redirect();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="plugin" group="vmcoupon" version="3.9" method="upgrade">
-  <name>Acumulus plugin voor VirtueMart 3</name>
+  <name>Acumulus plugin voor VirtueMart</name>
   <creationDate>October 2015</creationDate>
   <author>Buro RaDer</author>
   <authorEmail>support@burorader.com</authorEmail>

@@ -7,8 +7,8 @@
  * @license   GPL v3, see license.txt
  */
 
-defined('_JEXEC') or die;
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Config\ConfigUpgrade;
 use Siel\Acumulus\Helpers\Container;
@@ -22,7 +22,7 @@ use Siel\Acumulus\Invoice\Source;
 /**
  * Acumulus Model
  */
-class AcumulusModelAcumulus extends JModelLegacy
+class AcumulusModelAcumulus extends BaseDatabaseModel
 {
     /** @var \Siel\Acumulus\Helpers\Container */
     protected static $instance;
@@ -41,7 +41,11 @@ class AcumulusModelAcumulus extends JModelLegacy
 
     public function __construct($config = array())
     {
-        // Get access to our classes via the auto loader.
+        // Get access to our classes via the autoloader.
+        /**
+         * @noinspection PhpMethodParametersCountMismatchInspection : J3 has 5
+         *   parameters.
+         */
         JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/../lib/siel/acumulus/src', false, false, 'psr4');
 
         parent::__construct($config);
@@ -53,7 +57,7 @@ class AcumulusModelAcumulus extends JModelLegacy
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
         if (static::$instance === null) {
-            static::$instance = new Container($this->shopNamespace, substr(JFactory::getLanguage()->getTag(), 0, 2));
+            static::$instance = new Container($this->shopNamespace, substr(Factory::getApplication()->getLanguage()->getTag(), 0, 2));
         }
         $this->container = static::$instance;
     }
@@ -117,8 +121,11 @@ class AcumulusModelAcumulus extends JModelLegacy
      */
     protected function isEnabled(string $component): bool
     {
-        $db = JFactory::getDbo();
+        // J4: $db = Factory::getContainer()->get('DatabaseDriver'); (or injection)
+        /** @noinspection PhpDeprecationInspection : Deprecated as of J4 */
+        $db = Factory::getDbo();
         /** @noinspection SqlResolve */
+        /** @noinspection SqlDialectInspection */
         $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $enabled = $db->loadResult();
         return $enabled == 1;

@@ -5,12 +5,14 @@
  * @license   GPL v3, see license.txt
  */
 
+use Joomla\CMS\Table\Table;
+
 defined('_JEXEC') or die;
 
 /**
  * Acumulus Entry Table class.
  */
-class AcumulusTableAcumulusEntry extends JTable
+class AcumulusTableAcumulusEntry extends Table
 {
     /** @var int */
     public $id = null;
@@ -36,11 +38,14 @@ class AcumulusTableAcumulusEntry extends JTable
     /**
      * Constructor
      *
-     * @param \JDatabaseDriver|null $db
+     * @noinspection PhpUndefinedClassInspection : J3: JDatabaseDriver
+     * @param \Joomla\Database\DatabaseDriver|\JDatabaseDriver|null $db
      *   A database connector object. Leave empty for the default instance.
      */
-    public function __construct(?JDatabaseDriver $db = null)
+    public function __construct($db = null)
     {
+        // J4: $db ?? Factory::getContainer()->get('DatabaseDriver'); (or injection)
+        /** @noinspection PhpDeprecationInspection : Deprecated as of J4 */
         parent::__construct('#__acumulus_entry', 'id', $db ?? JFactory::getDbo());
     }
 

@@ -31,8 +31,37 @@ textarea {
   margin-top: 3em;
 }
 
+.controls {
+  padding-top: .3rem;
+}
+
 div.control-label {
   max-width: 180px;
+}
+
+.radio input, .checkbox input {
+  float: left;
+}
+
+.radio label, .checkbox label {
+  display: block;
+}
+
+.radio input, .checkbox input {
+  margin-top: .3rem;
+  width: 2em;
+}
+
+.radio label, .checkbox label {
+  margin-top: 0;
+}
+
+a.btn {
+  border-color: #aaa;
+}
+
+div.text-muted {
+  clear: left;
 }
 
 /*

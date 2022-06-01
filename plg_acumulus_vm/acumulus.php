@@ -5,6 +5,11 @@
  * @license   GPL v3, see license.txt
  */
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Table\Table;
+
 defined('_JEXEC') or die;
 
 /**
@@ -27,7 +32,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-class plgVmCouponAcumulus extends JPlugin
+class plgVmCouponAcumulus extends CMSPlugin
 {
     /** @var bool */
     protected $initialized = false;
@@ -47,8 +52,16 @@ class plgVmCouponAcumulus extends JPlugin
         if (!$this->initialized) {
             $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
             // Get access to our models and tables.
-            JModelLegacy::addIncludePath("$componentPath/models", 'AcumulusModel');
-            JTable::addIncludePath("$componentPath/tables");
+            /**
+             * @noinspection PhpDeprecationInspection : I think, eventually, we
+             *   should replace legacy models with J4 PSR4 models.
+             */
+            BaseDatabaseModel::addIncludePath("$componentPath/models", 'AcumulusModel');
+            /**
+             * @noinspection PhpDeprecationInspection : I think, eventually, we
+             *   should replace legacy table classes with J4 PSR4 table classes.
+             */
+            Table::addIncludePath("$componentPath/tables");
             $this->initialized = true;
         }
     }
@@ -61,7 +74,11 @@ class plgVmCouponAcumulus extends JPlugin
     protected function getModel(): AcumulusModelAcumulus
     {
         if ($this->model === null) {
-            $this->model = JModelLegacy::getInstance('Acumulus', 'AcumulusModel');
+            /**
+             * @noinspection PhpDeprecationInspection : Get the model through
+             *   the MVCFactory instead.
+             */
+            $this->model = BaseDatabaseModel::getInstance('Acumulus', 'AcumulusModel');
         }
         return $this->model;
     }
@@ -76,8 +93,12 @@ class plgVmCouponAcumulus extends JPlugin
     protected function getController(): AcumulusController
     {
         if ($this->controller === null) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->controller = JControllerLegacy::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
+            /**
+             * @noinspection PhpUnhandledExceptionInspection
+             * @noinspection PhpDeprecationInspection : Get the controller
+             *   through the MVCFactory instead.
+             */
+            $this->controller = BaseController::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
         }
         return $this->controller;
     }
