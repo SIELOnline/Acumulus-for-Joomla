@@ -9,7 +9,7 @@
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>7.2.2</version>
+  <version>7.2.4</version>
   <description>Acumulus package voor VirtueMart en HikaShop</description>
 
   <files folder="packages">
