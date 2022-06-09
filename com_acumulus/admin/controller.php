@@ -152,6 +152,20 @@ class AcumulusController extends BaseController
     }
 
     /**
+     * Executes the com_acumulus/activate task.
+     *
+     * @return \Joomla\CMS\MVC\Controller\BaseController
+     *
+     * @throws \Throwable
+     */
+    public function activate(): BaseController
+    {
+        $this->checkAuthorisation();
+        $this->executeTask();
+        return $this;
+    }
+
+    /**
      * Executes the com_acumulus/invoice task.
      *
      * @param int|null $orderId

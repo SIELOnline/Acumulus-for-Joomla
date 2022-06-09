@@ -65,7 +65,7 @@ div.text-muted {
 }
 
 /*
- * Invoice status overview for both virtuemart and hikashop.
+ * Invoice status overview for both VirtueMart and HikaShop.
  */
 #acumulus-invoice .notice-info {
   color: #3a87ad;
@@ -119,6 +119,33 @@ div.text-muted {
   background-size: 12px 16px;
   background-repeat: no-repeat;
   background-position: left center;
+}
+
+/*
+ * About block.
+ */
+.acumulus-blue {
+  color: #01a6d4;
+}
+
+.acumulus-light-green {
+  color: #f0fff0;
+}
+
+.button-pro-support {
+  display: inline-block;
+  transition: background-color 0.5s ease;
+  background-color: #f0fff0;
+  border-color: #000000;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 12px;
+  padding: 6px 20px;
+  margin-top: 5px;
+}
+
+.button-pro-support:hover {
+  background: #01a6d4;
 }
 
 /*
