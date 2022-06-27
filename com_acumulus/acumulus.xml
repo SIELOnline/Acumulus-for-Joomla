@@ -9,11 +9,11 @@
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the components table -->
-  <version>7.2.3</version>
-  <description>Acumulus webservice koppeling voor VirtueMart 3.x of HikaShop</description>
+  <version>7.3.1</version>
+  <description>Acumulus koppeling voor VirtueMart of HikaShop</description>
   <!-- Minimal VirtueMart or HikaShop version we require. -->
   <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
-  <minHikaShopVersion>1.0</minHikaShopVersion>
+  <minHikaShopVersion>3.0</minHikaShopVersion>
 
   <scriptfile>com_acumulusInstallerScript.php</scriptfile>
 
@@ -39,6 +39,7 @@
       <menu link="option=com_acumulus&amp;task=batch" img="./media/logo-acumulus-16.png">Batchverzending</menu>
       <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Instellingen</menu>
       <menu link="option=com_acumulus&amp;task=advanced" img="./media/logo-acumulus-16.png">Geavanceerde instellingen</menu>
+      <menu link="option=com_acumulus&amp;task=activate" img="./media/logo-acumulus-16.png">Activeer Acumulus pro-support</menu>
     </submenu>
 
     <!-- Administration Main File Copy Section -->
