@@ -10,7 +10,11 @@
       const clickedElt = this;
       const area = $(clickedElt).parents(".acumulus-area").get(0); // jQuery
       $(buttonSelector, area).prop("disabled", true); // jQuery
-      clickedElt.value = area.getAttribute("data-acumulus-wait");
+      if (clickedElt.tagName === "INPUT") {
+        clickedElt.value = area.getAttribute("data-acumulus-wait");
+      } else {
+        clickedElt.innerHTML = area.getAttribute("data-acumulus-wait");
+      }
 
       // The data we are going to send consists of:
       // - ajax: 1, to indicate that this is an ajax call.

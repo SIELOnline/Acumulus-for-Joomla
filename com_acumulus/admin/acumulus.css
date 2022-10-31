@@ -121,6 +121,41 @@ div.text-muted {
   background-position: left center;
 }
 
+[class*="acumulus-document"] {
+  display: inline-block;
+}
+
+#acumulus-invoice [class*="acumulus-document"] {
+  box-sizing: border-box;
+  padding-left: 34px;
+  margin-right: 1em;
+  background-size: 21px 28px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-position-x: 6px;
+  min-width: 11.5em;
+  height: 36px;
+}
+
+#acumulus-invoice [id$="_documents"] > div.controls {
+  display: inline-block;
+  min-width: 10em;
+  width: auto;
+  margin-left: 0
+}
+
+#acumulus-invoice a[class*="acumulus-document"] {
+  padding-top: 8px;
+}
+
+#acumulus-invoice [class*="acumulus-document-invoice"] {
+  background-image: url("./media/acumulus-invoice.png");
+}
+
+#acumulus-invoice [class*="acumulus-document-packing-slip"] {
+  background-image: url("./media/acumulus-packing-slip.png");
+}
+
 /*
  * About block.
  */

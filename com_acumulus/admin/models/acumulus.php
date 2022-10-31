@@ -74,17 +74,17 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
             // Load VirtueMart: we need access to its models and data.
             // Copied from administrator/components/com_virtuemart/virtuemart.php
             if (!class_exists('VmConfig')) {
-                /** @noinspection PhpIncludeInspection */
                 require_once JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php';
             }
+            /** @noinspection PhpUndefinedClassInspection */
             VmConfig::loadConfig();
 
             if (!class_exists('VmController')) {
-                /** @noinspection PhpIncludeInspection */
+                /** @noinspection PhpUndefinedConstantInspection */
                 require VMPATH_ADMIN . '/helpers/vmcontroller.php';
             }
             if (!class_exists('VmModel')) {
-                /** @noinspection PhpIncludeInspection */
+                /** @noinspection PhpUndefinedConstantInspection */
                 require VMPATH_ADMIN . '/helpers/vmmodel.php';
             }
             return true;
@@ -101,7 +101,6 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
     protected function loadHikaShop(): bool
     {
         if ($this->isEnabled('com_hikashop')) {
-            /** @noinspection PhpIncludeInspection */
             return require_once JPATH_ROOT . '/administrator/components/com_hikashop/helpers/helper.php';
         }
         return false;
