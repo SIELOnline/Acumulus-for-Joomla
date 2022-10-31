@@ -11,3 +11,6 @@ interdiff.txt
 # Resulting installer files
 /*.zip
 packages/*
+
+# Library
+com_acumulus/admin/lib/
