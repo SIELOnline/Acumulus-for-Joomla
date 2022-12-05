@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
@@ -17,8 +19,7 @@ use Joomla\CMS\Factory;
 // Get an instance of the controller prefixed by Acumulus.
 /** @noinspection PhpUnhandledExceptionInspection */
 $app = Factory::getApplication();
-require_once 'controller.php';
-/** @noinspection PhpParamsInspection : Parameters are for J4 */
+require_once __DIR__ . '/controller.php';
 $controller = new AcumulusController([], null, $app, $app->input);
 
 // Perform the requested task.

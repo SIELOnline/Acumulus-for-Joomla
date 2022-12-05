@@ -56,22 +56,23 @@ class AcumulusView extends JViewLegacy
      */
     public function display($tpl = null)
     {
+        if ($this->type === 'cancel') {
+            JFactory::getApplication()->redirect(JURI::root(true) . '/administrator/index.php');
+        }
+
         /** @var \AcumulusModelAcumulus $acumulusModel */
         $acumulusModel = $this->getModel();
 
         // Add styling.
-        $document = JFactory::getDocument();
+        $document = JFactory::getApplication()->getDocument();
         /**
-         * @noinspection PhpDeprecationInspection  method is not deprecated,
          *   only a variant with a different set of parameters.
          */
         $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');
         if ($acumulusModel->isVirtueMart) {
-            /** @noinspection PhpDeprecationInspection */
             $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-vm.css');
         }
         if ($acumulusModel->isHikaShop) {
-            /** @noinspection PhpDeprecationInspection */
             $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-hs.css');
         }
 

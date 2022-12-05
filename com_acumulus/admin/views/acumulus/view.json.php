@@ -8,7 +8,7 @@
  * @noinspection PhpUnused
  */
 
-require_once 'view.php';
+require_once __DIR__ . '/view.php';
 
 /**
  * Generic Acumulus view that outputs json format.
