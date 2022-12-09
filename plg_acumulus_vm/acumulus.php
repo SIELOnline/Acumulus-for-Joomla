@@ -35,13 +35,19 @@ defined('_JEXEC') or die;
 class plgVmCouponAcumulus extends CMSPlugin
 {
     /** @var bool */
-    protected $initialized = false;
+    protected $initialized;
 
     /** @var AcumulusModelAcumulus */
     protected $model;
 
     /** @var \AcumulusController */
     protected $controller;
+
+    public function __construct(&$subject, $config = [])
+    {
+        $this->initialized = false;
+        parent::__construct($subject, $config);
+    }
 
     /**
      * Initializes the environment for the plugin:
@@ -139,9 +145,10 @@ class plgVmCouponAcumulus extends CMSPlugin
      *
      * @throws \Throwable
      *
+     * @todo: VM4 (render as other blocks)
      * @noinspection PhpUnused  event handler: not called directly.
      */
-    public function plgVmOnUpdateOrderBEPayment(int $orderId): string
+    public function plgVmOnShowOrderBEPayment(int $orderId): string
     {
         $this->init();
         if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
