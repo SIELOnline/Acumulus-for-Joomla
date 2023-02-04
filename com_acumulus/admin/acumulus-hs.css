@@ -11,5 +11,10 @@
 
 #acumulus-invoice .acumulus-links ~ .controls {
     margin-top: 0;
-    max-width: 215px;
+    min-width: 200px;
+    max-width: 201px;
+}
+
+#acumulus-invoice .acumulus-links ~ .controls button {
+    text-align: left;
 }

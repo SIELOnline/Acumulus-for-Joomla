@@ -1,36 +1,60 @@
 /*
  * Invoice status overview for virtuemart.
  */
+/* VM3 on J3 */
+#order-items-table + table td + td {
+    display: flex;
+    flex-direction: column-reverse;
+}
+/* end of VM3 on J3 */
+
 #acumulus-invoice {
-  margin-top: 2em;
+    margin-top: 16px;
+    width: 100%; /* VM4 on J3 */
+    border-top: 3px solid #ddd; /* VM3 on J3 */
 }
 
 #acumulus-invoice .adminform {
-  border: none;
+    border: none;
 }
 
 #acumulus-invoice .adminform > legend {
-  background-image: url("./media/siel-logo.svg");
-  background-size: 32px 32px;
-  background-repeat: no-repeat;
-  padding-left: 32px;
-  margin-bottom: 0;
+    background-image: url("./media/siel-logo.svg");
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    margin-bottom: 0;
 }
 
 #acumulus-invoice .adminform .control-label {
-  padding-top: 0;
+    padding-top: 0;
 }
 
 #acumulus-invoice .adminform .control-group {
-  display: block;
-  line-height: 18px;
-  padding: 1em;
-  border-top: 1px solid #ddd;
-  margin: 0;
+    display: block;
+    line-height: 18px;
+    padding: 1em;
+    border-top: 1px solid #ddd;
+    margin: 0;
 }
 
 #acumulus-invoice .adminform .control-group:nth-child(9),
 #acumulus-invoice .adminform .control-group:nth-child(10) {
-  border-top-width: 0;
-  padding-top: 0;
+    border-top-width: 0;
+    padding-top: 0;
 }
+
+/* VM4 on J3 */
+#vm-order-payment .uk-grid {
+    flex-direction: column-reverse;
+}
+
+#acumulus-invoice .acumulus-links {
+    margin-left: 180px;
+}
+
+#acumulus-invoice .acumulus-links + .controls {
+    float: left;
+}
+
+/* End of VM4 on J3 */
