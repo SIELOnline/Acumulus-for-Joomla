@@ -3,7 +3,11 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+ *
+ * @noinspection AutoloadingIssuesInspection
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\Table\Table;
 
@@ -14,26 +18,13 @@ defined('_JEXEC') or die;
  */
 class AcumulusTableAcumulusEntry extends Table
 {
-    /** @var int */
-    public $id = null;
-
-    /** @var string */
-    public $entry_id = null;
-
-    /** @var string */
-    public $token = null;
-
-    /** @var string */
-    public $source_type = null;
-
-    /** @var int */
-    public $source_id = null;
-
-    /** @var string */
-    public $created = null;
-
-    /** @var string */
-    public $updated = null;
+    public ?int $id;
+    public ?string $entry_id;
+    public ?string $token;
+    public ?string $source_type;
+    public ?int $source_id;
+    public ?string $created;
+    public ?string $updated;
 
     /**
      * Constructor
@@ -74,7 +65,7 @@ class AcumulusTableAcumulusEntry extends Table
         foreach ($keys as $field => $value)
         {
             // Check that $field is in the table.
-            if (!in_array($field, $fields))
+            if (!in_array($field, $fields, true))
             {
                 throw new UnexpectedValueException(sprintf('Missing field in database: %s &#160; %s.', get_class($this), $field));
             }
@@ -87,7 +78,7 @@ class AcumulusTableAcumulusEntry extends Table
         $this->_db->setQuery($query);
 
         $isFirst = true;
-        $result = array();
+        $result = [];
         $rows = $this->_db->loadAssocList();
         if ($rows !== null) {
             foreach ($rows as $row) {

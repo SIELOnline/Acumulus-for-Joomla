@@ -3,7 +3,11 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+ *
+ * @noinspection AutoloadingIssuesInspection
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
@@ -16,6 +20,7 @@ use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Uri\Uri;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
+use Siel\Acumulus\Helpers\Util;
 use Siel\Acumulus\Invoice\Source;
 
 defined('_JEXEC') or die;
@@ -25,14 +30,12 @@ defined('_JEXEC') or die;
  */
 class AcumulusController extends BaseController
 {
-    /** @var AcumulusModelAcumulus */
-    protected $model;
-
+    protected AcumulusModelAcumulus $model;
     /**
-     * @var \Joomla\CMS\Application\CMSApplication|null
-     *   J4 only: CMSApplicationInterface
+     * @todo: check in J4: consequences for return type of getApp()!
+     * @var \Joomla\CMS\Application\CMSApplication|\CMSApplicationInterface|null
      */
-    protected $app = null;
+    protected $app;
 
     /**
      * @return \Joomla\CMS\Application\CMSApplication
@@ -41,25 +44,20 @@ class AcumulusController extends BaseController
      */
     public function getApp(): CMSApplication
     {
-        if ($this->app === null) {
+        if (!isset($this->app)) {
             $this->app = Factory::getApplication();
         }
         return $this->app;
     }
 
     /**
-     * @param string $action
-     * @param string $assetName
-     *
-     * @return void
-     *
      * @throws \Exception
      *   When the user is not authorised to perform the demanded action.
      */
     public function checkAuthorisation(string $action = 'core.admin', string $assetName = 'com_acumulus'): void
     {
         if (!$this->getApp()->getIdentity()->authorise($action, $assetName)) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'));
         }
     }
 
@@ -68,8 +66,9 @@ class AcumulusController extends BaseController
      */
     protected function getAcumulusModel(): AcumulusModelAcumulus
     {
-        if ($this->model === null) {
-            $this->model = $this->getModel('Acumulus', '', array('name' => 'Acumulus'));
+        if (!isset($this->model)) {
+            /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
+            $this->model = $this->getModel('Acumulus', '', ['name' => 'Acumulus']);
         }
         return $this->model;
     }
@@ -84,7 +83,7 @@ class AcumulusController extends BaseController
      *
      * @throws \Throwable
      */
-    public function display($cachable = false, $urlparams = array()): BaseController
+    public function display($cachable = false, $urlparams = []): BaseController
     {
         if (empty($this->task)) {
             $this->task = 'batch';
@@ -208,7 +207,7 @@ class AcumulusController extends BaseController
                  *   deprecated, only a variant with a different set of
                  *   parameters.
                  */
-                Factory::getDocument()->addScript(URI::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
+                Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
                 $this->input->set('view', null);
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
@@ -278,10 +277,10 @@ class AcumulusController extends BaseController
      * @return \Joomla\CMS\MVC\View\ViewInterface|\Joomla\CMS\MVC\View\HtmlView
      *   Joomla4: ViewInterface; Joomla3: HtmlView
      */
-    public function getView($name = '', $type = '', $prefix = '', $config = array())
+    public function getView($name = '', $type = '', $prefix = '', $config = [])
     {
         $config['type'] = $this->task;
-        $config['isJson'] = $this->input->get('ajax') == 1;
+        $config['isJson'] = (int) $this->input->get('ajax') === 1;
         return parent::getView($name, $type, $prefix, $config);
     }
 
@@ -290,20 +289,20 @@ class AcumulusController extends BaseController
      *
      * @throws \Exception
      */
-    public function update()
+    public function update(): void
     {
         // J4: $extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
         /** @noinspection PhpDeprecationInspection */
         $extensionTable = new Extension(Factory::getDbo());
-        $extensionTable->load(array('element' => 'com_acumulus'));
+        $extensionTable->load(['element' => 'com_acumulus']);
         $manifest_cache = $extensionTable->get('manifest_cache');
-        $manifest_cache = json_decode($manifest_cache);
+        $manifest_cache = json_decode($manifest_cache, false);
         if (!empty($manifest_cache->version) && $this->getAcumulusModel()->getAcumulusConfigUpgrade()->upgrade($manifest_cache->version)) {
             $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
             $manifest_cache->version = $manifest->version;
             // Reload as the upgrade may have changed the config.
-            $extensionTable->load(array('element' => 'com_acumulus'));
-            $extensionTable->set('manifest_cache', json_encode($manifest_cache));
+            $extensionTable->load(['element' => 'com_acumulus']);
+            $extensionTable->set('manifest_cache', json_encode($manifest_cache, Util::JsonFlags));
             $extensionTable->store();
             $this->setRedirect(Route::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
         } else {

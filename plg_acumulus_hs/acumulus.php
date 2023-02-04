@@ -1,9 +1,13 @@
 <?php
 /**
+ * @noinspection AutoloadingIssuesInspection
+ *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -17,24 +21,19 @@ defined('_JEXEC') or die;
  *
  * These status changes are advertised via the onAfterOrderUpdate event.
  *
- * @noinspection PhpUnused
+ * @noinspection PhpUnused  Plugins are instantiated dynamically.
  */
 class plgHikashopAcumulus extends CMSPlugin
 {
-    /** @var bool */
-    protected $initialized = false;
-
-    /** @var AcumulusModelAcumulus */
-    protected $model;
-
-    /** @var \AcumulusController */
-    protected $controller;
+    protected bool $initialized = false;
+    protected AcumulusModelAcumulus $model;
+    protected AcumulusController $controller;
 
     /**
      * Initializes the environment for the plugin:
      * - Register autoloader for our own library.
      */
-    protected function init()
+    protected function init(): void
     {
         if (!$this->initialized) {
             $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
@@ -60,10 +59,11 @@ class plgHikashopAcumulus extends CMSPlugin
      */
     protected function getModel(): AcumulusModelAcumulus
     {
-        if ($this->model === null) {
+        if (!isset($this->model)) {
             /**
              * @noinspection PhpDeprecationInspection : Get the model through
              *   the MVCFactory instead.
+             * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
             $this->model = BaseDatabaseModel::getInstance('Acumulus', 'AcumulusModel');
         }
@@ -79,11 +79,12 @@ class plgHikashopAcumulus extends CMSPlugin
      */
     protected function getController(): AcumulusController
     {
-        if ($this->controller === null) {
+        if (!isset($this->controller)) {
             /**
              * @noinspection PhpUnhandledExceptionInspection
              * @noinspection PhpDeprecationInspection : Get the controller
              *   through the MVCFactory instead.
+             * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
             $this->controller = BaseController::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
         }

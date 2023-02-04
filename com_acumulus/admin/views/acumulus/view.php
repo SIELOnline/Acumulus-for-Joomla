@@ -3,7 +3,11 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+ *
+ * @noinspection AutoloadingIssuesInspection
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -14,13 +18,10 @@ defined('_JEXEC') or die;
  */
 class AcumulusView extends JViewLegacy
 {
-    /** @var string */
-    protected $type;
+    protected string $type;
+    protected bool $isJson;
 
-    /** @var bool */
-    protected $isJson;
-
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->type = $config['type'];
         $this->isJson = $config['isJson'];
@@ -53,11 +54,16 @@ class AcumulusView extends JViewLegacy
      * @return void
      *
      * @throws \Exception
+     *
+     * @noinspection PhpDeprecationInspection  Document::addStyleSheet():
+     *   The (url, mime, media, attribs) method signature is deprecated, use
+     *   (url, options, attributes) instead.
+     *  @noinspection PhpMissingParentCallCommonInspection  We do not use a template.
      */
-    public function display($tpl = null)
+    public function display($tpl = null): void
     {
         if ($this->type === 'cancel') {
-            JFactory::getApplication()->redirect(JURI::root(true) . '/administrator/index.php');
+            JFactory::getApplication()->redirect(JUri::root(true) . '/administrator/index.php');
         }
 
         /** @var \AcumulusModelAcumulus $acumulusModel */
@@ -65,15 +71,12 @@ class AcumulusView extends JViewLegacy
 
         // Add styling.
         $document = JFactory::getApplication()->getDocument();
-        /**
-         *   only a variant with a different set of parameters.
-         */
-        $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus.css');
+        $document->addStyleSheet(JUri::root(true) . '/administrator/components/com_acumulus/acumulus.css');
         if ($acumulusModel->isVirtueMart) {
-            $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-vm.css');
+            $document->addStyleSheet(JUri::root(true) . '/administrator/components/com_acumulus/acumulus-vm.css');
         }
         if ($acumulusModel->isHikaShop) {
-            $document->addStyleSheet(JURI::root(true) . '/administrator/components/com_acumulus/acumulus-hs.css');
+            $document->addStyleSheet(JUri::root(true) . '/administrator/components/com_acumulus/acumulus-hs.css');
         }
 
         // Get and populate the form.
@@ -119,7 +122,7 @@ class AcumulusView extends JViewLegacy
      * @since   1.6
      * @throws \Exception
      */
-    protected function addToolBar()
+    protected function addToolBar(): void
     {
         // Show Joomla Administrator Main menu.
         JFactory::getApplication()->input->set('hidemainmenu', false);

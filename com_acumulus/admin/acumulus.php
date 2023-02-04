@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 /**
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
@@ -12,6 +10,8 @@ declare(strict_types=1);
  * place.
  */
 
+declare(strict_types=1);
+
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
@@ -20,6 +20,7 @@ use Joomla\CMS\Factory;
 /** @noinspection PhpUnhandledExceptionInspection */
 $app = Factory::getApplication();
 require_once __DIR__ . '/controller.php';
+// @todo: controller accepts 4 params in J4? If not remove.
 $controller = new AcumulusController([], null, $app, $app->input);
 
 // Perform the requested task.

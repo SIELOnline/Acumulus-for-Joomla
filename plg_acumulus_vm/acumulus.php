@@ -1,9 +1,13 @@
 <?php
 /**
+ * @noinspection AutoloadingIssuesInspection
+ *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -30,20 +34,25 @@ defined('_JEXEC') or die;
  *   been stored: so the database might not be used at that point as it is
  *   "outdated".
  *
- * @noinspection PhpUnused
+ * @noinspection PhpUnused  Plugins are instantiated dynamically.
  */
 class plgVmCouponAcumulus extends CMSPlugin
 {
-    /** @var bool */
-    protected $initialized;
+    protected bool $initialized;
+    protected AcumulusModelAcumulus $model;
+    protected AcumulusController $controller;
 
-    /** @var AcumulusModelAcumulus */
-    protected $model;
-
-    /** @var \AcumulusController */
-    protected $controller;
-
-    public function __construct(&$subject, $config = [])
+    /**
+     * Constructor
+     *
+     * @param object &$subject
+     *   The object to observe.
+     * @param array $config
+     *    An optional associative array of configuration settings. Recognized
+     *    key values include 'name', 'group', 'params', 'language' (this list is
+     *    not meant to be comprehensive).
+     */
+    public function __construct(&$subject, array $config = [])
     {
         $this->initialized = false;
         parent::__construct($subject, $config);
@@ -53,7 +62,7 @@ class plgVmCouponAcumulus extends CMSPlugin
      * Initializes the environment for the plugin:
      * - Register autoloader for our own library.
      */
-    protected function init()
+    protected function init(): void
     {
         if (!$this->initialized) {
             $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
@@ -79,10 +88,11 @@ class plgVmCouponAcumulus extends CMSPlugin
      */
     protected function getModel(): AcumulusModelAcumulus
     {
-        if ($this->model === null) {
+        if (!isset($this->model)) {
             /**
              * @noinspection PhpDeprecationInspection : Get the model through
              *   the MVCFactory instead.
+             * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
             $this->model = BaseDatabaseModel::getInstance('Acumulus', 'AcumulusModel');
         }
@@ -98,11 +108,12 @@ class plgVmCouponAcumulus extends CMSPlugin
      */
     protected function getController(): AcumulusController
     {
-        if ($this->controller === null) {
+        if (!isset($this->controller)) {
             /**
              * @noinspection PhpUnhandledExceptionInspection
              * @noinspection PhpDeprecationInspection : Get the controller
              *   through the MVCFactory instead.
+             * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
             $this->controller = BaseController::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
         }

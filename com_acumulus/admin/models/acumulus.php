@@ -1,11 +1,13 @@
 <?php
 /**
- * @noinspection SqlNoDataSourceInspection
- *
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
+  *
+ * @noinspection AutoloadingIssuesInspection
  */
+
+declare(strict_types=1);
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -24,22 +26,14 @@ use Siel\Acumulus\Invoice\Source;
  */
 class AcumulusModelAcumulus extends BaseDatabaseModel
 {
-    /** @var \Siel\Acumulus\Helpers\Container */
-    protected static $instance;
+    protected static Container $instance;
 
-    /** @var \Siel\Acumulus\Helpers\Container */
-    protected $container;
+    protected Container $container;
+    protected string $shopNamespace;
+    public bool $isVirtueMart = false;
+    public bool $isHikaShop = false;
 
-    /** @var string */
-    protected $shopNamespace;
-
-    /** @var bool  */
-    public $isVirtueMart = false;
-
-    /** @var bool  */
-    public $isHikaShop = false;
-
-    public function __construct($config = array())
+    public function __construct(array $config = [])
     {
         // Get access to our classes via the autoloader.
         /**
@@ -56,7 +50,8 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
             $this->isHikaShop = true;
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
-        if (static::$instance === null) {
+        if (!isset(static::$instance)) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             static::$instance = new Container($this->shopNamespace, substr(Factory::getApplication()->getLanguage()->getTag(), 0, 2));
         }
         $this->container = static::$instance;
@@ -67,6 +62,11 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
      *
      * @return bool
      *   True if VirtueMart is installed and enabled, false otherwise.
+     *
+     * @noinspection RedundantSuppression  Prevents warnings in VM.
+     * @noinspection PhpUndefinedConstantInspection  Prevents warnings in HS.
+     * @noinspection PhpUndefinedClassInspection  Prevents warnings in HS.
+     * @noinspection PhpIncludeInspection  VMPATH_ADMIN not resolvable
      */
     protected function loadVirtueMart(): bool
     {
@@ -76,16 +76,13 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
             if (!class_exists('VmConfig')) {
                 require_once JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php';
             }
-            /** @noinspection PhpUndefinedClassInspection */
             VmConfig::loadConfig();
 
             if (!class_exists('VmController')) {
-                /** @noinspection PhpUndefinedConstantInspection */
-                require VMPATH_ADMIN . '/helpers/vmcontroller.php';
+                require_once VMPATH_ADMIN . '/helpers/vmcontroller.php';
             }
             if (!class_exists('VmModel')) {
-                /** @noinspection PhpUndefinedConstantInspection */
-                require VMPATH_ADMIN . '/helpers/vmmodel.php';
+                require_once VMPATH_ADMIN . '/helpers/vmmodel.php';
             }
             return true;
         }
@@ -101,7 +98,8 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
     protected function loadHikaShop(): bool
     {
         if ($this->isEnabled('com_hikashop')) {
-            return require_once JPATH_ROOT . '/administrator/components/com_hikashop/helpers/helper.php';
+            require_once JPATH_ROOT . '/administrator/components/com_hikashop/helpers/helper.php';
+            return true;
         }
         return false;
     }
@@ -121,13 +119,11 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
     protected function isEnabled(string $component): bool
     {
         // J4: $db = Factory::getContainer()->get('DatabaseDriver'); (or injection)
-        /** @noinspection PhpDeprecationInspection : Deprecated as of J4 */
+        /** @noinspection PhpDeprecationInspection  Deprecated as of J4 */
         $db = Factory::getDbo();
-        /** @noinspection SqlResolve */
-        /** @noinspection SqlDialectInspection */
         $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $enabled = $db->loadResult();
-        return $enabled == 1;
+        return (int) $enabled === 1;
     }
 
     /**
@@ -205,6 +201,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
      *   The result of sending (or not sending) the invoice.
      *
      * @throws \Throwable
+     * @noinspection BadExceptionsProcessingInspection
      */
     public function sourceStatusChange(int $orderId): ?InvoiceAddResult
     {
