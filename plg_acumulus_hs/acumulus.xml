@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="plugin" group="hikashop" version="3.9" method="upgrade">
-  <name>Acumulus plugin voor HikaShop</name>
-  <creationDate>October 2015</creationDate>
-  <author>Buro RaDer</author>
-  <authorEmail>support@burorader.com</authorEmail>
-  <authorUrl>https://burorader.com/</authorUrl>
-  <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
-  <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
-  <!--  The version string is recorded in the extension table -->
-  <version>7.5.0</version>
-  <description>Verstuurt HikaShop facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen.</description>
+<extension type="plugin" group="hikashop" version="3.10" method="upgrade">
+    <name>Acumulus plugin voor HikaShop</name>
+    <creationDate>October 2015</creationDate>
+    <author>Buro RaDer</author>
+    <authorEmail>support@burorader.com</authorEmail>
+    <authorUrl>https://burorader.com/</authorUrl>
+    <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
+    <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+    <!--  The version string is recorded in the extension table -->
+    <version>7.6.3</version>
+    <description>Verstuurt HikaShop facturen automatisch naar Acumulus bij door u ingestelde bestellingsstatussen.</description>
 
-  <files>
-    <filename plugin="acumulus">acumulus.php</filename>
-  </files>
+    <files>
+        <filename plugin="acumulus">acumulus.php</filename>
+    </files>
 </extension>
