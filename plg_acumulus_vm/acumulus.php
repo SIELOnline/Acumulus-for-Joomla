@@ -36,7 +36,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused  Plugins are instantiated dynamically.
  */
-class plgVmCouponAcumulus extends CMSPlugin
+class plgVmExtendedAcumulus extends CMSPlugin
 {
     protected bool $initialized;
     protected AcumulusModelAcumulus $model;
@@ -45,7 +45,7 @@ class plgVmCouponAcumulus extends CMSPlugin
     /**
      * Constructor
      *
-     * @param object &$subject
+     * @param \Joomla\Event\DispatcherInterface &$subject
      *   The object to observe.
      * @param array $config
      *    An optional associative array of configuration settings. Recognized
@@ -56,6 +56,13 @@ class plgVmCouponAcumulus extends CMSPlugin
     {
         $this->initialized = false;
         parent::__construct($subject, $config);
+
+        // Since J4, events that do not start with 'on' are no longer registered
+        // automatically.
+        if (\Joomla\CMS\Version::MAJOR_VERSION >= 4) {
+            $this->registerLegacyListener('plgVmCouponUpdateOrderStatus');
+            $this->registerLegacyListener('plgVmOnShowOrderBEPayment');
+        }
     }
 
     /**
@@ -115,7 +122,10 @@ class plgVmCouponAcumulus extends CMSPlugin
              *   through the MVCFactory instead.
              * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
-            $this->controller = BaseController::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
+            $this->controller = BaseController::getInstance(
+                'Acumulus',
+                ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']
+            );
         }
         return $this->controller;
     }
@@ -139,7 +149,7 @@ class plgVmCouponAcumulus extends CMSPlugin
     public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/): ?bool
     {
         $this->init();
-        $this->getModel()->sourceStatusChange($order->virtuemart_order_id);
+        $this->getModel()->sourceStatusChange((int) $order->virtuemart_order_id);
 
         // We return null as we do not want to influence the return value of
         // VirtueMartModelOrders::updateStatusForOneOrder().

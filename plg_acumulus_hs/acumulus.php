@@ -86,7 +86,10 @@ class plgHikashopAcumulus extends CMSPlugin
              *   through the MVCFactory instead.
              * @noinspection PhpFieldAssignmentTypeMismatchInspection
              */
-            $this->controller = BaseController::getInstance('Acumulus', ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']);
+            $this->controller = BaseController::getInstance(
+                'Acumulus',
+                ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']
+            );
         }
         return $this->controller;
     }

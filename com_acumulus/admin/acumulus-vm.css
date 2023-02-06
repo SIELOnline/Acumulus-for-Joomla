@@ -1,5 +1,38 @@
 /*
  * Invoice status overview for virtuemart.
+ *
+ * css path VM3-J3:
+ * html
+ * body.admin.com_virtuemart.view-orders.layout-order.task-edit.itemid-0
+ * div.row-fluid
+ * div.span12
+ * div#acumulus-invoice.form-horizontal.acumulus-area
+ *
+ * css path VM4-J4:
+ * html
+ * body.admin.com_virtuemart.view-orders.layout-default.task-edit
+ * ...
+ * div.row
+ * div.col-md-12
+ * ...
+ * div#vm-order-payment.uk-card.uk-card-small.uk-card-vm
+ * ...
+ * div#acumulus-invoice.form-horizontal.acumulus-area.uk-grid-margin.uk-first-column
+ *
+ * css path VM4-J3:
+ * html
+ * ...
+ * body.admin.com_virtuemart.view-orders.layout-order.task-edit.itemid-0
+ * ...
+ * div.row-fluid
+ * div.span12
+ * ...
+ * div#vm-order-payment.uk-card.uk-card-small.uk-card-vm
+ * ...
+ * div#acumulus-invoice.form-horizontal.acumulus-area.uk-grid-margin.uk-first-column
+ * fieldset.adminform
+ * div.control-group
+ * div#Order_25_invoice_amount.controls
  */
 /* VM3 on J3 */
 #order-items-table + table td + td {
@@ -7,6 +40,40 @@
     flex-direction: column-reverse;
 }
 /* end of VM3 on J3 */
+
+/* VM4 on J4: #vm-order-payment is new in VM4 */
+#vm-order-payment #acumulus-invoice {
+    margin-top: 46px;
+}
+
+#vm-order-payment #acumulus-invoice legend {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-position-y: 10px;
+    padding-left: 40px;
+    font-size: 1.2rem;
+}
+
+#vm-order-payment #acumulus-invoice .control-group {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* .col-md-12 is specific to J4 */
+.col-md-12 #vm-order-payment #acumulus-invoice [id$="_invoice_amount"] {
+    float: left;
+}
+
+#vm-order-payment #acumulus-invoice .acumulus-links ~ .controls  {
+    margin-top: 0;
+    min-width: auto;
+}
+
+#vm-order-payment #acumulus-invoice .acumulus-links + .controls {
+    margin-left: 180px;
+    min-width: auto;
+}
+/* end of VM4 on J4 */
 
 #acumulus-invoice {
     margin-top: 16px;
@@ -18,7 +85,8 @@
     border: none;
 }
 
-#acumulus-invoice .adminform > legend {
+#acumulus-invoice .adminform > legend,
+#acumulus-invoice .options-form > legend {
     background-image: url("./media/siel-logo.svg");
     background-size: 32px 32px;
     background-repeat: no-repeat;
@@ -44,7 +112,7 @@
     padding-top: 0;
 }
 
-/* VM4 on J3 */
+/* VM4 on J3/J4 */
 #vm-order-payment .uk-grid {
     flex-direction: column-reverse;
 }
@@ -56,5 +124,4 @@
 #acumulus-invoice .acumulus-links + .controls {
     float: left;
 }
-
 /* End of VM4 on J3 */

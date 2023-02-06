@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="plugin" group="vmcoupon" version="3.10" method="upgrade">
+<extension type="plugin" group="vmextended" version="3.10" method="upgrade">
     <name>Acumulus plugin voor VirtueMart</name>
     <creationDate>October 2015</creationDate>
     <author>Buro RaDer</author>
@@ -9,8 +9,8 @@
     <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
     <!--  The version string is recorded in the extension table -->
     <version>7.6.3</version>
-    <description>Verstuurt VirtueMart facturen automatisch naar Acumulus bij door u ingestelde bestelstatussen.</description>
-
+    <description>Dez plugin verstuurt VirtueMart facturen automatisch naar Acumulus bij door u ingestelde bestelstatussen
+        en toont de status van de Acumulus-factuur op het scherm met de details van een bestelling.</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>
     </files>

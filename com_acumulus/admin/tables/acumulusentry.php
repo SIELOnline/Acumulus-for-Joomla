@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
 class AcumulusTableAcumulusEntry extends Table
 {
     public ?int $id;
-    public ?string $entry_id;
+    public ?int $entry_id;
     public ?string $token;
     public ?string $source_type;
     public ?int $source_id;

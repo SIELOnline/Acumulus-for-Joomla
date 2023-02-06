@@ -93,7 +93,8 @@ class AcumulusView extends JViewLegacy
             $wrapperBefore = "<form id='adminForm' action='$action' method='post' class='adminform form-horizontal acumulus-area'>";
             $wrapperAfter = JHtml::_('form.token') . '</form>';
         } else {
-            $wrapperBefore = "<div id='$id' class='form-horizontal acumulus-area' data-acumulus-url='$action' data-acumulus-token='$token' data-acumulus-wait='$wait' >";
+            $wrapperBefore = "<div id='$id' class='form-horizontal acumulus-area' "
+            . "data-acumulus-url='$action' data-acumulus-token='$token' data-acumulus-wait='$wait' >";
             $wrapperAfter = '</div>';
         }
 
