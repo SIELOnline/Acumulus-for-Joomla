@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Table\Table;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Helpers\Container;
 
@@ -34,16 +35,18 @@ class com_acumulusInstallerScript
      * This method checks:
      * - The Joomla version against the version attribute in the manifest.
      * - If this is not a downgrade of this module.
-     * - If VirtueMart is installed.
-     * - The VirtueMart against the minVirtueMartVersion element in the manifest.
+     * - If VirtueMart or HikaShop are installed.
+     * - The VirtueMart version against the minVirtueMartVersion element in the
+     *   manifest.
+     * - OR The HikaShop version against the minHikaShopVersion element in the
+     *   manifest.
      * - The dependencies on PHP extensions of this module.
      *
      * @param string $type
-     *   The type of change (install, update or discover_install)
+     *   The type of change (install, update or discover_install).
      * @param \Joomla\CMS\Installer\Adapter\ComponentAdapter $parent
      *   The installer object calling this method.
      *
-     * @noinspection PhpDocMissingThrowsInspection
      * @noinspection PhpDeprecationInspection AdapterInstance:
      *   5.0 Will be removed without replacement.
      */
@@ -70,8 +73,18 @@ class com_acumulusInstallerScript
                 return false;
             }
             if ($type === 'update') {
-                $currentInfo = json_decode($parent->get('extension')->manifest_cache, true);
-                $this->currentVersion = $currentInfo['version'];
+                /** @var \Joomla\CMS\Table\Extension $extension */
+                /** @noinspection PhpDeprecationInspection : Deprecated as of J4 */
+                $extension = Table::getInstance('extension');
+
+                $id = $extension->find(['element' => 'com_acumulus', 'type' => 'component']);
+                if (!empty($id) && $extension->load($id)) {
+                    /** @noinspection PhpUndefinedFieldInspection */
+                    $componentInfo = json_decode($extension->manifest_cache, true);
+                    $this->currentVersion = $componentInfo['version'];
+                } else {
+                    $this->currentVersion = '1.0';
+                }
                 // Check downgrade.
                 if (version_compare($this->newVersion, $this->currentVersion, '<')) {
                     Installer::getInstance()->abort(
@@ -131,6 +144,7 @@ class com_acumulusInstallerScript
                 // Installing from the zip.
                 $libraryPath = "$componentPath/admin";
             }
+            /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
             JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
             $this->container = new Container($shopNamespace, 'en');
             $errors = $this->container->getRequirements()->check();
@@ -187,8 +201,6 @@ class com_acumulusInstallerScript
      *
      * param \Joomla\CMS\Installer\Installer $parent
      *   The installer object calling this method.
-     *
-     * @noinspection PhpDocMissingThrowsInspection
      */
     public function uninstall(/*Installer $parent*/): void
     {
