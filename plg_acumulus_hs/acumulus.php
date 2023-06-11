@@ -110,7 +110,7 @@ class plgHikashopAcumulus extends CMSPlugin
     public function onAfterOrderUpdate(object $order/*, &$send_email*/): bool
     {
         $this->init();
-        $this->getModel()->sourceStatusChange($order->order_id);
+        $this->getModel()->sourceStatusChange((int) $order->order_id);
         return true;
     }
 
@@ -132,7 +132,7 @@ class plgHikashopAcumulus extends CMSPlugin
         if ($type === 'order_back_show') {
             $this->init();
             if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
-                $this->getController()->invoice($order->order_id);
+                $this->getController()->invoice((int) $order->order_id);
             }
         }
         return true;
