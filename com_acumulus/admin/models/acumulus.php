@@ -3,7 +3,7 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
-  *
+ *
  * @noinspection AutoloadingIssuesInspection
  */
 
@@ -35,12 +35,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
 
     public function __construct(array $config = [])
     {
-        // Get access to our classes via the autoloader.
-        /**
-         * @noinspection PhpMethodParametersCountMismatchInspection : J3 has 5
-         *   parameters.
-         */
-        JLoader::registerNamespace('Siel\\Acumulus', __DIR__ . '/../lib/siel/acumulus/src', false, false, 'psr4');
+        require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 
         parent::__construct($config);
         if ($this->loadVirtueMart()) {
@@ -123,7 +118,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
         $db = Factory::getDbo();
         $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $enabled = $db->loadResult();
-        return (int) $enabled === 1;
+        return ((int) $enabled) === 1;
     }
 
     /**
@@ -141,7 +136,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
         return $this->getAcumulusContainer()->getTranslator()->get($key);
     }
 
-    protected function getAcumulusContainer(): Container
+    public function getAcumulusContainer(): Container
     {
         return $this->container;
     }

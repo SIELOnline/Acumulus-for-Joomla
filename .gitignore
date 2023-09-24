@@ -12,5 +12,6 @@ interdiff.txt
 /*.zip
 packages/*
 
-# Library
+# Library (old and new location)
 com_acumulus/admin/lib/
+com_acumulus/admin/vendor/
