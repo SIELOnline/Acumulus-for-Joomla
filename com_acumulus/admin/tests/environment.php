@@ -6,15 +6,10 @@
 declare(strict_types=1);
 
 /**
- * File that sets environment variables for our PHPUnit tests.
- * - WP_TESTS_INSTALLATION={path to WP installation};
- *   (We can use different WP core installs, e.g. to test different versions,
- *   for now we stick to the version our plugin is installed into).
- * - WP_TESTS_CONFIG_FILE_PATH={path and name to wp-tests-config.php}
- *   (includes/bootstrap.php expects this as a constant).
- * - WP_TESTS_DIR={path to the data and includes folders from the WordPress test framework}
- * - WP_TESTS_SKIP_INSTALL=1; {1 = skip install, 0 = reinstall tables}
+ * File that sets environment/global variables for our PHPUnit tests.
  */
+
+const _JEXEC = 1;
 
 // Set the admin path, unaware that our plugin may be symlinked.
 $administratorPath = dirname(__DIR__, 2);
@@ -29,4 +24,12 @@ if (is_array($argv)) {
         $bootstrapFile = $argv[$i + 1];
         $administratorPath = substr($bootstrapFile, 0, strpos($bootstrapFile, 'administrator')) . 'administrator';
     }
+}
+
+// HikaShop assumes we are in a web request and utilises {@see Joomla\CMS\Uri\Uri}.
+if (!isset($_SERVER['HTTP_HOST'])) {
+    $_SERVER['HTTP_HOST'] = 'localhost';
+}
+if (!isset($_SERVER['SCRIPT_NAME'])) {
+    $_SERVER['SCRIPT_NAME'] = '/administrator/index.php';
 }

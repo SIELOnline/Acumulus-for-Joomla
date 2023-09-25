@@ -7,9 +7,18 @@
  * "all" our MVC classes (rename, use namespaces, ...) and that would make our component
  * run only on J4, and it is too early for that (sep. 2023) (or we could make 2 versions)
  *
- * Note: if we run into other problems with setting up a working instance,have a look at
- *   https://github.com/joomla/test-integration/blob/master/bootstrap.php, to see how it
- *   it is done there.
+ * Notes
+ * - If we run into other problems with setting up a working instance, have a look at
+ *   {@link https://github.com/joomla/test-integration/blob/master/bootstrap.php}, to see
+ *   how it is done there.
+ * - With HikaShop we run into an error because the ConsoleApplication does not offer
+ *   a getDocument() method. Replace line 1638 of
+ *   administrator/components/com_hikashop/helpers/helper.php with:
+ *      try {
+ *          $document = $app->getDocument();
+ *      } catch (Throwable $e) {
+ *          $document = null;
+ *      }
  *
  * @noinspection PhpIllegalPsrClassPathInspection  Bootstrap file is loaded directly.
  */
@@ -24,11 +33,8 @@ declare(strict_types=1);
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
-use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
-
-const _JEXEC = 1;
 
 /**
  * Class AcumulusTestsBootstrap bootstraps the Acumulus tests.
