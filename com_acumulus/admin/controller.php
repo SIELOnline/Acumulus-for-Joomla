@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Manifest\PackageManifest;
 use Joomla\CMS\Language\Text;
@@ -32,17 +32,16 @@ class AcumulusController extends BaseController
 {
     protected AcumulusModelAcumulus $model;
     /**
-     * @todo: check in J4: consequences for return type of getApp()!
-     * @var \Joomla\CMS\Application\CMSApplication|\CMSApplicationInterface|null
+     * @todo: J4: BaseController already defines this property and assigns it in the
+     *   constructor. No more need to define it here, nor assign it in the getter.
+     * @var \Joomla\CMS\Application\CMSApplicationInterface|\CMSApplicationInterface|null
      */
     protected $app;
 
     /**
-     * @return \Joomla\CMS\Application\CMSApplication
-     *
      * @throws \Exception
      */
-    public function getApp(): CMSApplication
+    protected function getApp(): CMSApplicationInterface
     {
         if (!isset($this->app)) {
             $this->app = Factory::getApplication();
