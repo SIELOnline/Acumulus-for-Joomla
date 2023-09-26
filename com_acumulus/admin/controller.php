@@ -108,6 +108,34 @@ class AcumulusController extends BaseController
     }
 
     /**
+     * Executes the com_acumulus/settings task.
+     *
+     * @return \Joomla\CMS\MVC\Controller\BaseController
+     *
+     * @throws \Throwable
+     */
+    public function settings(): BaseController
+    {
+        $this->checkAuthorisation();
+        $this->executeTask();
+        return $this;
+    }
+
+    /**
+     * Executes the com_acumulus/mappings task.
+     *
+     * @return \Joomla\CMS\MVC\Controller\BaseController
+     *
+     * @throws \Throwable
+     */
+    public function mappings(): BaseController
+    {
+        $this->checkAuthorisation();
+        $this->executeTask();
+        return $this;
+    }
+
+    /**
      * Executes the com_acumulus/config task.
      *
      * @return \Joomla\CMS\MVC\Controller\BaseController

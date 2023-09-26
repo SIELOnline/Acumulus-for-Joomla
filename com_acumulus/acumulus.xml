@@ -34,9 +34,12 @@
         <menu img="./media/logo-acumulus-16.png">Acumulus</menu>
         <submenu>
             <menu link="option=com_acumulus&amp;task=batch" img="./media/logo-acumulus-16.png">Batchverzending</menu>
+            <menu link="option=com_acumulus&amp;task=settings" img="./media/logo-acumulus-16.png">Instellingen</menu>
+            <menu link="option=com_acumulus&amp;task=mappings" img="./media/logo-acumulus-16.png">Veldverwijzingen</menu>
             <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Instellingen</menu>
             <menu link="option=com_acumulus&amp;task=advanced" img="./media/logo-acumulus-16.png">Geavanceerde instellingen</menu>
             <menu link="option=com_acumulus&amp;task=activate" img="./media/logo-acumulus-16.png">Activeer Acumulus pro-support</menu>
+            <menu link="option=com_acumulus&amp;task=register" img="./media/logo-acumulus-16.png">Registreer een nieuw Acumulus account</menu>
         </submenu>
         <!-- Administration Main File Copy Section -->
         <files folder="admin">

@@ -9,11 +9,12 @@
   <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
   <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
   <!--  The version string is recorded in the extension table -->
-  <version>7.6.8</version>
+  <version>8.0.3</version>
   <description>Acumulus package voor VirtueMart en HikaShop</description>
 
   <files folder="packages">
     <file type="component" id="com_acumulus" >com_acumulus.zip</file>
+    <file type="plugin" id="acumulus" group="system">plg_acumulus_system.zip</file>
     <file type="plugin" id="acumulus" group="vmextended">plg_acumulus_vm.zip</file>
     <file type="plugin" id="acumulus" group="hikashop">plg_acumulus_hs.zip</file>
   </files>
