@@ -57,11 +57,12 @@
             <filename>leesmij-indien-hulp-nodig.txt</filename>
             <filename>license.txt</filename>
             <filename>licentie-nl.pdf</filename>
-            <folder>lib</folder>
+            <folder>language</folder>
             <folder>media</folder>
             <folder>models</folder>
             <folder>sql</folder>
             <folder>tables</folder>
+            <folder>vendor</folder>
             <folder>views</folder>
         </files>
         <languages folder="admin">

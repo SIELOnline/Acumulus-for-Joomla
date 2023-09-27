@@ -136,16 +136,26 @@ class com_acumulusInstallerScript
             // Check extension requirements.
             // Get access to our classes via the auto loader.
             $componentPath = __DIR__;
-            if (is_dir("$componentPath/lib")) {
+//            if (is_dir("$componentPath/lib")) {
+//                // Installing directly from administrator/components/com_acumulus:
+//                // probably via the discovery feature of the extension manager.
+//                $libraryPath = $componentPath;
+//            } else /* if (is_dir("$componentPath/admin/lib")) */ {
+//                // Installing from the zip.
+//                $libraryPath = "$componentPath/admin";
+//            }
+//            /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
+//            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
+            // we now load the autoloader from vendor
+            if (is_dir("$componentPath/vendor")) {
                 // Installing directly from administrator/components/com_acumulus:
                 // probably via the discovery feature of the extension manager.
-                $libraryPath = $componentPath;
-            } else /* if (is_dir("$componentPath/admin/lib")) */ {
+                $autoload = "$componentPath/vendor/autoload.php";
+            } else /* if (is_dir("$componentPath/admin/vendor")) */ {
                 // Installing from the zip.
-                $libraryPath = "$componentPath/admin";
+                $autoload = "$componentPath/admin/vendor/autoload.php";
             }
-            /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
-            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
+            require_once $autoload;
             $this->container = new Container($shopNamespace, 'en');
             $errors = $this->container->getRequirements()->check();
             $abortMessage = '';
