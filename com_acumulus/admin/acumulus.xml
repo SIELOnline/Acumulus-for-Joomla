@@ -8,7 +8,7 @@
     <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
     <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
     <!--  The version string is recorded in the components table -->
-    <version>7.6.8</version>
+    <version>8.0.3</version>
     <description>Acumulus koppeling voor VirtueMart of HikaShop</description>
     <!-- Minimal VirtueMart or HikaShop version we require. -->
     <minVirtueMartVersion>3.0.8</minVirtueMartVersion>
@@ -36,7 +36,7 @@
             <menu link="option=com_acumulus&amp;task=batch" img="./media/logo-acumulus-16.png">Batchverzending</menu>
             <menu link="option=com_acumulus&amp;task=settings" img="./media/logo-acumulus-16.png">Instellingen</menu>
             <menu link="option=com_acumulus&amp;task=mappings" img="./media/logo-acumulus-16.png">Veldverwijzingen</menu>
-            <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Instellingen</menu>
+            <menu link="option=com_acumulus&amp;task=config" img="./media/logo-acumulus-16.png">Configuratie</menu>
             <menu link="option=com_acumulus&amp;task=advanced" img="./media/logo-acumulus-16.png">Geavanceerde instellingen</menu>
             <menu link="option=com_acumulus&amp;task=activate" img="./media/logo-acumulus-16.png">Activeer Acumulus pro-support</menu>
             <menu link="option=com_acumulus&amp;task=register" img="./media/logo-acumulus-16.png">Registreer een nieuw Acumulus account</menu>

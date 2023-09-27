@@ -6,14 +6,16 @@
  *
  * @noinspection PhpUnused
  * @noinspection PhpDeprecationInspection
+ * @noinspection PhpMultipleClassDeclarationsInspection  JFactory gets conditionally
+ *   defined in many hikashop source files.
  */
 
 declare(strict_types=1);
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Table\Table;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Helpers\Container;
@@ -44,13 +46,13 @@ class com_acumulusInstallerScript
      *
      * @param string $type
      *   The type of change (install, update or discover_install).
-     * @param \Joomla\CMS\Installer\Adapter\ComponentAdapter $parent
+     * @param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The installer object calling this method.
      *
      * @noinspection PhpDeprecationInspection AdapterInstance:
      *   5.0 Will be removed without replacement.
      */
-    public function preflight(string $type, ComponentAdapter $parent): bool
+    public function preflight(string $type, InstallerAdapter $parent): bool
     {
         try {
             $this->newVersion = (string) $parent->getManifest()->version;
@@ -88,7 +90,8 @@ class com_acumulusInstallerScript
                 // Check downgrade.
                 if (version_compare($this->newVersion, $this->currentVersion, '<')) {
                     Installer::getInstance()->abort(
-                        "The Acumulus component ($this->currentVersion) cannot be downgraded to $this->newVersion.");
+                        "The Acumulus component ($this->currentVersion) cannot be downgraded to $this->newVersion."
+                    );
                     return false;
                 }
                 // Check VM plugin move.
@@ -128,7 +131,8 @@ class com_acumulusInstallerScript
                     }
                 } else {
                     Installer::getInstance()->abort(
-                        "The Acumulus component $this->newVersion requires VirtueMart or HikaShop to be installed and enabled.");
+                        "The Acumulus component $this->newVersion requires VirtueMart or HikaShop to be installed and enabled."
+                    );
                     return false;
                 }
                 $shopNamespace = 'Joomla\\HikaShop';
@@ -136,26 +140,16 @@ class com_acumulusInstallerScript
             // Check extension requirements.
             // Get access to our classes via the auto loader.
             $componentPath = __DIR__;
-//            if (is_dir("$componentPath/lib")) {
-//                // Installing directly from administrator/components/com_acumulus:
-//                // probably via the discovery feature of the extension manager.
-//                $libraryPath = $componentPath;
-//            } else /* if (is_dir("$componentPath/admin/lib")) */ {
-//                // Installing from the zip.
-//                $libraryPath = "$componentPath/admin";
-//            }
-//            /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
-//            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
-            // we now load the autoloader from vendor
-            if (is_dir("$componentPath/vendor")) {
+            if (is_dir("$componentPath/lib")) {
                 // Installing directly from administrator/components/com_acumulus:
                 // probably via the discovery feature of the extension manager.
-                $autoload = "$componentPath/vendor/autoload.php";
-            } else /* if (is_dir("$componentPath/admin/vendor")) */ {
+                $libraryPath = $componentPath;
+            } else /* if (is_dir("$componentPath/admin/lib")) */ {
                 // Installing from the zip.
-                $autoload = "$componentPath/admin/vendor/autoload.php";
+                $libraryPath = "$componentPath/admin";
             }
-            require_once $autoload;
+            /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
+            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
             $this->container = new Container($shopNamespace, 'en');
             $errors = $this->container->getRequirements()->check();
             $abortMessage = '';
@@ -181,12 +175,12 @@ class com_acumulusInstallerScript
     /**
      * Method to install the extension.
      *
-     * @param \Joomla\CMS\Installer\Adapter\ComponentAdapter $parent
+     * @param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The installer object calling this method.
      *
      * @throws \Exception
      */
-    public function install(ComponentAdapter $parent): void
+    public function install(InstallerAdapter $parent): void
     {
         try {
             $version = (string) $parent->getManifest()->version;// Set initial config version.
@@ -196,7 +190,7 @@ class com_acumulusInstallerScript
             }
             $shopName = $this->getVersion('com_virtuemart') !== '' ? 'VirtueMart' : 'HikaShop';
             JFactory::getApplication()->enqueueMessage(
-                "The Acumulus component ($version) has been installed. ".
+                "The Acumulus component ($version) has been installed. " .
                 "Please fill in the settings form and enable the Acumulus plugin for $shopName.",
                 'message'
             );
@@ -209,10 +203,10 @@ class com_acumulusInstallerScript
     /**
      * Method to uninstall the extension.
      *
-     * param \Joomla\CMS\Installer\Installer $parent
+     * param Joomla\CMS\Installer\InstallerAdapter $parent
      *   The installer object calling this method.
      */
-    public function uninstall(/*Installer $parent*/): void
+    public function uninstall(/*InstallerAdapter $parent*/): void
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         JFactory::getApplication()->enqueueMessage('The Acumulus component has been uninstalled.');
@@ -221,12 +215,12 @@ class com_acumulusInstallerScript
     /**
      * Method to update the extension.
      *
-     * param \Joomla\CMS\Installer\Adapter\ComponentAdapter $parent
+     * param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The installer object calling this method.
      *
      * @throws \Exception
      */
-    public function update(/*ComponentAdapter $parent*/): void
+    public function update(/*InstallerAdapter $parent*/): void
     {
         try {
             // The autoloader should have been set by the preflight method.
