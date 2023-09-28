@@ -25,6 +25,8 @@
 
 declare(strict_types=1);
 
+const _JEXEC = 1;
+
 /**
  * Constant that is checked in included files to prevent direct access.
  * define() is used rather than "const" to not error for PHP 5.2 and lower
@@ -99,6 +101,14 @@ class AcumulusTestsBootstrap
      */
     public function execute(): void
     {
+        // HikaShop assumes we are in a web request and utilises {@see Joomla\CMS\Uri\Uri}.
+        if (!isset($_SERVER['HTTP_HOST'])) {
+            $_SERVER['HTTP_HOST'] = 'localhost';
+        }
+        if (!isset($_SERVER['SCRIPT_NAME'])) {
+            $_SERVER['SCRIPT_NAME'] = '/administrator/index.php';
+        }
+
         // From app.php
         $administratorPath = $this->getAdministratorPath();
 
@@ -144,6 +154,11 @@ class AcumulusTestsBootstrap
         // restructure "all" our MVC classes (rename, use namespaces, ...) and that would
         // make our component run only on J4, and it is too early for that (sep. 2023).
         $this->factory = new LegacyFactory();
+
+        // Start the session before the ConsoleApp starts outputting "headers" and we get
+        // an error "Failed to start the session because headers have already been sent
+        // by ..." from {@see// Joomla\Session\Storage\NativeStorage::start()}
+        $app->getSession()->get('user');
 
         $this->load_acumulus();
     }

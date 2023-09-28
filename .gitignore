@@ -1,3 +1,17 @@
+# Ignore dependencies that are managed with Composer.
+# We only want to commit our own stuff, that is unique to this project. So we do not
+# commit the vendor directory, not even autoload.php and vendor/siel/acumulus. If you want
+# to use this project from GitHub instead of via https://extensions.joomla.org/, you will
+# have to run "composer update --no-dev" yourself.
+composer.lock
+# Library (old and new location)
+com_acumulus/admin/lib/
+com_acumulus/admin/vendor/
+
+# Test artifacts that we do not store
+/tests/.phpunit.result.cache
+**.latest.json
+
 # patches, diffs, merges
 *.patch
 interdiff.txt
@@ -12,6 +26,3 @@ interdiff.txt
 /*.zip
 packages/*
 
-# Library (old and new location)
-com_acumulus/admin/lib/
-com_acumulus/admin/vendor/
