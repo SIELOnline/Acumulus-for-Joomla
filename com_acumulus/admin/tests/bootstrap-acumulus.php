@@ -34,6 +34,7 @@ const _JEXEC = 1;
 
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
 use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
@@ -142,8 +143,21 @@ class AcumulusTestsBootstrap
             ->alias(Session::class, 'session.web.administrator')
             ->alias(SessionInterface::class, 'session.web.administrator');
 
-        // Instantiate the application.
+        // Instantiate the application: assure we use the nl-NL language.
+        /** @var Joomla\Registry\Registry $config */
+        $config = $container->get('config');
+        $config->set('language', 'nl-NL');
+        /** @var ConsoleApplication $app */
         $app = $container->get(ConsoleApplication::class);
+
+        // We have to change the name property as hikashop bases its logic in
+        // {@see \hikashopOrderClass::loadFullOrder()} on it, more specifically: loading
+        // the history is only done in the administrator app.
+        // (Code from PHP manual: ReflectionProperty::setValue())
+        $reflectionClass = new ReflectionClass($app);
+        $reflectionProperty = $reflectionClass->getProperty('name');
+        $reflectionProperty->setAccessible(true); // only required prior to PHP 8.1.0
+        $reflectionProperty->setValue($app, 'administrator');
 
         // Set the application as global app
         /** @noinspection DisallowWritingIntoStaticPropertiesInspection */
