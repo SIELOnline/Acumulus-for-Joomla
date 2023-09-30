@@ -34,7 +34,6 @@ const _JEXEC = 1;
 
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
 use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
@@ -124,6 +123,7 @@ class AcumulusTestsBootstrap
             exit;
         }
 
+        /** @noinspection PhpIncludeInspection false positive */
         require_once JPATH_BASE . '/includes/framework.php';
 
         // Boot the DI container
@@ -146,6 +146,7 @@ class AcumulusTestsBootstrap
         // Instantiate the application: assure we use the nl-NL language.
         /** @var Joomla\Registry\Registry $config */
         $config = $container->get('config');
+        /** @noinspection PhpDeprecationInspection only parameter 3 is deprecated, and we don't use that */
         $config->set('language', 'nl-NL');
         /** @var ConsoleApplication $app */
         $app = $container->get(ConsoleApplication::class);
