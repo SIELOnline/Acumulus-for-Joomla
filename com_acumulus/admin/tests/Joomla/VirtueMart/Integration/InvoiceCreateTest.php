@@ -21,7 +21,7 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
     {
         $dataPath = dirname(__FILE__, 2) . '/Data';
         return [
-//            'NL billing (consumer), FR shipping (company)' => [$dataPath, Source::Order, 34],
+            'FR company without VAT number' => [$dataPath, Source::Order, 25],
         ];
     }
 

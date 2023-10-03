@@ -21,7 +21,7 @@
         "altCountryAutoName": 2,
         "altMeta-address-type": "shipping",
         "altMeta-shop-country-name": "France",
-        "meta-vat-based-on-shop": "billing",
+        "meta-shop-vat-based-on": "billing",
         "meta-main-address": "invoice",
         "invoice": {
             "concept": 0,
@@ -106,6 +106,7 @@
                     "vatamount": 0.0,
                     "meta-vatrate-source": "creator-lookup",
                     "meta-vatclass-name": "BTW 0%",
+                    "meta-vatrate-lookup": 0.0,
                     "meta-line-type": "shipping",
                     "unitpriceinc": 1.1174764240653463,
                     "meta-fields-calculated": "['unitpriceinc']"
@@ -140,7 +141,7 @@
                     "meta-vatclass-id": "tax_1451471968_11993",
                     "meta-vatclass-name": "BTW Laag",
                     "meta-line-type": "payment",
-                    "meta-vatrate-range-matches": "[{'vatrate':9.0,'vattype':1}]",
+                    "meta-vatrate-range-matches": "[{'vatrate':'9.0000','vattype':1}]",
                     "meta-recalculate-old-price": 0.25,
                     "meta-did-recalculate": true
                 }

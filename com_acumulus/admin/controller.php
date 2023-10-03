@@ -20,8 +20,8 @@ use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Uri\Uri;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
-use Siel\Acumulus\Helpers\Util;
 use Siel\Acumulus\Invoice\Source;
+use Siel\Acumulus\Meta;
 
 defined('_JEXEC') or die;
 
@@ -329,7 +329,7 @@ class AcumulusController extends BaseController
             $manifest_cache->version = $manifest->version;
             // Reload as the upgrade may have changed the config.
             $extensionTable->load(['element' => 'com_acumulus']);
-            $extensionTable->set('manifest_cache', json_encode($manifest_cache, Util::JsonFlags));
+            $extensionTable->set('manifest_cache', json_encode($manifest_cache, Meta::JsonFlags));
             $extensionTable->store();
             $this->setRedirect(Route::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
         } else {

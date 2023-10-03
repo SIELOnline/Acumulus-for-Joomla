@@ -9,16 +9,14 @@
  *
  * Notes
  * - If we run into other problems with setting up a working instance, have a look at
- *   {@link https://github.com/joomla/test-integration/blob/master/bootstrap.php}, to see
- *   how it is done there.
- * - With HikaShop we run into an error because the ConsoleApplication does not offer
- *   a getDocument() method. Replace line 1638 of
- *   administrator/components/com_hikashop/helpers/helper.php with:
- *      try {
- *          $document = $app->getDocument();
- *      } catch (Throwable $e) {
- *          $document = null;
- *      }
+ *   https://github.com/joomla/test-integration/blob/master/bootstrap.php, to see how it
+ *   is done there.
+ * - We got an error Class 'Joomla\Component\Templates\Administrator\Extension\TemplatesComponent'
+ *   not found" error on HS4 + J4.2. The page on
+ *   https://joomla.stackexchange.com/questions/32688/4-1-4-2-attempted-to-load-class-templatecomponent-from-namespace-joomla-com
+ *   contained the solution: explicitly register that namespace.
+ * - Getting the language of the country name right requires to set the language in the
+ *   Config. To get it right in our component requires ot set it in the Application.
  *
  * @noinspection PhpIllegalPsrClassPathInspection  Bootstrap file is loaded directly.
  */
@@ -32,8 +30,9 @@ const _JEXEC = 1;
  * define() is used rather than "const" to not error for PHP 5.2 and lower
  */
 
-use Joomla\CMS\Application\ConsoleApplication;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
 use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
@@ -109,9 +108,8 @@ class AcumulusTestsBootstrap
             $_SERVER['SCRIPT_NAME'] = '/administrator/index.php';
         }
 
-        // From app.php
         $administratorPath = $this->getAdministratorPath();
-
+        // From app.php
         if (!defined('JPATH_BASE')) {
             define('JPATH_BASE', $administratorPath);
         }
@@ -123,7 +121,7 @@ class AcumulusTestsBootstrap
             exit;
         }
 
-        /** @noinspection PhpIncludeInspection false positive */
+        /** @noinspection PhpIncludeInspection false positive, however, not in HS? */
         require_once JPATH_BASE . '/includes/framework.php';
 
         // Boot the DI container
@@ -143,24 +141,21 @@ class AcumulusTestsBootstrap
             ->alias(Session::class, 'session.web.administrator')
             ->alias(SessionInterface::class, 'session.web.administrator');
 
-        // Instantiate the application: assure we use the nl-NL language.
+        // Ensure we (and other code) use the nl-NL language.
         /** @var Joomla\Registry\Registry $config */
         $config = $container->get('config');
+        /** @var LanguageFactoryInterface $languageFactory */
+        $languageFactory = $container->get(LanguageFactoryInterface::class);
+        $locale = 'nl-NL';
         /** @noinspection PhpDeprecationInspection only parameter 3 is deprecated, and we don't use that */
-        $config->set('language', 'nl-NL');
-        /** @var ConsoleApplication $app */
-        $app = $container->get(ConsoleApplication::class);
+        $config->set('language', $locale);
+        $language = $languageFactory->createLanguage($locale);
 
-        // We have to change the name property as hikashop bases its logic in
-        // {@see \hikashopOrderClass::loadFullOrder()} on it, more specifically: loading
-        // the history is only done in the administrator app.
-        // (Code from PHP manual: ReflectionProperty::setValue())
-        $reflectionClass = new ReflectionClass($app);
-        $reflectionProperty = $reflectionClass->getProperty('name');
-        $reflectionProperty->setAccessible(true); // only required prior to PHP 8.1.0
-        $reflectionProperty->setValue($app, 'administrator');
-
-        // Set the application as global app
+        // Instantiate the application.
+        /** @var AdministratorApplication $app */
+        $app = $container->get(AdministratorApplication::class);
+        $app->loadLanguage($language);
+        // And set it as global app.
         /** @noinspection DisallowWritingIntoStaticPropertiesInspection */
         Factory::$application = $app;
 
@@ -175,6 +170,9 @@ class AcumulusTestsBootstrap
         // by ..." from {@see// Joomla\Session\Storage\NativeStorage::start()}
         $app->getSession()->get('user');
 
+        // This line prevents a "Class 'Joomla\Component\Templates\Administrator\Extension\TemplatesComponent'
+        // not found" error on HS4 + J4.2
+        JLoader::registerNamespace('Joomla\Component\Templates\Administrator', JPATH_ADMINISTRATOR . '/components/com_templates/src');
         $this->load_acumulus();
     }
 
