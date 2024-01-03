@@ -8,7 +8,7 @@
     <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
     <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
     <!--  The version string is recorded in the extension table -->
-    <version>8.0.3</version>
+    <version>8.1.0</version>
     <description>Deze plugin verbergt menu-items gebaseerd op interne status (usesNewCode)</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>
