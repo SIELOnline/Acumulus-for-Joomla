@@ -18,7 +18,7 @@ class InitTest extends Acumulus_Joomla_TestCase
      * A single test to see if the test framework (including the plugins) has been
      * initialized correctly:
      * 1 We have access to the Container.
-     * 2 WooCommerce has been initialized.
+     * 2 Joomla and a shop have been initialized.
      */
     public function testInit(): void
     {
