@@ -100,8 +100,19 @@ class com_acumulusInstallerScript
                 ) {
                     JFactory::getApplication()->enqueueMessage(
                         'The Acumulus plugin for VirtueMart has been moved from folder "vmcoupon" to "vmextended". ' .
-                        'The update did not remove the plugin from the old folder.' .
+                        'The update did not remove the plugin from the old folder. ' .
                         'Please go to "Extensions - Manage" and uninstall the Acumulus plugin at folder "vmcoupon".',
+                        'warning'
+                    );
+                }
+                // Check VM plugin move.
+                if (version_compare($this->currentVersion, '8.1.0', '<')
+                    && version_compare($this->newVersion, '8.1.3', '>=')
+                ) {
+                    JFactory::getApplication()->enqueueMessage(
+                        'The library for the Acumulus plugin has been moved from folder "lib" to "vendor". ' .
+                        'The update did not remove the old folder. ' .
+                        'Please manually remove the folder administrator/components/com_acumulus/lib on your server".',
                         'warning'
                     );
                 }
@@ -140,7 +151,7 @@ class com_acumulusInstallerScript
             // Check extension requirements.
             // Get access to our classes via the auto loader.
             $componentPath = __DIR__;
-            if (is_dir("$componentPath/lib")) {
+            if (is_dir("$componentPath/vendor")) {
                 // Installing directly from administrator/components/com_acumulus:
                 // probably via the discovery feature of the extension manager.
                 $libraryPath = $componentPath;
@@ -149,7 +160,7 @@ class com_acumulusInstallerScript
                 $libraryPath = "$componentPath/admin";
             }
             /** @noinspection PhpMethodParametersCountMismatchInspection  Parameter is needed in J3. */
-            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/lib/siel/acumulus/src', false, false, 'psr4');
+            JLoader::registerNamespace('Siel\\Acumulus', $libraryPath . '/vendor/siel/acumulus/src', false, false, 'psr4');
             $this->container = new Container($shopNamespace, 'en');
             $errors = $this->container->getRequirements()->check();
             $abortMessage = '';
