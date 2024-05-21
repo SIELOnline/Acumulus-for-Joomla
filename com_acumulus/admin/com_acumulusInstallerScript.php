@@ -106,7 +106,7 @@ class com_acumulusInstallerScript
                     );
                 }
                 // Check VM plugin move.
-                if (version_compare($this->currentVersion, '8.1.0', '<')
+                if (version_compare($this->currentVersion, '8.1.3', '<')
                     && version_compare($this->newVersion, '8.1.3', '>=')
                 ) {
                     JFactory::getApplication()->enqueueMessage(
