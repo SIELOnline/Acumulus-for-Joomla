@@ -2,12 +2,12 @@
     "name": "siel/acumulus-joomla",
     "description": "Integrates VirtueMart or HikaShop on Joomla with your Siel Acumulus online administration",
     "type": "joomla-package",
-    "version": "8.0.3",
+    "version": "8.1.4",
     "license": [
         "GPL-3.0"
     ],
     "require": {
-        "siel/acumulus": "^8.1.3",
+        "siel/acumulus": "^8.1.4",
         "ext-dom": "*",
         "ext-json": "*"
     },

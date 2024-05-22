@@ -36,17 +36,19 @@ class AcumulusController extends BaseController
      *   constructor. No more need to define it here, nor assign it in the getter.
      * @var \Joomla\CMS\Application\CMSApplicationInterface|\CMSApplicationInterface|null
      */
-    protected $app;
+    protected $joomlaApp;
 
     /**
+     * @return \Joomla\CMS\Application\CMSApplicationInterface|\Joomla\CMS\Application\BaseApplication
+     *
      * @throws \Exception
      */
-    protected function getApp(): CMSApplicationInterface
+    protected function getApp()
     {
-        if (!isset($this->app)) {
-            $this->app = Factory::getApplication();
+        if (!isset($this->joomlaApp)) {
+            $this->joomlaApp = Factory::getApplication();
         }
-        return $this->app;
+        return $this->joomlaApp;
     }
 
     /**
@@ -300,9 +302,10 @@ class AcumulusController extends BaseController
     /**
      * @inheritDoc
      *
-     * @noinspection PhpReturnDocTypeMismatchInspection
      * @return \Joomla\CMS\MVC\View\ViewInterface|\Joomla\CMS\MVC\View\HtmlView
      *   Joomla4: ViewInterface; Joomla3: HtmlView
+     *
+     * @noinspection PhpReturnDocTypeMismatchInspection
      */
     public function getView($name = '', $type = '', $prefix = '', $config = [])
     {
