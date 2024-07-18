@@ -22,7 +22,7 @@
         "altMeta-address-type": "shipping",
         "altMeta-shop-country-name": "France",
         "meta-shop-vat-based-on": "billing",
-        "meta-main-address": "invoice",
+        "meta-main-address-type": "invoice",
         "invoice": {
             "concept": 0,
             "vatType": 1,
@@ -146,11 +146,11 @@
                     "meta-did-recalculate": true
                 }
             ],
-            "meta-shop-source-type": "Order",
-            "meta-id": 34,
-            "meta-reference": "B3M4",
-            "meta-shop-source-date": "2021-01-22",
-            "meta-status": "shipped",
+            "meta-source-type": "Order",
+            "meta-source-id": 34,
+            "meta-source-reference": "B3M4",
+            "meta-source-date": "2021-01-22",
+            "meta-source-status": "shipped",
             "meta-payment-method": "8",
             "meta-shop-invoice-id": null,
             "meta-shop-invoice-reference": "L10",
