@@ -196,7 +196,7 @@ class com_acumulusInstallerScript
                 "Please fill in the settings form and enable the Acumulus plugin for $shopName.",
                 'message'
             );
-            JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=config');
+            JInstaller::getInstance()->setRedirectUrl('index.php?option=com_acumulus&task=settings');
         } catch (Throwable $e) {
             Installer::getInstance()->abort($e->getMessage());
         }
