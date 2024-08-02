@@ -26,7 +26,7 @@
         "altMeta-shop-country-code": 73,
         "altMeta-shop-country-name": "Frankrijk",
         "meta-shop-vat-based-on": "invoice",
-        "meta-main-address": "invoice",
+        "meta-main-address-type": "invoice",
         "invoice": {
             "concept": 0,
             "vatType": 6,
@@ -91,11 +91,11 @@
                     "meta-vattypes-possible": "[6]"
                 }
             ],
-            "meta-shop-source-type": "Order",
-            "meta-id": 25,
-            "meta-reference": "CNSZ027",
-            "meta-shop-source-date": "2022-04-11",
-            "meta-status": "F",
+            "meta-source-type": "Order",
+            "meta-source-id": 25,
+            "meta-source-reference": "CNSZ027",
+            "meta-source-date": "2022-04-11",
+            "meta-source-status": "F",
             "meta-payment-method": 1,
             "meta-shop-invoice-id": null,
             "meta-shop-invoice-reference": null,

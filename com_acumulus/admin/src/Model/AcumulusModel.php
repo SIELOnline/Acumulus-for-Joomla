@@ -73,9 +73,9 @@ class AcumulusModel extends AdminModel
             // Load VirtueMart: we need access to its models and data.
             // Copied from administrator/components/com_virtuemart/virtuemart.php
             if (!class_exists('VmConfig')) {
-                require_once JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php';
+                require_once JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php';
             }
-            VmConfig::loadConfig();
+            \VmConfig::loadConfig();
 
             if (!class_exists('VmController')) {
                 require_once VMPATH_ADMIN . '/helpers/vmcontroller.php';

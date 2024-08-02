@@ -2,15 +2,13 @@
 /**
  * @noinspection PhpMissingStrictTypesDeclarationInspection
  * @noinspection DuplicatedCode Proudly copied (and slightly adapted) from
- *   /administrator/ includes/app.php.
+ *   /administrator/includes/app.php.
  */
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\DI\Container;
-
-\defined('_JEXEC') or die;
 
 /**
  * AppLoader encapsulates the code we copied from app.php to start Joomla.

@@ -31,7 +31,6 @@ const _JEXEC = 1;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\LanguageFactoryInterface;
-use Siel\Joomla\Component\Acumulus\Administrator\Extension\AcumulusComponent;
 
 /**
  * Class AcumulusTestsBootstrap bootstraps the Acumulus tests.
@@ -139,56 +138,7 @@ class AcumulusTestsBootstrap
 
     private function loadCompatBehaviour(): void
     {
-        /** @noinspection ClassConstantCanBeUsedInspection */
-        $aliases = [
-            'JObject' => 'Joomla\CMS\Object\CMSObject',
-            'JTable' => 'Joomla\CMS\Table\Table',
-            'JComponentHelper' => 'Joomla\CMS\Component\ComponentHelper',
-            'JApplicationHelper' => 'Joomla\CMS\Application\ApplicationHelper',
-            'JTableContenttype' => 'Joomla\CMS\Table\ContentType',
-            'JFactory' => 'Joomla\CMS\Factory',
-            'JInstaller' => 'Joomla\CMS\Installer\Installer',
-            'JControllerLegacy' => 'Joomla\CMS\MVC\Controller\BaseController',
-            'JViewLegacy' => 'Joomla\CMS\MVC\View\HtmlView',
-            'JRoute' => 'Joomla\CMS\Router\Route',
-            'JURI' => 'Joomla\CMS\Uri\Uri',
-            'JPlugin' => 'Joomla\CMS\Plugin\CMSPlugin',
-            'JPluginHelper' => 'Joomla\CMS\Plugin\PluginHelper',
-            'JModuleHelper' => 'Joomla\CMS\Helper\ModuleHelper',
-            'JRegistry' => 'Joomla\Registry\Registry',
-            'JFilterInput' => 'Joomla\CMS\Filter\InputFilter',
-            'JFilterOutput' => 'Joomla\CMS\Filter\OutputFilter',
-            'JLanguage' => 'Joomla\CMS\Language\Language',
-            'JLanguageHelper' => 'Joomla\CMS\Language\LanguageHelper',
-            'JLanguageAssociations' => 'Joomla\CMS\Language\Associations',
-            'JText' => 'Joomla\CMS\Language\Text',
-            'JFile' => 'Joomla\CMS\Filesystem\File',
-            'JFolder' => 'Joomla\CMS\Filesystem\Folder',
-            'JPath' => 'Joomla\CMS\Filesystem\Path',
-            'JMailHelper' => 'Joomla\CMS\Mail\MailHelper',
-            'JUserHelper' => 'Joomla\CMS\User\UserHelper',
-            'JUser' => 'Joomla\CMS\User\User',
-            'JAccess' => 'Joomla\CMS\Access\Access',
-            'JSession' => 'Joomla\CMS\Session\Session',
-            'JButton' => 'Joomla\CMS\Toolbar\ToolbarButton',
-            'JToolbarHelper' => 'Joomla\CMS\Toolbar\ToolbarHelper',
-            'JToolbar' => 'Joomla\CMS\Toolbar\Toolbar',
-            'JPagination' => 'Joomla\CMS\Pagination\Pagination',
-            'JLayoutFile' => 'Joomla\CMS\Layout\FileLayout',
-            'JHTML' => 'Joomla\CMS\HTML\HTMLHelper',
-            'JHTMLSelect' => 'Joomla\CMS\HTML\Helpers\Select',
-            'JEditor' => 'Joomla\CMS\Editor\Editor',
-            'JForm' => 'Joomla\CMS\Form\Form',
-            'JFormHelper' => 'Joomla\CMS\Form\FormHelper',
-            'JFormField' => 'Joomla\CMS\Form\FormField',
-            'JUtility' => 'Joomla\CMS\Utility\Utility',
-            'JCache' => 'Joomla\CMS\Cache\Cache',
-        ];
-        foreach ($aliases as $alias => $original) {
-            if (!class_exists($alias)) {
-                class_alias($original, $alias);
-            }
-        }
+        Joomla\CMS\Plugin\PluginHelper::importPlugin('behaviour', 'compat');
     }
 }
 

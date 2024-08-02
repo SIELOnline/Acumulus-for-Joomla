@@ -93,7 +93,7 @@ class DisplayController extends BaseController
      */
     public function display($cachable = false, $urlparams = []): BaseController
     {
-        if (empty($this->task)) {
+        if (empty($this->task) || $this->task === 'display') {
             $this->task = 'batch';
             $this->batch();
         } else {
@@ -238,11 +238,15 @@ class DisplayController extends BaseController
         try {
             $form = $this->getAcumulusModel()->getAcumulusForm($this->task);
             if ($orderId !== null) {
+                /**
+                 * @noinspection PhpPossiblePolymorphicInvocationInspection  defined in
+                 *   {@see \Joomla\CMS\Application\CMSWebApplicationInterface}
+                 */
                 Factory::getApplication()->getDocument()->addScript(
                     Uri::root(true) . '/administrator/components/com_acumulus/media/acumulus-ajax.js'
                 );
                 $this->input->set('view', null);
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection  $form instanceof {@see InvoiceStatusForm} */
                 $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
             }
             if ($form->isSubmitted()) {

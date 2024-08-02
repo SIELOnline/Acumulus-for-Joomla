@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Siel\Acumulus\Tests\Integration\Joomla\Shop;
 
 use DateTime;
+use DateTimeZone;
+use Joomla\CMS\Factory;
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Shop\AcumulusEntry;
 use Siel\Acumulus\Shop\AcumulusEntryManager;
@@ -45,7 +47,8 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
     public function testCreate(Source $source): Source
     {
         $acumulusEntryManager = $this->getAcumulusEntryManager();
-        $now = new DateTime();
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $now = new DateTime('now', new DateTimeZone(Factory::getApplication()->get('offset')));
         self::assertTrue($acumulusEntryManager->save($source, AcumulusEntry::conceptIdUnknown, null));
 
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
