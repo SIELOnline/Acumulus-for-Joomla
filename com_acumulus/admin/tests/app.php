@@ -9,6 +9,8 @@ use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\DI\Container;
+use Joomla\Session\Session;
+use Joomla\Session\SessionInterface;
 
 /**
  * AppLoader encapsulates the code we copied from app.php to start Joomla.
@@ -27,6 +29,8 @@ class AppLoader
         require_once "$administratorPath/includes/defines.php";
 
         // Check for presence of vendor dependencies not included in the git repository
+        // JPATH_PUBLIC is not defined in J4.
+        defined('JPATH_PUBLIC') || define('JPATH_PUBLIC', JPATH_ROOT);
         if (!file_exists(JPATH_LIBRARIES . '/vendor/autoload.php') || !is_dir(JPATH_PUBLIC . '/media/vendor')) {
             echo file_get_contents(JPATH_ROOT . '/templates/system/build_incomplete.html');
             exit;
@@ -48,8 +52,8 @@ class AppLoader
             ->alias('session', 'session.web.administrator')
             ->alias('JSession', 'session.web.administrator')
             ->alias(\Joomla\CMS\Session\Session::class, 'session.web.administrator')
-            ->alias(\Joomla\Session\Session::class, 'session.web.administrator')
-            ->alias(\Joomla\Session\SessionInterface::class, 'session.web.administrator');
+            ->alias(Session::class, 'session.web.administrator')
+            ->alias(SessionInterface::class, 'session.web.administrator');
 
         // Instantiate the application.
         $app = $container->get(AdministratorApplication::class);
