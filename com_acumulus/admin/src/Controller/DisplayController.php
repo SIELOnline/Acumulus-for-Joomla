@@ -3,52 +3,59 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
- *
- * @noinspection AutoloadingIssuesInspection
  */
 
 declare(strict_types=1);
+
+namespace Siel\Joomla\Component\Acumulus\Administrator\Controller;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Manifest\PackageManifest;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\MVC\View\ViewInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Input\Input;
+use RuntimeException;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Meta;
-
-defined('_JEXEC') or die;
+use Siel\Joomla\Component\Acumulus\Administrator\Model\AcumulusModel;
+use Throwable;
 
 /**
  * Controller of the Acumulus component.
+ *
+ * @noinspection PhpUnused
  */
-class AcumulusController extends BaseController
+class DisplayController extends BaseController
 {
-    protected AcumulusModelAcumulus $model;
-    /**
-     * @todo: J4: BaseController already defines this property and assigns it in the
-     *   constructor. No more need to define it here, nor assign it in the getter.
-     * @var \Joomla\CMS\Application\CMSApplicationInterface|\CMSApplicationInterface|null
-     */
-    protected $joomlaApp;
+    protected AcumulusModel $model;
 
     /**
-     * @return \Joomla\CMS\Application\CMSApplicationInterface|\Joomla\CMS\Application\BaseApplication
-     *
+     * @param array $config
+     */
+    public function __construct(
+        $config = [],
+        MVCFactoryInterface $factory = null,
+        ?CMSApplicationInterface $app = null,
+        ?Input $input = null
+    ) {
+        parent::__construct($config, $factory, $app, $input);
+        $this->default_view = 'acumulus';
+    }
+
+    /**
      * @throws \Exception
      */
-    protected function getApp()
+    protected function getApp(): CMSApplicationInterface
     {
-        if (!isset($this->joomlaApp)) {
-            $this->joomlaApp = Factory::getApplication();
-        }
-        return $this->joomlaApp;
+        return $this->app;
     }
 
     /**
@@ -63,13 +70,13 @@ class AcumulusController extends BaseController
     }
 
     /**
-     * @return AcumulusModelAcumulus
+     * @return AcumulusModel
      */
-    protected function getAcumulusModel(): AcumulusModelAcumulus
+    protected function getAcumulusModel(): AcumulusModel
     {
         if (!isset($this->model)) {
             /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-            $this->model = $this->getModel('Acumulus', '', ['name' => 'Acumulus']);
+            $this->model = $this->getModel('Acumulus', 'Administrator', ['name' => 'Acumulus']);
         }
         return $this->model;
     }
@@ -229,14 +236,11 @@ class AcumulusController extends BaseController
     protected function executeTask(?int $orderId = null): BaseController
     {
         try {
-            $form = $this->getAcumulusModel()->getForm($this->task);
+            $form = $this->getAcumulusModel()->getAcumulusForm($this->task);
             if ($orderId !== null) {
-                /**
-                 * @noinspection PhpDeprecationInspection  method is not
-                 *   deprecated, only a variant with a different set of
-                 *   parameters.
-                 */
-                Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_acumulus/acumulus-ajax.js');
+                Factory::getApplication()->getDocument()->addScript(
+                    Uri::root(true) . '/administrator/components/com_acumulus/media/acumulus-ajax.js'
+                );
                 $this->input->set('view', null);
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
@@ -256,14 +260,13 @@ class AcumulusController extends BaseController
                 );
             }
             // Display form.
-            $this->default_view = '';
             $this->display();
         } catch (Throwable $e) {
             try {
                 $crashReporter = $this->getAcumulusModel()->getCrashReporter();
                 $message = $crashReporter->logAndMail($e);
                 Factory::getApplication()->enqueueMessage($message, 'error');
-            } catch (Throwable $inner) {
+            } catch (Throwable) {
                 // We do not know if we have informed the user per mail or
                 // screen, so assume not, and rethrow the original exception.
                 throw $e;
@@ -301,16 +304,10 @@ class AcumulusController extends BaseController
 
     /**
      * @inheritDoc
-     *
-     * @return \Joomla\CMS\MVC\View\ViewInterface|\Joomla\CMS\MVC\View\HtmlView
-     *   Joomla4: ViewInterface; Joomla3: HtmlView
-     *
-     * @noinspection PhpReturnDocTypeMismatchInspection
      */
-    public function getView($name = '', $type = '', $prefix = '', $config = [])
+    public function getView($name = '', $type = '', $prefix = '', $config = []): ViewInterface
     {
         $config['type'] = $this->task;
-        $config['isJson'] = (int) $this->input->get('ajax') === 1;
         return parent::getView($name, $type, $prefix, $config);
     }
 
@@ -321,18 +318,16 @@ class AcumulusController extends BaseController
      */
     public function update(): void
     {
-        // J4: $extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
-        /** @noinspection PhpDeprecationInspection */
-        $extensionTable = new Extension(Factory::getDbo());
+        $extensionTable = $this->factory->createTable('Extension', 'Administrator');
         $extensionTable->load(['element' => 'com_acumulus']);
-        $manifest_cache = $extensionTable->get('manifest_cache');
-        $manifest_cache = json_decode($manifest_cache, false);
+        $manifest_cache = $extensionTable->manifest_cache;
+        $manifest_cache = json_decode($manifest_cache, false, 512, JSON_THROW_ON_ERROR);
         if (!empty($manifest_cache->version) && $this->getAcumulusModel()->getAcumulusConfigUpgrade()->upgrade($manifest_cache->version)) {
             $manifest = new PackageManifest(__DIR__ . '/acumulus.xml');
             $manifest_cache->version = $manifest->version;
             // Reload as the upgrade may have changed the config.
             $extensionTable->load(['element' => 'com_acumulus']);
-            $extensionTable->set('manifest_cache', json_encode($manifest_cache, Meta::JsonFlags));
+            $extensionTable->manifest_cache = json_encode($manifest_cache, Meta::JsonFlags);
             $extensionTable->store();
             $this->setRedirect(Route::_('index.php?option=com_installer&view=manage', false), 'Module upgraded');
         } else {

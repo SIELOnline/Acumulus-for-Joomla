@@ -9,7 +9,7 @@ com_acumulus/admin/lib/
 com_acumulus/admin/vendor/
 
 # Test artifacts that we do not store
-/tests/.phpunit.result.cache
+.phpunit.result.cache
 **.latest.json
 
 # patches, diffs, merges

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<testsuites>
+    <testsuite name="all">
+        <directory>.</directory>
+    </testsuite>
+    <testsuite name="unit">
+        <directory>Unit/Joomla</directory>
+    </testsuite>
+    <testsuite name="integration_hs">
+        <directory>Integration/Joomla/Shop</directory>
+        <directory>Integration/Joomla/HikaShop</directory>
+    </testsuite>
+    <testsuite name="integration_vm">
+        <directory>Integration/Joomla/Shop</directory>
+        <directory>Integration/Joomla/VirtueMart</directory>
+    </testsuite>
+</testsuites>

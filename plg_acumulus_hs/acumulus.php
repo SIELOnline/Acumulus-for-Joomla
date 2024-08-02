@@ -9,10 +9,9 @@
 
 declare(strict_types=1);
 
-use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Table\Table;
+use Siel\Joomla\Component\Acumulus\Administrator\Extension\AcumulusComponent;
 
 defined('_JEXEC') or die;
 
@@ -25,73 +24,11 @@ defined('_JEXEC') or die;
  */
 class plgHikashopAcumulus extends CMSPlugin
 {
-    protected bool $initialized = false;
-    protected AcumulusModelAcumulus $model;
-    protected AcumulusController $controller;
-
-    /**
-     * Initializes the environment for the plugin:
-     * - Register autoloader for our own library.
-     */
-    protected function init(): void
+    private function getAcumulusComponent(): AcumulusComponent
     {
-        if (!$this->initialized) {
-            $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
-            // Get access to our models and tables.
-            /**
-             * @noinspection PhpDeprecationInspection : I think, eventually, we
-             *   should replace legacy models with J4 PSR4 models.
-             */
-            BaseDatabaseModel::addIncludePath("$componentPath/models", 'AcumulusModel');
-            /**
-             * @noinspection PhpDeprecationInspection : I think, eventually, we
-             *   should replace legacy table classes with J4 PSR4 table classes.
-             */
-            Table::addIncludePath("$componentPath/tables");
-            $this->initialized = true;
-        }
-    }
-
-    /**
-     * Returns an Acumulus model.
-     *
-     * @return AcumulusModelAcumulus
-     */
-    protected function getModel(): AcumulusModelAcumulus
-    {
-        if (!isset($this->model)) {
-            /**
-             * @noinspection PhpDeprecationInspection : Get the model through
-             *   the MVCFactory instead.
-             * @noinspection PhpFieldAssignmentTypeMismatchInspection
-             */
-            $this->model = BaseDatabaseModel::getInstance('Acumulus', 'AcumulusModel');
-        }
-        return $this->model;
-    }
-
-    /**
-     * Returns an Acumulus controller.
-     *
-     * @return \AcumulusController
-     *
-     * @noinspection PhpDocMissingThrowsInspection
-     */
-    protected function getController(): AcumulusController
-    {
-        if (!isset($this->controller)) {
-            /**
-             * @noinspection PhpUnhandledExceptionInspection
-             * @noinspection PhpDeprecationInspection : Get the controller
-             *   through the MVCFactory instead.
-             * @noinspection PhpFieldAssignmentTypeMismatchInspection
-             */
-            $this->controller = BaseController::getInstance(
-                'Acumulus',
-                ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']
-            );
-        }
-        return $this->controller;
+        /** @noinspection PhpUnhandledExceptionInspection */
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return Factory::getApplication()->bootComponent('acumulus');
     }
 
     /**
@@ -109,8 +46,7 @@ class plgHikashopAcumulus extends CMSPlugin
      */
     public function onAfterOrderUpdate(object $order/*, &$send_email*/): bool
     {
-        $this->init();
-        $this->getModel()->sourceStatusChange((int) $order->order_id);
+        $this->getAcumulusComponent()->getAcumulusModel()->sourceStatusChange((int) $order->order_id);
         return true;
     }
 
@@ -130,9 +66,8 @@ class plgHikashopAcumulus extends CMSPlugin
     public function onAfterOrderProductsListingDisplay(object $order, string $type): bool
     {
         if ($type === 'order_back_show') {
-            $this->init();
-            if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
-                $this->getController()->invoice((int) $order->order_id);
+            if ($this->getAcumulusComponent()->getAcumulusModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+                $this->getAcumulusComponent()->getAcumulusController()->invoice((int) $order->order_id);
             }
         }
         return true;

@@ -1,16 +1,11 @@
 <?php
-/**
- * @noinspection PhpStaticAsDynamicMethodCallInspection
- */
 
 declare(strict_types=1);
 
-namespace Siel\Acumulus\Tests\Joomla\HikaShop\Integration;
+namespace Siel\Acumulus\Tests\Integration\Joomla\VirtueMart;
 
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
-
-use function dirname;
 
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
@@ -19,10 +14,10 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
 {
     public function InvoiceDataProvider(): array
     {
-        $dataPath = dirname(__FILE__, 2) . '/Data';
+        $dataPath = __DIR__ . '/Data';
         return [
-            'FR billing (consumer), FR shipping (consumer)' => [$dataPath, Source::Order, 32],
-            'NL billing (consumer), FR shipping (company)' => [$dataPath, Source::Order, 34],
+            'FR company without VAT number, 0% and vat free items' => [$dataPath, Source::Order, 24],
+            'FR company without VAT number' => [$dataPath, Source::Order, 25],
         ];
     }
 

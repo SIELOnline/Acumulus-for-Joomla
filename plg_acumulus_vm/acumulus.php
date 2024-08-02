@@ -9,10 +9,11 @@
 
 declare(strict_types=1);
 
-use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Version;
+use Siel\Joomla\Component\Acumulus\Administrator\Extension\AcumulusComponent;
 
 defined('_JEXEC') or die;
 
@@ -38,10 +39,6 @@ defined('_JEXEC') or die;
  */
 class plgVmExtendedAcumulus extends CMSPlugin
 {
-    protected bool $initialized;
-    protected AcumulusModelAcumulus $model;
-    protected AcumulusController $controller;
-
     /**
      * Constructor
      *
@@ -59,81 +56,24 @@ class plgVmExtendedAcumulus extends CMSPlugin
 
         // Since J4, events that do not start with 'on' are no longer registered
         // automatically.
-        if (\Joomla\CMS\Version::MAJOR_VERSION >= 4) {
+        if (Version::MAJOR_VERSION >= 4) {
             $this->registerLegacyListener('plgVmCouponUpdateOrderStatus');
             $this->registerLegacyListener('plgVmOnShowOrderBEPayment');
         }
     }
 
-    /**
-     * Initializes the environment for the plugin:
-     * - Register autoloader for our own library.
-     */
-    protected function init(): void
+    private function getAcumulusComponent(): AcumulusComponent
     {
-        if (!$this->initialized) {
-            $componentPath = JPATH_ADMINISTRATOR . '/components/com_acumulus';
-            // Get access to our models and tables.
-            /**
-             * @noinspection PhpDeprecationInspection : I think, eventually, we
-             *   should replace legacy models with J4 PSR4 models.
-             */
-            BaseDatabaseModel::addIncludePath("$componentPath/models", 'AcumulusModel');
-            /**
-             * @noinspection PhpDeprecationInspection : I think, eventually, we
-             *   should replace legacy table classes with J4 PSR4 table classes.
-             */
-            Table::addIncludePath("$componentPath/tables");
-            $this->initialized = true;
-        }
-    }
-
-    /**
-     * Returns an Acumulus model.
-     *
-     * @return AcumulusModelAcumulus
-     */
-    protected function getModel(): AcumulusModelAcumulus
-    {
-        if (!isset($this->model)) {
-            /**
-             * @noinspection PhpDeprecationInspection : Get the model through
-             *   the MVCFactory instead.
-             * @noinspection PhpFieldAssignmentTypeMismatchInspection
-             */
-            $this->model = BaseDatabaseModel::getInstance('Acumulus', 'AcumulusModel');
-        }
-        return $this->model;
-    }
-
-    /**
-     * Returns an Acumulus controller.
-     *
-     * @return \AcumulusController
-     *
-     * @noinspection PhpDocMissingThrowsInspection
-     */
-    protected function getController(): AcumulusController
-    {
-        if (!isset($this->controller)) {
-            /**
-             * @noinspection PhpUnhandledExceptionInspection
-             * @noinspection PhpDeprecationInspection : Get the controller
-             *   through the MVCFactory instead.
-             * @noinspection PhpFieldAssignmentTypeMismatchInspection
-             */
-            $this->controller = BaseController::getInstance(
-                'Acumulus',
-                ['base_path' => JPATH_ROOT . '/administrator/components/com_acumulus']
-            );
-        }
-        return $this->controller;
+        /** @noinspection PhpUnhandledExceptionInspection */
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return Factory::getApplication()->bootComponent('acumulus');
     }
 
     /**
      * Event observer to react to order updates.
      *
      * @param TableOrders $order
+     *   A {@see Table} for the  VirtueMart orders
      * param string $old_order_status
      *
      * @return bool|null
@@ -148,8 +88,7 @@ class plgVmExtendedAcumulus extends CMSPlugin
      */
     public function plgVmCouponUpdateOrderStatus(TableOrders $order/*, $old_order_status*/): ?bool
     {
-        $this->init();
-        $this->getModel()->sourceStatusChange((int) $order->virtuemart_order_id);
+        $this->getAcumulusComponent()->getAcumulusModel()->sourceStatusChange((int) $order->virtuemart_order_id);
 
         // We return null as we do not want to influence the return value of
         // VirtueMartModelOrders::updateStatusForOneOrder().
@@ -171,10 +110,9 @@ class plgVmExtendedAcumulus extends CMSPlugin
      */
     public function plgVmOnShowOrderBEPayment(int $orderId): string
     {
-        $this->init();
-        if ($this->getModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+        if ($this->getAcumulusComponent()->getAcumulusModel()->getAcumulusConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
             ob_start();
-            $this->getController()->invoice($orderId);
+            $this->getAcumulusComponent()->getAcumulusController()->invoice($orderId);
             return ob_get_clean();
         }
         return '';

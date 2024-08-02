@@ -9,7 +9,7 @@
     <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
     <!--  The version string is recorded in the extension table -->
     <version>8.2.0</version>
-    <description>Dez plugin verstuurt hikaShop facturen automatisch naar Acumulus bij door u ingestelde bestelstatussen
+    <description>Deze plugin verstuurt hikaShop facturen automatisch naar Acumulus bij door u ingestelde bestelstatussen
         en toont de status van de Acumulus-factuur op het scherm met de details van een bestelling.</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>

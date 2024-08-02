@@ -3,41 +3,43 @@
  * @author    Buro RaDer, https://burorader.com/
  * @copyright SIEL BV, https://www.siel.nl/acumulus/
  * @license   GPL v3, see license.txt
- *
- * @noinspection AutoloadingIssuesInspection
  */
 
 declare(strict_types=1);
 
+namespace Siel\Joomla\Component\Acumulus\Administrator\Model;
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\DatabaseInterface;
+use RuntimeException;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Config\ConfigUpgrade;
 use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Helpers\CrashReporter;
-use Siel\Acumulus\Helpers\Form;
+use Siel\Acumulus\Helpers\Form as AcumulusForm;
 use Siel\Acumulus\Helpers\FormRenderer;
 use Siel\Acumulus\Helpers\Log;
 use Siel\Acumulus\Invoice\InvoiceAddResult;
 use Siel\Acumulus\Invoice\Source;
+use Throwable;
 
 /**
  * Acumulus Model
  */
-class AcumulusModelAcumulus extends BaseDatabaseModel
+class AcumulusModel extends AdminModel
 {
-    protected static Container $instance;
+    protected static Container $acumulusContainer;
 
-    protected Container $container;
     protected string $shopNamespace;
     public bool $isVirtueMart = false;
     public bool $isHikaShop = false;
 
     public function __construct(array $config = [])
     {
-        require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
-
         parent::__construct($config);
+
         if ($this->loadVirtueMart()) {
             $this->isVirtueMart = true;
             $this->shopNamespace = 'Joomla\\VirtueMart';
@@ -45,11 +47,13 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
             $this->isHikaShop = true;
             $this->shopNamespace = 'Joomla\\HikaShop';
         }
-        if (!isset(static::$instance)) {
+        if (!isset(static::$acumulusContainer)) {
             /** @noinspection PhpUnhandledExceptionInspection */
-            static::$instance = new Container($this->shopNamespace, substr(Factory::getApplication()->getLanguage()->getTag(), 0, 2));
+            static::$acumulusContainer = new Container(
+                $this->shopNamespace,
+                substr(Factory::getApplication()->getLanguage()->getTag(), 0, 2)
+            );
         }
-        $this->container = static::$instance;
     }
 
     /**
@@ -113,9 +117,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
      */
     protected function isEnabled(string $component): bool
     {
-        // J4: $db = Factory::getContainer()->get('DatabaseDriver'); (or injection)
-        /** @noinspection PhpDeprecationInspection  Deprecated as of J4 */
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $db->setQuery(sprintf("SELECT enabled FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component)));
         $enabled = $db->loadResult();
         return ((int) $enabled) === 1;
@@ -138,7 +140,7 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
 
     public function getAcumulusContainer(): Container
     {
-        return $this->container;
+        return static::$acumulusContainer;
     }
 
     public function getCrashReporter(): CrashReporter
@@ -161,12 +163,12 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
         return $this->getAcumulusContainer()->getLog();
     }
 
-    public function getForm(string $task): Form
+    public function getAcumulusForm(string $task): AcumulusForm
     {
         return $this->getAcumulusContainer()->getForm($task);
     }
 
-    public function getFormRenderer(): FormRenderer
+    public function getAcumulusFormRenderer(): FormRenderer
     {
         return $this->getAcumulusContainer()->getFormRenderer();
     }
@@ -196,7 +198,6 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
      *   The result of sending (or not sending) the invoice.
      *
      * @throws \Throwable
-     * @noinspection BadExceptionsProcessingInspection
      */
     public function sourceStatusChange(int $orderId): ?InvoiceAddResult
     {
@@ -210,11 +211,19 @@ class AcumulusModelAcumulus extends BaseDatabaseModel
                 // try to display the message returned by logAndMail().
                 $crashReporter->logAndMail($e);
                 return null;
-            } catch (Throwable $inner) {
+            } catch (Throwable) {
                 // We do not know if we have informed the user per mail or
                 // screen, so assume not, and rethrow the original exception.
                 throw $e;
             }
         }
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    public function getForm($data = [], $loadData = true): Form
+    {
+        throw new RuntimeException(__METHOD__ . ' is not implemented');
     }
 }

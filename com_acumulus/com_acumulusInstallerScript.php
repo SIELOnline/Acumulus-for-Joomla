@@ -5,18 +5,17 @@
  * @license   GPL v3, see license.txt
  *
  * @noinspection PhpUnused
- * @noinspection PhpDeprecationInspection
  * @noinspection PhpMultipleClassDeclarationsInspection  JFactory gets conditionally
  *   defined in many hikashop source files.
  */
 
 declare(strict_types=1);
 
-defined('_JEXEC') or die;
-
+use Joomla\CMS\Extension\ExtensionHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerAdapter;
-use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseInterface;
 use Siel\Acumulus\Config\Config;
 use Siel\Acumulus\Helpers\Container;
 
@@ -48,9 +47,6 @@ class com_acumulusInstallerScript
      *   The type of change (install, update or discover_install).
      * @param \Joomla\CMS\Installer\InstallerAdapter $parent
      *   The installer object calling this method.
-     *
-     * @noinspection PhpDeprecationInspection AdapterInstance:
-     *   5.0 Will be removed without replacement.
      */
     public function preflight(string $type, InstallerAdapter $parent): bool
     {
@@ -67,7 +63,7 @@ class com_acumulusInstallerScript
             }
             if (version_compare($joomlaVersion, $minJoomlaVersion, '<')) {
                 /** @noinspection PhpUnhandledExceptionInspection */
-                JFactory::getApplication()->enqueueMessage(
+                Factory::getApplication()->enqueueMessage(
                     "The Acumulus component ($this->newVersion) has not been tested on Joomla $joomlaVersion. " .
                     'Please report any incompatibilities.',
                     'warning'
@@ -75,14 +71,9 @@ class com_acumulusInstallerScript
                 return false;
             }
             if ($type === 'update') {
-                /** @var \Joomla\CMS\Table\Extension $extension */
-                /** @noinspection PhpDeprecationInspection : Deprecated as of J4 */
-                $extension = Table::getInstance('extension');
-
-                $id = $extension->find(['element' => 'com_acumulus', 'type' => 'component']);
-                if (!empty($id) && $extension->load($id)) {
-                    /** @noinspection PhpUndefinedFieldInspection */
-                    $componentInfo = json_decode($extension->manifest_cache, true);
+                $extension = ExtensionHelper::getExtensionRecord('com_acumulus', 'component');
+                if ($extension !== null) {
+                    $componentInfo = json_decode($extension->manifest_cache, true, 512, JSON_THROW_ON_ERROR);
                     $this->currentVersion = $componentInfo['version'];
                 } else {
                     $this->currentVersion = '1.0';
@@ -268,17 +259,19 @@ class com_acumulusInstallerScript
      * @return string
      *   The version string if the extension is installed and enabled, the empty
      *   string otherwise.
+     *
+     * @throws \JsonException
      */
     protected function getVersion(string $component): string
     {
         $result = '';
-        $db = JFactory::getDbo();
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $db->setQuery(
             sprintf("SELECT manifest_cache FROM #__extensions WHERE element = '%s' and type = 'component'", $db->escape($component))
         );
         $manifestCache = $db->loadResult();
         if (!empty($manifestCache)) {
-            $componentInfo = json_decode($manifestCache, false);
+            $componentInfo = json_decode($manifestCache, false, 512, JSON_THROW_ON_ERROR);
             $result = $componentInfo->version;
         }
         return $result;

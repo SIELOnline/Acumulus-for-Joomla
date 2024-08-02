@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace Siel\Acumulus\Tests\Joomla\Unit;
+namespace Siel\Acumulus\Tests\Unit\Joomla;
 
 use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
 
