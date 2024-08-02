@@ -19,7 +19,7 @@
         "psr-4": {
             "Siel\\Joomla\\Component\\Acumulus\\Administrator\\": "src/"
         }
-    }
+    },
     "autoload-dev": {
         "psr-4": {
             "Siel\\Acumulus\\Tests\\Joomla\\": "tests/Joomla/"

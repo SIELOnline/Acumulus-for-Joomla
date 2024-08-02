@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="plugin" group="vmextended" version="3.10" method="upgrade">
+<extension type="plugin" group="vmextended" method="upgrade">
     <name>Acumulus plugin voor Joomla</name>
     <creationDate>September 2023</creationDate>
     <author>Buro RaDer</author>
@@ -8,7 +8,7 @@
     <copyright>SIEL BV https://www.siel.nl/acumulus/</copyright>
     <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
     <!--  The version string is recorded in the extension table -->
-    <version>8.2.0</version>
+    <version>8.3.0</version>
     <description>Deze plugin verbergt menu-items gebaseerd op interne status</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>
