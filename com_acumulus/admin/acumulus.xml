@@ -48,8 +48,6 @@
             <!-- Admin Main File Copy Section -->
             <filename>acumulus.xml</filename>
             <filename>com_acumulusInstallerScript.php</filename>
-            <filename>composer.json</filename>
-            <filename>composer.lock</filename>
             <filename>config.xml</filename>
             <filename>events.txt</filename>
             <filename>leesmij-indien-hulp-nodig.txt</filename>
@@ -57,9 +55,9 @@
             <filename>licentie-nl.pdf</filename>
             <folder>language</folder>
             <folder>media</folder>
+            <folder>services</folder>
             <folder>sql</folder>
             <folder>src</folder>
-            <folder>tests</folder>
             <folder>vendor</folder>
         </files>
         <languages folder="admin">

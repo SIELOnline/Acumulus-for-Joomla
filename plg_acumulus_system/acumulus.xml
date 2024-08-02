@@ -12,5 +12,6 @@
     <description>Deze plugin verbergt menu-items gebaseerd op interne status</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>
+        <filename>acumulus.xml</filename>
     </files>
 </extension>

@@ -13,5 +13,6 @@
         en toont de status van de Acumulus-factuur op het scherm met de details van een bestelling.</description>
     <files>
         <filename plugin="acumulus">acumulus.php</filename>
+        <filename>acumulus.xml</filename>
     </files>
 </extension>
