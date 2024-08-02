@@ -46,13 +46,11 @@
         <!-- Administration Main File Copy Section -->
         <files folder="admin">
             <!-- Admin Main File Copy Section -->
-            <filename>acumulus.php</filename>
             <filename>acumulus.xml</filename>
             <filename>com_acumulusInstallerScript.php</filename>
             <filename>composer.json</filename>
             <filename>composer.lock</filename>
             <filename>config.xml</filename>
-            <filename>controller.php</filename>
             <filename>events.txt</filename>
             <filename>leesmij-indien-hulp-nodig.txt</filename>
             <filename>license.txt</filename>
