@@ -101,7 +101,7 @@
             "meta-shop-invoice-reference": null,
             "meta-shop-invoice-date": null,
             "meta-currency": "{'currency':'EUR','rate':1.0,'doConvert':false}",
-            "meta-totals": "{'amountEx':409.3285,'amountInc':491.1942,'amountVat':81.8657,'vatBreakdown':null,'calculated':'amountEx'}",
+            "meta-totals": "{'amountEx':409.3285,'amountInc':491.1942,'amountVat':81.8657,'calculated':['amountEx']}",
             "meta-prices-include-vat": false,
             "meta-add-email-as-pdf-section": false,
             "meta-lines-amount": 409.3319,

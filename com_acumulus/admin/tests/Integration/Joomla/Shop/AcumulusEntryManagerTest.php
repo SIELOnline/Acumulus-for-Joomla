@@ -17,6 +17,7 @@ use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
  */
 class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
 {
+    private const testSourceType = Source::Order;
     private const testSourceId = 3;
     private const testEntryId = 1; // Acumulus entry ids are auto incrementing and will never equal this anymore.
     private const testToken = 'TESTTOKEN0123456789TESTTOKENtest';
@@ -33,7 +34,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
     public function testDeleteForTestSource(): Source
     {
         $acumulusEntryManager = $this->getAcumulusEntryManager();
-        $source = static::getAcumulusContainer()->createSource(Source::Order, static::testSourceId);
+        $source = static::getAcumulusContainer()->createSource(static::testSourceType, static::testSourceId);
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
         self::assertTrue($entry === null || $acumulusEntryManager->delete($entry));
         return $source;
@@ -53,7 +54,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
 
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
         self::assertInstanceOf(AcumulusEntry::class, $entry);
-        self::assertSame(Source::Order, $entry->getSourceType());
+        self::assertSame(static::testSourceType, $entry->getSourceType());
         self::assertSame(static::testSourceId, $entry->getSourceId());
         self::assertSame(AcumulusEntry::conceptIdUnknown, $entry->getConceptId());
         self::assertNull($entry->getEntryId());
