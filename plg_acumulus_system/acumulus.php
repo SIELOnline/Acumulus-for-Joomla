@@ -22,7 +22,7 @@ class plgSystemAcumulus extends CMSPlugin
         return Factory::getApplication()->bootComponent('acumulus');
     }
 
-    public function isAllowed(string $action = 'core.admin', string $assetName = 'com_acumulus'): bool
+    public function isAllowed(string $action, string $assetName = 'com_acumulus'): bool
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         return Factory::getApplication()->getIdentity()->authorise($action, $assetName);
@@ -39,26 +39,26 @@ class plgSystemAcumulus extends CMSPlugin
 
         $remove = [];
         foreach ($items as $key => $item) {
-            $usesNewCode = $this->getAcumulusComponent()->getAcumulusModel()->getAcumulusContainer()->getShopCapabilities()->usesNewCode();
             $vars = [];
             parse_str(parse_url($item->link, PHP_URL_QUERY) ?? '', $vars);
             if (!empty($vars['task'])) {
                 switch ($vars['task']) {
                     case 'settings':
                     case 'mappings':
-                        if (!$this->isAllowed() || !$usesNewCode) {
+                        if (!$this->isAllowed('core.admin')) {
                             $remove[] = $key;
                         }
                         break;
-                    case 'config':
-                    case 'advanced':
-                        if (!$this->isAllowed() || $usesNewCode) {
-                            $remove[] = $key;
-                        }
-                        break;
-                    case 'register':  // @todo: hide if already registered?
+                    case 'batch':
                     case 'activate':
-                        if (!$this->isAllowed()) {
+                        if (!$this->isAllowed('core.create')) {
+                            $remove[] = $key;
+                        }
+                        break;
+                    case 'register':  // Also hide if already registered
+                        $checkAccount = $this->getAcumulusComponent()->getAcumulusModel()->getAcumulusContainer()->getCheckAccount()
+                            ->doCheck();
+                        if (!$this->isAllowed('core.create') || empty($checkAccount)) {
                             $remove[] = $key;
                         }
                         break;

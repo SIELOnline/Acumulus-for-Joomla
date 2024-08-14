@@ -34,11 +34,13 @@
  * div.control-group
  * div#Order_25_invoice_amount.controls
  */
+
 /* VM3 on J3 */
 #order-items-table + table td + td {
     display: flex;
     flex-direction: column-reverse;
 }
+
 /* end of VM3 on J3 */
 
 /* VM4 on J4: #vm-order-payment is new in VM4 */
@@ -64,7 +66,7 @@
     float: left;
 }
 
-#vm-order-payment #acumulus-invoice .acumulus-links ~ .controls  {
+#vm-order-payment #acumulus-invoice .acumulus-links ~ .controls {
     margin-top: 0;
     min-width: auto;
 }
@@ -73,6 +75,7 @@
     margin-left: 180px;
     min-width: auto;
 }
+
 /* end of VM4 on J4 */
 
 #acumulus-invoice {
@@ -124,4 +127,5 @@
 #acumulus-invoice .acumulus-links + .controls {
     float: left;
 }
+
 /* End of VM4 on J3 */

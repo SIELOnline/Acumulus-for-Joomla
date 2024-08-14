@@ -145,34 +145,6 @@ class DisplayController extends BaseController
     }
 
     /**
-     * Executes the com_acumulus/config task.
-     *
-     * @return \Joomla\CMS\MVC\Controller\BaseController
-     *
-     * @throws \Throwable
-     */
-    public function config(): BaseController
-    {
-        $this->checkAuthorisation();
-        $this->executeTask();
-        return $this;
-    }
-
-    /**
-     * Executes the com_acumulus/advanced task.
-     *
-     * @return \Joomla\CMS\MVC\Controller\BaseController
-     *
-     * @throws \Throwable
-     */
-    public function advanced(): BaseController
-    {
-        $this->checkAuthorisation();
-        $this->executeTask();
-        return $this;
-    }
-
-    /**
      * Executes the com_acumulus/register task.
      *
      * @return \Joomla\CMS\MVC\Controller\BaseController

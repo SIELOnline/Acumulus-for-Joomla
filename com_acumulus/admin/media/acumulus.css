@@ -1,228 +1,229 @@
 .icon-acumulus {
-  background-image: url(./logo-acumulus-16.png);
+    background-image: url(./logo-acumulus-16.png);
 }
 
 summary {
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 18px;
-  font-size: 19.5px;
-  line-height: 36px;
-  color: #333;
-  border: none;
-  border-bottom: 1px solid #e5e5e5;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 18px;
+    /*noinspection CssNonIntegerLengthInPixels*/
+    font-size: 19.5px;
+    line-height: 36px;
+    color: #333;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 summary span {
-  display: inline-block;
-  font-size: smaller;
-  padding-left: 1em;
+    display: inline-block;
+    font-size: smaller;
+    padding-left: 1em;
 }
 
 .description {
-  font-style: italic;
+    font-style: italic;
 }
 
 textarea {
-  min-width: 90%;
+    min-width: 90%;
 }
 
 #intro {
-  margin-top: 3em;
+    margin-top: 3em;
 }
 
 .controls {
-  padding-top: .3rem;
+    padding-top: .3rem;
 }
 
 div.control-label {
-  max-width: 180px;
+    max-width: 180px;
 }
 
 .radio input, .checkbox input {
-  float: left;
+    float: left;
 }
 
 .radio label, .checkbox label {
-  display: block;
+    display: block;
 }
 
 .radio input, .checkbox input {
-  margin-top: .3rem;
-  width: 2em;
+    margin-top: .3rem;
+    width: 2em;
 }
 
 .radio label, .checkbox label {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 a.btn {
-  border-color: #aaa;
+    border-color: #aaa;
 }
 
 div.text-muted {
-  clear: left;
+    clear: left;
 }
 
 /*
  * Invoice status overview for both VirtueMart and HikaShop.
  */
 #acumulus-invoice .notice-info {
-  color: #3a87ad;
+    color: #3a87ad;
 }
 
 #acumulus-invoice .notice-warning {
-  color: #c09853;
+    color: #c09853;
 }
 
 #acumulus-invoice .notice-warning {
 }
 
 #acumulus-invoice .notice-error {
-  color: #b94a48;
+    color: #b94a48;
 }
 
 #acumulus-invoice .notice-success {
-  color: #468847;
+    color: #468847;
 }
 
 #acumulus-invoice label.notice-warning {
-  font-size: larger;
-  font-weight: 900;
+    font-size: larger;
+    font-weight: 900;
 }
 
 .acumulus-amount .amount {
-  display: block;
-  width: 6em;
-  text-align: right;
+    display: block;
+    width: 6em;
+    text-align: right;
 }
 
 .acumulus-amount .amount:nth-child(2) {
-  display: inline-block;
+    display: inline-block;
 }
 
 .acumulus-amount .amount:last-child {
-  border-top: 1px solid #444;
+    border-top: 1px solid #444;
 }
 
 .acumulus-amount .amount .sign,
 .acumulus-amount .amount .currency {
-  float: left;
-  width: 0.25em;
+    float: left;
+    width: 0.25em;
 }
 
 #acumulus-invoice .pdf {
-  display: inline-block;
-  padding-left: 15px;
-  margin: 0.1em 1.5em 0.2em 0;
-  background-image: url('./icon-pdf.svg');
-  background-size: 12px 16px;
-  background-repeat: no-repeat;
-  background-position: left center;
+    display: inline-block;
+    padding-left: 15px;
+    margin: 0.1em 1.5em 0.2em 0;
+    background-image: url('./icon-pdf.svg');
+    background-size: 12px 16px;
+    background-repeat: no-repeat;
+    background-position: left center;
 }
 
 [class*="acumulus-document"] {
-  display: inline-block;
+    display: inline-block;
 }
 
 #acumulus-invoice [class*="acumulus-document"] {
-  box-sizing: border-box;
-  padding-left: 34px;
-  margin-right: 1em;
-  background-size: 21px 28px;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-position-x: 6px;
-  min-width: 11.5em;
-  height: 36px;
+    box-sizing: border-box;
+    padding-left: 34px;
+    margin-right: 1em;
+    background-size: 21px 28px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-position-x: 6px;
+    min-width: 11.5em;
+    height: 36px;
 }
 
 #acumulus-invoice [id$="_documents"] > div.controls {
-  display: inline-block;
-  min-width: 10em;
-  width: auto;
-  margin-left: 0
+    display: inline-block;
+    min-width: 10em;
+    width: auto;
+    margin-left: 0;
 }
 
 #acumulus-invoice a[class*="acumulus-document"] {
-  padding-top: 8px;
+    padding-top: 8px;
 }
 
 #acumulus-invoice [class*="acumulus-document-invoice"] {
-  background-image: url("./acumulus-invoice.png");
+    background-image: url("./acumulus-invoice.png");
 }
 
 #acumulus-invoice [class*="acumulus-document-packing-slip"] {
-  background-image: url("./acumulus-packing-slip.png");
+    background-image: url("./acumulus-packing-slip.png");
 }
 
 /*
  * About block.
  */
 .acumulus-blue {
-  color: #01a6d4;
+    color: #01a6d4;
 }
 
 .acumulus-light-green {
-  color: #f0fff0;
+    color: #f0fff0;
 }
 
 .button-pro-support {
-  display: inline-block;
-  transition: background-color 0.5s ease;
-  background-color: #f0fff0;
-  border-color: #000000;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 12px;
-  padding: 6px 20px;
-  margin-top: 5px;
+    display: inline-block;
+    transition: background-color 0.5s ease;
+    background-color: #f0fff0;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 12px;
+    padding: 6px 20px;
+    margin-top: 5px;
 }
 
 .button-pro-support:hover {
-  background: #01a6d4;
+    background: #01a6d4;
 }
 
 /*
  * EU Commerce threshold progress bar
  */
 .acumulus-progressbar, .acumulus-progress, .acumulus-threshold {
-  display: inline-block;
+    display: inline-block;
 }
 
 .acumulus-progressbar {
-  box-sizing: border-box;
-  position: relative;
-  width: 75%;
-  max-width: 20em;
-  height: 2em;
-  border-radius: 16px;
-  background-color: lightgrey;
+    box-sizing: border-box;
+    position: relative;
+    width: 75%;
+    max-width: 20em;
+    height: 2em;
+    border-radius: 16px;
+    background-color: lightgrey;
 }
 
 .acumulus-progress {
-  box-sizing: border-box;
-  padding: 2px 0.5em 0;
-  border-radius: inherit;
-  height: 100%;
+    box-sizing: border-box;
+    padding: 2px 0.5em 0;
+    border-radius: inherit;
+    height: 100%;
 }
 
 .acumulus-error {
-  background-color: #b94a48;
-  color: white;
+    background-color: #b94a48;
+    color: white;
 }
 
 .acumulus-warning {
-  background-color: #c09853;
+    background-color: #c09853;
 }
 
 .acumulus-ok {
-  background-color: #468847;
+    background-color: #468847;
 }
 
 .acumulus-threshold {
-  box-sizing: border-box;
-  padding-left: 0.3em;
-  width: 24%;
-  height: 2em;
+    box-sizing: border-box;
+    padding-left: 0.3em;
+    width: 24%;
+    height: 2em;
 }
