@@ -17,6 +17,7 @@ use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
  */
 class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
 {
+    // This test source works with both the HikaShop and VirtueMart installation.
     private const testSourceType = Source::Order;
     private const testSourceId = 3;
     private const testEntryId = 1; // Acumulus entry ids are auto incrementing and will never equal this anymore.
@@ -44,6 +45,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
      * Tests creating an acumulus entry and the getByInvoiceSource() method.
      *
      * @depends testDeleteForTestSource
+     * @throws \Exception
      */
     public function testCreate(Source $source): Source
     {
@@ -71,6 +73,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
      * Tests updating an acumulus entry and the getByEntryId() method.
      *
      * @depends testCreate
+     * @throws \Exception
      */
     public function testUpdate(Source $source): Source
     {

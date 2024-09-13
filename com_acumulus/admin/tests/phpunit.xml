@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <testsuites>
-    <testsuite name="all">
-        <directory>.</directory>
-    </testsuite>
     <testsuite name="unit">
         <directory>Unit/Joomla</directory>
     </testsuite>
