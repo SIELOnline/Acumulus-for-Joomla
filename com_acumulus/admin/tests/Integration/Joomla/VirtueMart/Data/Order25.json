@@ -54,7 +54,7 @@
                     "meta-vatrate-source": "completor-range",
                     "unitpriceinc": 484.5,
                     "meta-sub-type": "ItemLine",
-                    "meta-vatrate-range-matches": "[{'vatrate':'20.0000','vattype':6}]",
+                    "meta-vatrate-range-matches": "[{'vatrate':20.0,'vattype':6}]",
                     "meta-children-merged": 2,
                     "meta-vattypes-possible": "[6]"
                 },
@@ -70,7 +70,7 @@
                     "meta-vatamount-precision": 0.001,
                     "meta-vatrate-source": "completor-range",
                     "meta-sub-type": "ShippingLine",
-                    "meta-vatrate-range-matches": "[{'vatrate':'20.0000','vattype':6}]",
+                    "meta-vatrate-range-matches": "[{'vatrate':20.0,'vattype':6}]",
                     "unitpriceinc": 6.446280000000001,
                     "meta-fields-calculated": "['unitpriceinc']",
                     "meta-vattypes-possible": "[6]"
@@ -87,7 +87,7 @@
                     "meta-vatamount-precision": 0.001,
                     "meta-vatrate-source": "completor-range",
                     "meta-sub-type": "PaymentLine",
-                    "meta-vatrate-range-matches": "[{'vatrate':'20.0000','vattype':6}]",
+                    "meta-vatrate-range-matches": "[{'vatrate':20.0,'vattype':6}]",
                     "unitpriceinc": 0.252,
                     "meta-fields-calculated": "['unitpriceinc']",
                     "meta-vattypes-possible": "[6]"
