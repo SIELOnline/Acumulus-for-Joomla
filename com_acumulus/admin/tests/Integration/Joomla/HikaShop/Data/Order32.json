@@ -72,29 +72,29 @@
                     "meta-vattypes-possible": "[1,6]"
                 },
                 {
-                    "product": "UPS",
+                    "product": "UPS (BTW)",
                     "unitPrice": 2.3126746154012907,
                     "vatRate": 21.0,
                     "quantity": 1.0,
+                    "meta-sub-type": "ShippingLine",
                     "vatamount": 0.485661669234271,
                     "meta-vatrate-source": "creator-lookup",
                     "meta-vatclass-name": "BTW",
                     "meta-vatrate-lookup": 21.0,
-                    "meta-sub-type": "ShippingLine",
                     "unitpriceinc": 2.7983362846355617,
                     "meta-fields-calculated": "['unitpriceinc']",
                     "meta-vattypes-possible": "[1]"
                 },
                 {
-                    "product": "UPS",
+                    "product": "UPS (?)",
                     "unitPrice": 1.8195253845987094,
                     "vatRate": 0.0,
                     "quantity": 1.0,
+                    "meta-sub-type": "ShippingLine",
                     "vatamount": 0.0,
                     "meta-vatrate-source": "creator-missing-amount",
                     "meta-vatclass-name": "vat_class_null",
                     "meta-warning": "Amounts for this shipping method do not add up: probably vat free product or rates have changed. (order_shipping_params->prices = {'5@0':{'price_with_tax':4.617861669234271,'tax':0.485661669234271,'taxes':{'BTW':0.485661669234271}}})",
-                    "meta-sub-type": "ShippingLine",
                     "unitpriceinc": 1.8195253845987094,
                     "meta-fields-calculated": "['unitpriceinc']"
                 }
