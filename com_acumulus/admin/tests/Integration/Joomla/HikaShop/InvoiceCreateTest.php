@@ -18,6 +18,8 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
         return [
             'FR billing (consumer), FR shipping (consumer)' => [$dataPath, Source::Order, 32],
             'NL billing (consumer), FR shipping (company)' => [$dataPath, Source::Order, 34],
+            'FR billing (consumer), NL shipping (consumer), discount' => [$dataPath, Source::Order, 35],
+            'FR billing (consumer), FR shipping (consumer), discount' => [$dataPath, Source::Order, 36],
         ];
     }
 

@@ -18,6 +18,7 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
         return [
             'FR company without VAT number, 0% and vat free items' => [$dataPath, Source::Order, 24],
             'FR company without VAT number' => [$dataPath, Source::Order, 25],
+            'FR company without VAT number, discount' => [$dataPath, Source::Order, 27],
         ];
     }
 
