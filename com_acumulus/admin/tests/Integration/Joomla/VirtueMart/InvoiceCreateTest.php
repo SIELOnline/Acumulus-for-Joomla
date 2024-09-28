@@ -9,6 +9,8 @@ use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
 
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
+ *
+ * @todo: add a margin scheme invoice.
  */
 class InvoiceCreateTest extends Acumulus_Joomla_TestCase
 {
