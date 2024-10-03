@@ -66,6 +66,8 @@
                     "meta-line-amountinc": 19.5,
                     "meta-vatclass-id": "vat_class_null",
                     "vatamount": 0.0,
+                    "meta-unitprice-precision": 0.0002,
+                    "meta-vatamount-precision": 0.0002,
                     "meta-vatrate-source": "exact-0,corrected-no-vat",
                     "unitpriceinc": 19.5,
                     "meta-fields-calculated": "['unitpriceinc']",
