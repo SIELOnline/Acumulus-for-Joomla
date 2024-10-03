@@ -1,5 +1,6 @@
 <?php
 /**
+ * @noinspection PhpIllegalPsrClassPathInspection
  * @noinspection PhpMissingStrictTypesDeclarationInspection
  * @noinspection DuplicatedCode Proudly copied (and slightly adapted) from
  *   /administrator/includes/app.php.

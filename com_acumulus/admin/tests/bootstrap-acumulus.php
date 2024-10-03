@@ -29,8 +29,10 @@ declare(strict_types=1);
 const _JEXEC = 1;
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\LanguageFactoryInterface;
+use Joomla\DI\Container as JoomlaContainer;
 
 /**
  * Class AcumulusTestsBootstrap bootstraps the Acumulus tests.
@@ -70,14 +72,19 @@ class AcumulusTestsBootstrap
         $administratorPath = dirname(__DIR__, 2);
 
         // if our component is symlinked, we need to redefine the administratorPath. Try to
-        // find it by looking at the --bootstrap option as passed to phpunit.
+        // find it by looking at the --bootstrap option as passed to phpunit or at the
+        // script name passed to PHP CLI
         global $argv;
         if (is_array($argv)) {
             $i = array_search('--bootstrap', $argv, true);
             // if we found --bootstrap, the value is in the next entry.
-            if ($i < count($argv) - 1) {
+            if (is_int($i) && $i < count($argv) - 1) {
                 $bootstrapFile = $argv[$i + 1];
-                $administratorPath = substr($bootstrapFile, 0, strpos($bootstrapFile, 'administrator')) . 'administrator';
+            } elseif (count($argv) === 1 && str_contains($argv[0], 'administrator')) {
+                $bootstrapFile = $argv[0];
+            }
+            if (isset($bootstrapFile)) {
+                $administratorPath = substr($bootstrapFile, 0, strpos($bootstrapFile, 'administrator') + strlen('administrator'));
             }
         }
         return $administratorPath;
@@ -88,30 +95,13 @@ class AcumulusTestsBootstrap
      */
     public function execute(): void
     {
-        // HikaShop assumes we are in a web request and utilises {@see Joomla\CMS\Uri\Uri}.
-        if (!isset($_SERVER['HTTP_HOST'])) {
-            $_SERVER['HTTP_HOST'] = 'localhost';
-        }
-        if (!isset($_SERVER['SCRIPT_NAME'])) {
-            $_SERVER['SCRIPT_NAME'] = '/administrator/index.php';
-        }
-        if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-            $_SERVER['HTTP_USER_AGENT'] = 'Firefox';
-        }
-
-        $administratorPath = $this->getAdministratorPath();
-        // Load and execute app.php
-        if (!defined('JPATH_BASE')) {
-            define('JPATH_BASE', $administratorPath);
-        }
-        include_once __DIR__ . '/app.php';
-        $container = (new AppLoader())->execute($administratorPath);
+        $container = $this->loadMinimal();
 
         // Ensure we (and other code) use the nl-NL language.
         /** @var LanguageFactoryInterface $languageFactory */
         $languageFactory = $container->get(LanguageFactoryInterface::class);
         $locale = 'nl-NL';
-        Factory::getApplication()->set('language', $locale);
+        $this->getApplication()->set('language', $locale);
         $language = $languageFactory->createLanguage($locale);
         /** @var AdministratorApplication $app */
         $app = $container->get(AdministratorApplication::class);
@@ -127,18 +117,42 @@ class AcumulusTestsBootstrap
     }
 
     /**
+     * @throws \Exception
+     */
+    public function loadMinimal(): JoomlaContainer
+    {
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/administrator/index.php';
+        $_SERVER['HTTP_USER_AGENT'] = 'Firefox';
+
+        $administratorPath = $this->getAdministratorPath();
+        // Load and execute app.php
+        if (!defined('JPATH_BASE')) {
+            define('JPATH_BASE', $administratorPath);
+        }
+        include_once __DIR__ . '/app.php';
+        return (new AppLoader())->execute($administratorPath);
+    }
+
+    /**
      * Load Acumulus
      *
      * @throws \Exception
      */
     private function loadAcumulus(): void
     {
-        Factory::getApplication()->bootComponent('acumulus');
+        $this->getApplication()->bootComponent('acumulus');
     }
 
     private function loadCompatBehaviour(): void
     {
         Joomla\CMS\Plugin\PluginHelper::importPlugin('behaviour', 'compat');
+    }
+
+    private function getApplication(): CMSApplicationInterface
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        return Factory::getApplication();
     }
 }
 
