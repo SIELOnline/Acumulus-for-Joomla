@@ -56,9 +56,9 @@ class plgSystemAcumulus extends CMSPlugin
                         }
                         break;
                     case 'register':  // Also hide if already registered
-                        $checkAccount = $this->getAcumulusComponent()->getAcumulusModel()->getAcumulusContainer()->getCheckAccount()
-                            ->doCheck();
-                        if (!$this->isAllowed('core.create') || empty($checkAccount)) {
+                        $accountStatus = $this->getAcumulusComponent()->getAcumulusModel()->getAcumulusContainer()->getCheckAccount()
+                            ->getAccountStatus();
+                        if (!$this->isAllowed('core.create') || $accountStatus === true) {
                             $remove[] = $key;
                         }
                         break;
