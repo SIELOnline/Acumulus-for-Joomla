@@ -24,6 +24,7 @@ use RuntimeException;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
 use Siel\Acumulus\Invoice\Source;
+use Siel\Acumulus\Joomla\Shop\InvoiceStatusForm;
 use Siel\Acumulus\Meta;
 use Siel\Joomla\Component\Acumulus\Administrator\Model\AcumulusModel;
 use Throwable;
@@ -209,16 +210,11 @@ class DisplayController extends BaseController
     {
         try {
             $form = $this->getAcumulusModel()->getAcumulusForm($this->task);
-            if ($orderId !== null) {
-                /**
-                 * @noinspection PhpPossiblePolymorphicInvocationInspection  defined in
-                 *   {@see \Joomla\CMS\Application\CMSWebApplicationInterface}
-                 */
+            if ($orderId !== null && $form instanceof InvoiceStatusForm) {
                 Factory::getApplication()->getDocument()->addScript(
                     Uri::root(true) . '/administrator/components/com_acumulus/media/acumulus-ajax.js'
                 );
                 $this->input->set('view', null);
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection  $form instanceof {@see InvoiceStatusForm} */
                 $form->setSource($this->getAcumulusModel()->getSource(Source::Order, $orderId));
             }
             if ($form->isSubmitted()) {

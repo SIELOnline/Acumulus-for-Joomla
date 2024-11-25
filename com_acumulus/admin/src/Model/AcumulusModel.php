@@ -24,6 +24,9 @@ use Siel\Acumulus\Helpers\Log;
 use Siel\Acumulus\Invoice\InvoiceAddResult;
 use Siel\Acumulus\Invoice\Source;
 use Throwable;
+use VmConfig;
+
+use function sprintf;
 
 /**
  * Acumulus Model
@@ -75,7 +78,7 @@ class AcumulusModel extends AdminModel
             if (!class_exists('VmConfig')) {
                 require_once JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php';
             }
-            \VmConfig::loadConfig();
+            VmConfig::loadConfig();
 
             if (!class_exists('VmController')) {
                 require_once VMPATH_ADMIN . '/helpers/vmcontroller.php';
@@ -184,7 +187,7 @@ class AcumulusModel extends AdminModel
      * @return \Siel\Acumulus\Invoice\Source
      *   A wrapper object around a shop specific invoice source object.
      */
-    public function getSource(string $invoiceSourceType, $invoiceSourceOrId): Source
+    public function getSource(string $invoiceSourceType, int|array $invoiceSourceOrId): Source
     {
         return $this->getAcumulusContainer()->createSource($invoiceSourceType, $invoiceSourceOrId);
     }

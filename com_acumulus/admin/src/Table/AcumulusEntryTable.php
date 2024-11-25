@@ -18,6 +18,7 @@ use UnexpectedValueException;
 
 use function get_class;
 use function in_array;
+use function sprintf;
 
 /**
  * Acumulus Entry Table class.
