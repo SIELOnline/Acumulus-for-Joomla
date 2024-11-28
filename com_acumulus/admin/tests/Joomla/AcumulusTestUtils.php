@@ -18,6 +18,7 @@ trait AcumulusTestUtils
 {
     use BaseAcumulusTestUtils {
         copyLatestTestSources as protected parentCopyLatestTestSources;
+        updateTestSources as protected parentUpdateTestSources;
     }
 
     protected static function getAcumulusComponent(): AcumulusComponent
@@ -46,5 +47,16 @@ trait AcumulusTestUtils
             require_once dirname(__FILE__, 2) . '/bootstrap-acumulus.php';
         }
         $this->parentCopyLatestTestSources();
+    }
+
+    public function updateTestSources(): void
+    {
+        static $hasRun = false;
+
+        if (!$hasRun) {
+            $hasRun = true;
+            require_once dirname(__FILE__, 2) . '/bootstrap-acumulus.php';
+        }
+        $this->parentUpdateTestSources();
     }
 }
