@@ -68,7 +68,7 @@
                     "vatamount": 0.0,
                     "meta-unitprice-precision": 0.0002,
                     "meta-vatamount-precision": 0.0002,
-                    "meta-vatrate-source": "exact-0,corrected-no-vat",
+                    "meta-vatrate-source": "['exact-0','corrected-no-vat']",
                     "unitpriceinc": 19.5,
                     "meta-fields-calculated": "['unitpriceinc']",
                     "meta-vattypes-possible": "[1,6]"
