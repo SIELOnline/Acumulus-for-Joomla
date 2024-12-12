@@ -28,7 +28,7 @@ trait AcumulusTestUtils
         return Factory::getApplication()->bootComponent('acumulus');
     }
 
-    protected static function getAcumulusContainer(): Container
+    protected static function createContainer(): Container
     {
         return static::getAcumulusComponent()->getAcumulusModel()->getAcumulusContainer();
     }

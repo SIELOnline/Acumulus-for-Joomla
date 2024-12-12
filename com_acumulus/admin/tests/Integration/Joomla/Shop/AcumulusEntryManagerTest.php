@@ -25,7 +25,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
 
     private function getAcumulusEntryManager(): AcumulusEntryManager
     {
-        return static::getAcumulusContainer()->getAcumulusEntryManager();
+        return static::getContainer()->getAcumulusEntryManager();
     }
 
     /**
@@ -35,7 +35,7 @@ class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
     public function testDeleteForTestSource(): Source
     {
         $acumulusEntryManager = $this->getAcumulusEntryManager();
-        $source = static::getAcumulusContainer()->createSource(static::testSourceType, static::testSourceId);
+        $source = static::getContainer()->createSource(static::testSourceType, static::testSourceId);
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
         self::assertTrue($entry === null || $acumulusEntryManager->delete($entry));
         return $source;

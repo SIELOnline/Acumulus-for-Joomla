@@ -23,8 +23,8 @@ class InitTest extends Acumulus_Joomla_TestCase
     public function testInit(): void
     {
         // 1.
-        $container = self::getAcumulusContainer();
-        $environmentInfo = $container->getEnvironment()->get();
+        $container = self::getContainer();
+        $environmentInfo = $container->getEnvironment()->toArray();
         // 2.
         $this->assertMatchesRegularExpression('|\d+\.\d+\.\d+|', $environmentInfo['shopVersion']);
     }
