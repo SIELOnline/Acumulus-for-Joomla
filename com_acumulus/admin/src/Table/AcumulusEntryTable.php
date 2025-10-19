@@ -56,6 +56,10 @@ class AcumulusEntryTable extends Table
 
         // Initialise the query.
         $this->reset();
+        /**
+         * Deprecated since 5.4.0: wait with replacing (with getDatabase()) until that is
+         * the lowest supported Joomla version.
+         */
         $query = $this->_db->getQuery(true)->select('*')->from($this->_tbl);
 
         foreach ($keys as $field => $value) {

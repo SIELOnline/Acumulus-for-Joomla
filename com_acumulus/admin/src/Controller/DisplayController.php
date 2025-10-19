@@ -18,7 +18,9 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\View\ViewInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Input\Input;
 use RuntimeException;
 use Siel\Acumulus\Helpers\Message;
@@ -32,7 +34,7 @@ use Throwable;
 /**
  * Controller of the Acumulus component.
  *
- * @noinspection PhpUnused
+ * @noinspection PhpUnused  This Controller is instantiated by the Joomla framework.
  */
 class DisplayController extends BaseController
 {
@@ -290,7 +292,12 @@ class DisplayController extends BaseController
      */
     public function update(): void
     {
-        $extensionTable = $this->factory->createTable('Extension', 'Administrator');
+        /**
+         * We directly instantiate the Extension table, I could not find any other way
+         * that is not deprecated. Same pattern is used in
+         * {@see \Siel\Acumulus\Joomla\Config\ConfigStore::load()} (and ...::save()).
+         */
+        $extensionTable = new Extension(Factory::getContainer()->get(DatabaseInterface::class));
         $extensionTable->load(['element' => 'com_acumulus']);
         $manifest_cache = $extensionTable->manifest_cache;
         $manifest_cache = json_decode($manifest_cache, false, 512, JSON_THROW_ON_ERROR);

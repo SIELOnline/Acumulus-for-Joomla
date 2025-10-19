@@ -5,8 +5,8 @@
  * @license   GPL v3, see license.txt
  *
  * @noinspection PhpUnused
- * @noinspection PhpMultipleClassDeclarationsInspection  JFactory gets conditionally
- *   defined in many hikashop source files.
+ * @noinspection PhpMultipleClassDeclarationsInspection
+ *   JFactory gets conditionally defined in many hikashop source files.
  */
 
 declare(strict_types=1);
@@ -156,7 +156,7 @@ class com_acumulusInstallerScript
             $errors = $this->container->getRequirements()->check();
             $abortMessage = '';
             foreach ($errors as $key => $message) {
-                if (strpos($key, 'warning') !== false) {
+                if (str_contains($key, 'warning')) {
                     JFactory::getApplication()->enqueueMessage($message, 'warning');
                 } else {
                     $abortMessage .= ' ' . $message;
