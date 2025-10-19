@@ -16,12 +16,11 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
 {
     public function InvoiceDataProvider(): array
     {
-        $dataPath = __DIR__ . '/Data';
         return [
-            'FR billing (consumer), FR shipping (consumer)' => [$dataPath, Source::Order, 32],
-            'NL billing (consumer), FR shipping (company)' => [$dataPath, Source::Order, 34],
-            'FR billing (consumer), NL shipping (consumer), discount' => [$dataPath, Source::Order, 35],
-            'FR billing (consumer), FR shipping (consumer), discount' => [$dataPath, Source::Order, 36],
+            'FR billing (consumer), FR shipping (consumer)' => [Source::Order, 32],
+            'NL billing (consumer), FR shipping (company)' => [Source::Order, 34],
+            'FR billing (consumer), NL shipping (consumer), discount' => [Source::Order, 35],
+            'FR billing (consumer), FR shipping (consumer), discount' => [Source::Order, 36],
         ];
     }
 
@@ -32,8 +31,8 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
      * @dataProvider InvoiceDataProvider
      * @throws \JsonException
      */
-    public function testCreate(string $dataPath, string $type, int $id, array $excludeFields = []): void
+    public function testCreate(string $type, int $id, array $excludeFields = []): void
     {
-        $this->_testCreate($dataPath, $type, $id, $excludeFields);
+        $this->_testCreate($type, $id, $excludeFields);
     }
 }
