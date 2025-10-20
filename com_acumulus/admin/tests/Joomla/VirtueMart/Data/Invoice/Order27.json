@@ -1,10 +1,13 @@
 {
     "customer": {
+        "type": 3,
         "vattypeid": 1,
         "contactyourid": "368",
         "contactstatus": 1,
+        "salutation": "Beste Erwin",
         "email": "user1@example.com",
         "overwriteifexists": 1,
+        "disableduplicates": 0,
         "companyname1": "Les Camélias",
         "fullname": "Erwin Derksen",
         "address1": "6 avenue de Clermont",

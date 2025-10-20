@@ -14,13 +14,12 @@ use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
  */
 class InvoiceCreateTest extends Acumulus_Joomla_TestCase
 {
-    public function InvoiceDataProvider(): array
+    public static function InvoiceDataProvider(): array
     {
-        $dataPath = __DIR__ . '/Data';
         return [
-            'FR company without VAT number, 0% and vat free items' => [$dataPath, Source::Order, 24],
-            'FR company without VAT number' => [$dataPath, Source::Order, 25],
-            'FR company without VAT number, discount' => [$dataPath, Source::Order, 27],
+            'FR company without VAT number, 0% and vat free items' => [Source::Order, 24],
+            'FR company without VAT number' => [Source::Order, 25],
+            'FR company without VAT number, discount' => [Source::Order, 27],
         ];
     }
 
@@ -29,10 +28,11 @@ class InvoiceCreateTest extends Acumulus_Joomla_TestCase
      * {@see \Siel\Acumulus\Data\Invoice}.
      *
      * @dataProvider InvoiceDataProvider
+     *
      * @throws \JsonException
      */
-    public function testCreate(string $dataPath, string $type, int $id, array $excludeFields = []): void
+    public function testCreate(string $type, int $id, array $excludeFields = []): void
     {
-        $this->_testCreate($dataPath, $type, $id, $excludeFields);
+        $this->_testCreate($type, $id, $excludeFields);
     }
 }

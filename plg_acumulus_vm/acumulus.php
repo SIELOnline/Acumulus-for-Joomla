@@ -51,7 +51,7 @@ class plgVmExtendedAcumulus extends CMSPlugin
      */
     public function __construct(&$subject, array $config = [])
     {
-        $this->initialized = false;
+//        $this->initialized = false;
         parent::__construct($subject, $config);
 
         // Since J4, events that do not start with 'on' are no longer registered
