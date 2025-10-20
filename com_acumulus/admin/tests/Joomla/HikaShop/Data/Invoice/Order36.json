@@ -8,6 +8,7 @@
         "telephone2": "04751236",
         "email": "user11@example.com",
         "overwriteifexists": 1,
+        "disableduplicates": 0,
         "fullname": "Consument Frankrijk",
         "city": "Le Mont-Dore",
         "countrycode": "FR",
