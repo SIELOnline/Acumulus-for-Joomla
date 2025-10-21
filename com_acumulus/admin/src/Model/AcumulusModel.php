@@ -43,14 +43,14 @@ class AcumulusModel extends AdminModel
     {
         parent::__construct($config);
 
-        if ($this->loadVirtueMart()) {
-            $this->isVirtueMart = true;
-            $this->shopNamespace = 'Joomla\\VirtueMart';
-        } elseif ($this->loadHikaShop()) {
-            $this->isHikaShop = true;
-            $this->shopNamespace = 'Joomla\\HikaShop';
-        }
         if (!isset(static::$acumulusContainer)) {
+            if ($this->loadVirtueMart()) {
+                $this->isVirtueMart = true;
+                $this->shopNamespace = 'Joomla\\VirtueMart';
+            } elseif ($this->loadHikaShop()) {
+                $this->isHikaShop = true;
+                $this->shopNamespace = 'Joomla\\HikaShop';
+            }
             /** @noinspection PhpUnhandledExceptionInspection */
             static::$acumulusContainer = new Container(
                 $this->shopNamespace,
