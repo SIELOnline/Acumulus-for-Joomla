@@ -7,12 +7,12 @@ namespace Siel\Acumulus\Tests\Integration\Joomla\VirtueMart\Invoice;
 use Siel\Acumulus\Joomla\VirtueMart\Invoice\Item;
 use Siel\Acumulus\Joomla\VirtueMart\Invoice\Source;
 use Siel\Acumulus\Joomla\VirtueMart\Product\Product;
-use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
+use Siel\Acumulus\Tests\Joomla\TestCase;
 
 /**
  * ItemTest tests the VirtueMart source => items => products chain.
  */
-class ItemTest extends Acumulus_Joomla_TestCase
+class ItemTest extends TestCase
 {
     public function testGetProduct(): void
     {

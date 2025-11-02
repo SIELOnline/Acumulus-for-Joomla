@@ -10,12 +10,12 @@ use Joomla\CMS\Factory;
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Shop\AcumulusEntry;
 use Siel\Acumulus\Shop\AcumulusEntryManager;
-use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
+use Siel\Acumulus\Tests\Joomla\TestCase;
 
 /**
  * AcumulusEntryTest tests the CRUD actions on the acumulus entries storage in Joomla.
  */
-class AcumulusEntryManagerTest extends Acumulus_Joomla_TestCase
+class AcumulusEntryManagerTest extends TestCase
 {
     // This test source works with both the HikaShop and VirtueMart installation.
     private const testSourceType = Source::Order;

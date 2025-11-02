@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Siel\Acumulus\Tests\Integration\Joomla\HikaShop;
 
 use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\Tests\Joomla\Acumulus_Joomla_TestCase;
+use Siel\Acumulus\Tests\Joomla\TestCase;
 
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
  *
  * @todo: add a margin scheme invoice.
  */
-class InvoiceCreateTest extends Acumulus_Joomla_TestCase
+class InvoiceCreateTest extends TestCase
 {
     public function InvoiceDataProvider(): array
     {
