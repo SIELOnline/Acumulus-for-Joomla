@@ -44,6 +44,7 @@
                 {
                     "itemnumber": "WER",
                     "product": "Marine Cap (Cap Size S-M)",
+                    "nature": "Product",
                     "unitprice": 17.9,
                     "vatrate": 21.0,
                     "quantity": 1.0,
@@ -61,6 +62,7 @@
                 {
                     "itemnumber": "ASD",
                     "product": "Dress (Clothing size M, Clothing weave Twill)",
+                    "nature": "Product",
                     "unitprice": 425.0,
                     "vatrate": -1.0,
                     "quantity": 1.0,
@@ -77,6 +79,7 @@
                 {
                     "itemnumber": "VGB",
                     "product": "Classic Jacket (Clothing weave Twill, Clothing size M)",
+                    "nature": "Product",
                     "unitprice": 899.9,
                     "vatrate": 0.0,
                     "quantity": 1.0,
@@ -93,6 +96,7 @@
                 },
                 {
                     "product": "PostNL",
+                    "nature": "Product",
                     "unitprice": 5.3719,
                     "vatrate": 21.0,
                     "quantity": 1.0,
@@ -107,6 +111,7 @@
                 },
                 {
                     "product": "Betaalkosten",
+                    "nature": "Product",
                     "unitprice": 0.21,
                     "vatrate": 21.0,
                     "quantity": 1.0,

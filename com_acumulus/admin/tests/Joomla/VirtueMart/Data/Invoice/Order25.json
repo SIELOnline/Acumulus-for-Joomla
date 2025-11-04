@@ -44,6 +44,7 @@
                 {
                     "itemnumber": "ASD",
                     "product": "Dress (Clothing size M, Clothing weave Twill)",
+                    "nature": "Product",
                     "unitprice": 403.75,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -63,6 +64,7 @@
                 },
                 {
                     "product": "PostNL",
+                    "nature": "Product",
                     "unitprice": 5.3719,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -80,6 +82,7 @@
                 },
                 {
                     "product": "Betaalkosten",
+                    "nature": "Product",
                     "unitprice": 0.21,
                     "vatrate": 20.0,
                     "quantity": 1.0,

@@ -43,6 +43,7 @@
                 {
                     "itemnumber": "ERT",
                     "product": "Baseball Cap (Cap Size S-M)",
+                    "nature": "Product",
                     "unitprice": 15.0,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -63,6 +64,7 @@
                 {
                     "itemnumber": "ERT",
                     "product": "Baseball Cap (Cap Size L-XL)",
+                    "nature": "Product",
                     "unitprice": 17.0,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -82,6 +84,7 @@
                 },
                 {
                     "product": "PostNL",
+                    "nature": "Product",
                     "unitprice": 5.3719,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -99,6 +102,7 @@
                 },
                 {
                     "product": "Betaalkosten",
+                    "nature": "Product",
                     "unitprice": 0.2,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -116,6 +120,7 @@
                 },
                 {
                     "product": "5€ on products",
+                    "nature": "Product",
                     "unitprice": -4.166666666666667,
                     "vatrate": 20.0,
                     "quantity": 1.0,
@@ -146,7 +151,7 @@
             "meta-lines-amountinc": 40.08628,
             "meta-lines-vatamount": 7.51438,
             "meta-lines-incomplete": "['meta-lines-amount','meta-lines-vatamount']",
-            "meta-completor-strategy-input-vat-rates": "[{'vatrate':'21.0000','vattype':1},{'vatrate':'9.0000','vattype':1},{'vatrate':0.0,'vattype':1},{'vatrate':-1,'vattype':1},{'vatrate':'2.1000','vattype':6},{'vatrate':'5.5000','vattype':6},{'vatrate':'10.0000','vattype':6},{'vatrate':'20.0000','vattype':6},{'vatrate':'0.0000','vattype':6},{'vatrate':-1,'vattype':6}]",
+            "meta-completor-strategy-input-vat-rates": "[{'vatrate':21.0,'vattype':1},{'vatrate':9.0,'vattype':1},{'vatrate':0.0,'vattype':1},{'vatrate':-1,'vattype':1},{'vatrate':2.1,'vattype':6},{'vatrate':5.5,'vattype':6},{'vatrate':10.0,'vattype':6},{'vatrate':20.0,'vattype':6},{'vatrate':0.0,'vattype':6},{'vatrate':-1,'vattype':6}]",
             "meta-completor-strategy-input-vat-2-divide": -0.8299999999999998,
             "meta-completor-strategy-input-vat-breakdown": "[{'vatrate':20.0,'vatamount':7.51438,'amount':37.5719,'count':4},{'vatrate':21.0,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':9.0,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':0.0,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':-1.0,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':2.1,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':5.5,'vatamount':0.0,'amount':0.0,'count':0},{'vatrate':10.0,'vatamount':0.0,'amount':0.0,'count':0}]",
             "meta-completor-strategy-precondition-failed": "['SplitKnownDiscountLine','SplitNonMatchingLine']",
